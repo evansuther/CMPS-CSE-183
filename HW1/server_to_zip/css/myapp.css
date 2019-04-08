@@ -1,0 +1,32 @@
+/* defined my own navy by using paint to get the rgb values 
+ * then google to convert the rgb values to hex
+ * followed the format of the colors defined in stupid.css
+ */
+
+.mynavy {
+    background-color:#00305c;
+    color:white;
+}
+
+img.newsimage {
+    height: 100px;
+}
+
+div.newscolumn div#myfunnybox {
+
+}
+
+div.newscolumn div.innercol {
+    padding: 5px;
+}
+
+div.newscolumn div.newsbox {
+    padding: 4px;
+}
+
+div.newsheading {
+    font-size: 200%;
+    padding: 4px;
+    background-color: #4477ff;
+    color: white;
+}
