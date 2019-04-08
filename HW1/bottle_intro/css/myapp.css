@@ -1,0 +1,27 @@
+
+h1.main_title {
+    color: #4477ff;
+}
+
+img.newsimage {
+    height: 100px;
+}
+
+div.newscolumn div#myfunnybox {
+
+}
+
+div.newscolumn div.innercol {
+    padding: 5px;
+}
+
+div.newscolumn div.newsbox {
+    padding: 4px;
+}
+
+div.newsheading {
+    font-size: 200%;
+    padding: 4px;
+    background-color: #4477ff;
+    color: white;
+}
