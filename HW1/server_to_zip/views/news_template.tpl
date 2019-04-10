@@ -11,7 +11,7 @@
 </header>
 <body>
   <div class="container">
-    <div class="twothirds container padded">
+    <div class="twothirds container padded newscolumn">
       <div class="newstitle padded compressible">
         Regents approve Student Housing West, Kresge renewal
       </div>
@@ -45,23 +45,23 @@
         <div class="half container padded compressible">
           <div class="padded">
             <img  src="/images/kresge.jpg" />
+            <p>
+              A rendering of the new academic building and Kresge College entrance from the north pedestrian bridge. (Rendering by Studio Gang)
+            </p>
           </div>
-          <p class="padded">
-            A rendering of the new academic building and Kresge College entrance from the north pedestrian bridge. (Rendering by Studio Gang)
-          </p>
           <div class="gray box outline padded">
             <span class="newstitle">Drink water and save the world!</span>  
             Drinking water is better for your health than drinking olive oil, and besides, it's cheaper too!
-          </div>
+          </div> <br>
         </div>
-    <div class="gray box">
+    <div class="gray box padded">
       Get a sidecar bike! Do you have a friend who you like to go around with, but who's too lazy for pedaling? Get a bike with sidecar at SideCarBikes.com 
-    </div>
-    <div class="half box green compressible">Read more about Kresge College </div>
-    <div class="half box blue compressible">Read more about Student Housing West</div>
+    </div><br>
+    <div class="half box green padded">Read more about Kresge College </div>
+    <div class="half box blue padded">Read more about Student Housing West</div>
     </div>
 
-    <div class="third padded">
+    <div class="third padded newscolumn">
         <div class="newstitle">
           Summer programs draw visitors to Lick Observatory for music and stargazing 
         </div>
@@ -69,17 +69,19 @@
           By Tim Stephens <br/>
           March 25, 2019 
         </div>
+        <div class="innercol">
         <p>
           For over 35 years, the Summer Series program at UC's Lick Obseniatory has drawn concert fans and astronomy devotees to the summit of Mt. Hamilton for live music, evening astronomy lectures from world-renowned scientists, and the opportunity to view celestial objects through historic telescopes.
         </p>
         <div class="padded">
           <img  src="/images/lick-domes.jpg" />
+          <p>
+            Sunset over Lick Observatory with open domes. (Photo by Laurie Hatch) 
+            Tickets for the observatory's popular summer evening programs go on sale in April. 
+          </p>
         </div>
-        <p>
-          Sunset over Lick Observatory with open domes. (Photo by Laurie Hatch) 
-          Tickets for the observatory's popular summer evening programs go on sale in April. 
-        </p>
-    <div class="red box compressible">
+        </div>
+    <div class="red box compressible padded">
       Read more about UC's Lick Observatory
     </div>
     </div>
