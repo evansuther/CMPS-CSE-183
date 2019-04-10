@@ -41,25 +41,26 @@
         <div class="half ">
           <div class="innercol">
             <img  src="/images/kresge.jpg" />
-            <p>
+            <p class="italic">
               A rendering of the new academic building and Kresge College entrance from the north pedestrian bridge. (Rendering by Studio Gang)
             </p>
+            <div class="gray box padded blacktext">
+              <p class="bigtext">Drink water and save the world!</p>
+              <p>Drinking water is better for your health than drinking olive oil, and besides, it's cheaper too!</p>
+            </div> 
           </div>
-          <div class="gray box padded blacktext">
-            <p class="bigtext">Drink water and save the world!</p>
-            <p>Drinking water is better for your health than drinking olive oil, and besides, it's cheaper too!</p>
-          </div> <br>
         </div>
         <div class="fill">
-          <div class=" gray box newscolumn ">
-            Get a sidecar bike! Do you have a friend who you like to go around with, but who's too lazy for pedaling? Get a bike with sidecar at SideCarBikes.com
+          <div class=" gray box blacktext innercol ">
+            <p class="bigtext"> Get a sidecar bike! </p>
+            Do you have a friend who you like to go around with, but who's too lazy for pedaling? Get a bike with sidecar at SideCarBikes.com
           </div><br>
           
         </div>
         <div class="half fill">
-          <div class=" green padded innercol">Read more about Kresge College </div> </div>
+          <div class=" green padded innercol newsheading btn">Read more about Kresge College </div> </div>
           <div class="half fill">
-            <div class=" blue padded innercol">Read more about Student Housing West</div> </div>
+            <div class=" blue padded innercol newsheading btn">Read more about Student Housing West</div> </div>
           </div>
           <div class="third padded container">
             <div class="newstitle">
@@ -74,11 +75,15 @@
                 For over 35 years, the Summer Series program at UC's Lick Obseniatory has drawn concert fans and astronomy devotees to the summit of Mt. Hamilton for live music, evening astronomy lectures from world-renowned scientists, and the opportunity to view celestial objects through historic telescopes.
               </p>
               <img  src="/images/lick-domes.jpg" />
-              <p>
-                Sunset over Lick Observatory with open domes. (Photo by Laurie Hatch)
-                Tickets for the observatory's popular summer evening programs go on sale in April.
-              </p>
-              <div class="red compressible padded">
+              <div class="italic">
+                <p>Sunset over Lick Observatory with open domes. (Photo by Laurie Hatch)</p>
+                <br>
+                <div class="bigtext">
+                <p>Tickets for the observatory's popular summer evening programs go on sale in April.</p>
+                </div>
+                <br>
+              </div>
+              <div class="red padded innercol newsheading btn">
                 Read more about UC's Lick Observatory
               </div>
             </div>

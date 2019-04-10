@@ -8,6 +8,10 @@
     color:white;
 }
 
+p{
+    text-align: left;
+}
+
 .box {border:2px solid #000000;}
 
 img.newsimage {
@@ -17,7 +21,7 @@ img.newsimage {
 
 .newscolumn, .innercol {
     padding: 5px;
-    margin: 5px;
+    margin: 10px;
 }
 
 div.newscolumn, div.newsbox {
@@ -27,6 +31,10 @@ div.newscolumn, div.newsbox {
 .bigtext {
 	font-size: 150%;
 	font-weight: bold;
+}
+
+.italic{
+    font-style: italic;
 }
 
 .blacktext {
