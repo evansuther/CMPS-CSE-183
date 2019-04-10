@@ -14,26 +14,33 @@ img.newsimage {
     height: 100px;
 }
 
-div.newscolumn div#myfunnybox {
 
-}
-
-div.newscolumn div.innercol {
+.newscolumn, .innercol {
     padding: 5px;
+    margin: 5px;
 }
 
-div.newscolumn div.newsbox {
+div.newscolumn, div.newsbox {
     padding: 4px;
+}
+
+.bigtext {
+	font-size: 150%;
+	font-weight: bold;
+}
+
+.blacktext {
+	color:black;
 }
 
 .newstitle { 
 	font-size: 200%;
-    padding: 4px;
+    padding: 10px;
     font-weight: bolder;
 }
+
 div.newsheading {
     font-size: 120%;
-    padding: 4px;
-    background-color: #4477ff;
-    color: white;
+    padding: 10px;
+    font-weight: bold;
 }
