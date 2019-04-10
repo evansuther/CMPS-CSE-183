@@ -8,6 +8,8 @@
     color:white;
 }
 
+.box {border:2px solid #000000;}
+
 img.newsimage {
     height: 100px;
 }
@@ -24,8 +26,13 @@ div.newscolumn div.newsbox {
     padding: 4px;
 }
 
+.newstitle { 
+	font-size: 200%;
+    padding: 4px;
+    font-weight: bolder;
+}
 div.newsheading {
-    font-size: 200%;
+    font-size: 120%;
     padding: 4px;
     background-color: #4477ff;
     color: white;
