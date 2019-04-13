@@ -8,10 +8,20 @@
     color:white;
 }
 
+.mymax{
+    max-width: 1200px;
+}
+
+/*
+ * I didnt like stupid.css p alignment
+ */
 p{
     text-align: left;
 }
 
+/*
+ * source https://www.w3schools.com/css/css_border.asp
+ */
 .box {border:2px solid #000000;}
 
 img.newsimage {
@@ -22,6 +32,7 @@ img.newsimage {
 .newscolumn, .innercol {
     padding: 5px;
     margin: 10px;
+    line-height: 150%;
 }
 
 div.newscolumn, div.newsbox {
@@ -43,12 +54,24 @@ div.newscolumn, div.newsbox {
 
 .newstitle { 
 	font-size: 180%;
-    padding: 10px;
+    padding: 5px;
+    margin: 10px;
     font-weight: bolder;
 }
+    
 
-div.newsheading {
+
+.newsheading {
     font-size: 120%;
-    padding: 10px;
+    padding: 5px;
+    margin: 10px;
     font-weight: bold;
 }
+
+/*
+ * source: https://www.w3schools.com/cssref/pr_text_text-decoration.asp;
+ */
+.underlined{
+    text-decoration: underline;
+}
+
