@@ -14,7 +14,7 @@
     </header>
     
     <div class="container">
-      <div class="twothirds container">
+      <div class="twothirds container compressible">
         <div class="newstitle">
           Regents approve Student Housing West, Kresge renewal
         </div>
@@ -22,7 +22,7 @@
           By Scott Hernandez-Jason and Dan White<br/>
           April 1, 2019
         </div>
-        <div class="half">
+        <div class="half compressible">
           <div class="newstext innercol">
             <p>
               The UC Board of Regents have approved two major projects that are aimed at improving the student experience at UC Santa Cruz by offering more campus housing options and revitalizing aging facilities.
@@ -38,7 +38,7 @@
             </p>
           </div>
         </div>
-        <div class="half ">
+        <div class="half compressible">
           <div class="innercol">
             <img  src="/images/kresge.jpg" />
             <p class="italic">
@@ -57,7 +57,7 @@
           </div><br>
           
         </div>
-        <div class="half fill">
+        <div class="half fill compressible">
           <div class=" green padded innercol newsheading btn">Read more about Kresge College </div> </div>
           <div class="half fill">
             <div class=" blue padded innercol newsheading btn">Read more about Student Housing West</div> </div>

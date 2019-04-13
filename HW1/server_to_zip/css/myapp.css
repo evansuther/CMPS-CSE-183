@@ -29,7 +29,7 @@ div.newscolumn, div.newsbox {
 }
 
 .bigtext {
-	font-size: 150%;
+	font-size: 140%;
 	font-weight: bold;
 }
 
@@ -42,7 +42,7 @@ div.newscolumn, div.newsbox {
 }
 
 .newstitle { 
-	font-size: 200%;
+	font-size: 180%;
     padding: 10px;
     font-weight: bolder;
 }
