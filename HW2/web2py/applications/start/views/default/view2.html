@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+
+<div class="main_content">
+
+  {{if post is None:}}
+    <div class="alert">The post does not exist</div>
+  {{else:}}
+    <div class="title">The title of the post is: {{=post.post_title}}</div>
+    <div class="content">The content of the post is: {{=post.post_content}}</div>
+  {{pass}}
+
+</div>

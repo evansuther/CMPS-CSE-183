@@ -1,0 +1,12 @@
+cache/*
+databases/*
+errors/*
+sessions/*
+uploads/*
+*.pyc
+*~
+.sass-cache
+.sass-cache/*
+
+private/gcs_keys.json
+.vscode/settings.json

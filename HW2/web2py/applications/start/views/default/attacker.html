@@ -1,0 +1,33 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+
+<div class="main_content">
+    
+    <h3>How much do you like bananas?</h3>
+
+    <!-- Let's make a copy for the form in add1.html, making the actual 
+        fields hidden.  The form will submit to the other server. -->
+    <form action="http://luca-teaching.appspot.com/start/default/add1" enctype="multipart/form-data" method="post">
+        <table class="input_table">
+            <tr style="display:none"> <!-- hidden -->
+                <th><span class="label">Title:</span></th>
+                <td><input class="string" name="post_title" type="text" value="You need to eat more bananas"></td>
+            </tr>
+            <tr  style="display:none">
+                <th><span class="label">Content:</span></th>
+                <td>
+                    <textarea class="input_content" name="post_content" rows=10>And for the very best bananas, visit http://www.bananas.com</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="btn" type="submit" value="A lot">
+                    <input class="btn" type="submit" value="Not so much">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>

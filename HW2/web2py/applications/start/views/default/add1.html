@@ -1,0 +1,29 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+
+<div class="main_content">
+
+    <form action="#" enctype="multipart/form-data" method="post">
+        <table class="input_table">
+            <tr>
+                <th><span class="label">Title:</span></th>
+                <td><input class="string" name="post_title" type="text"></td>
+            </tr>
+            <tr>
+                <th><span class="label">Content:</span></th>
+                <td>
+                    <textarea class="input_content" name="post_content" rows=10>
+                    </textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="btn btn-primary" type="submit" value="Add">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>

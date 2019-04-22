@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+
+<div class="main_content">
+
+   <p>{{=URL('default', 'example')}}</p>
+
+   <p>{{=URL('default', 'example', args=[5, 'luca'])}}</p>
+
+   <p>{{=URL('default', 'example', vars = dict(id=7, person='luca/gianni'))}}</p>
+
+   <p>{{=URL('default', 'example', args=[5, 6], user_signature=True)}}</p>
+
+   <p>{{=URL('default', 'example')}}</p>
+
+</div>
