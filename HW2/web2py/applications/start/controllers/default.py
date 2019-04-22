@@ -15,30 +15,6 @@ class Post(object):
     def __init__(self):
         pass
 
-#def attacker():
-    """This controller simply produces the attack page for Form 1.
-    The interesting bits are found in the corresponding view."""
- #   return dict()
-
-# def simple_index():
-#     """Unlike the real index, this does not take data from the database."""
-#     post1 = Post()
-#     post1.id = 1
-#     post1.post_title = "Synthetic post 1 title"
-#     post1.post_content = "Synthetic post 1 content"
-#     post1.post_author = "luca@ucsc.edu"
-#     post1.post_time = datetime.datetime.utcnow()
-#     post2 = Post()
-#     post2.id = 2
-#     post2.post_title = "Synthetic post 2 title"
-#     post2.post_content = "Synthetic post 2 content"
-#     post2.post_author = "luca@ucsc.edu"
-#     post2.post_time = datetime.datetime.utcnow()
-#     return dict(
-#         rows=[post1, post2]
-#     )
-
-
 @auth.requires_login()
 def setup():
     """Inserts a couple of posts just to bring the database to a known state.
@@ -56,7 +32,6 @@ def setup():
     # We don't need a view if we don't return a dictionary.
     return "ok"
 
-
 def index():
     """Displays the list of rows"""
     rows = db(db.post).select()
@@ -64,51 +39,6 @@ def index():
     return dict(
         rows=rows, prods = prods
     )
-
-
-# @auth.requires_login()
-# def add1():
-#     """INSECURE -- form does not contain token -- do not use."""
-#     """Very simple way to insert records."""
-#     logger.info("Request method: %r", request.env.request_method)
-#     if request.env.request_method == 'POST':
-#         # This is a postback.  Insert the record.
-#         logger.info("We are inserting: title: %r content: %r" % (
-#             # I could also access the title via request.post_vars.post_title,
-#             # but I don't care to differentiate betw post and get variables.
-#             request.vars.post_title, request.vars.post_content
-#         ))
-#         db.post.insert(
-#             post_title=request.vars.post_title,
-#             post_content=request.vars.post_content
-#         )
-#         redirect(URL('default', 'index'))
-#     else:
-#         # This is a GET request.  Returns the form.
-#         return dict()
-
-
-# @auth.requires_login()
-# def add2():
-#     """More sophisticated way, in which we use web2py to come up with the form."""
-#     form = SQLFORM.factory(
-#         Field('post_title'),
-#         Field('post_content', 'text'),
-#     )
-#     # We can process the form.  This will check that the request is a POST,
-#     # and also perform validation, but in this case there is no validation.
-#     if form.process().accepted:
-#         # We insert the result, as in add1.
-#         db.post.insert(
-#             post_title=form.vars.post_title,
-#             post_content=form.vars.post_content
-#         )
-#         # And we load default/index via redirect.
-#         redirect(URL('default', 'index'))
-#     # We ask web2py to lay out the form for us.
-#     logger.info("My session is: %r" % session)
-#     return dict(form=form)
-
 
 @auth.requires_login()
 def add3():
@@ -212,6 +142,46 @@ def mychecks(form):
     # form.vars contains what the user put in.
     if form.vars.view_count % 2 == 1:
         form.errors.view_count = "I am sorry but it's odd that you wrote %d" % form.vars.view_count
+# /start/default/delete/2
+@auth.requires_signature()
+@auth.requires_login()
+def delete():
+    post = db.post(request.args(0))
+    # We must validate everything we receive.
+    if post is None:
+        logging.info("Invalid edit call")
+        redirect(URL('default', 'index'))
+    # One can edit only one's own posts.
+    if post.post_author != auth.user.email:
+        logging.info("Attempt to edit some one else's post by: %r" % auth.user.email)
+        redirect(URL('default', 'index'))
+    db(db.post.id == post.id).delete()
+    redirect(URL('default', 'index'))
+
+@auth.requires_signature()
+@auth.requires_login()
+def toggle_star():
+    star_record = db((db.star.post_id == int(request.args[0])) &
+        (db.star.user_id == auth.user_id)).select().first()
+    if star_record is not None:
+        # Removes star.
+        db(db.star.id == star_record.id).delete()
+    else:
+        # Adds the star.
+        db.star.insert(
+            user_id = auth.user.id,
+            post_id = int(request.args[0]))
+    redirect(URL('default', 'index_inefficient'))
+
+@auth.requires_signature()
+def rightback():
+    #update viewcount
+    post = db.post(request.args(0))
+    if post is None:
+        redirect(URL('default', 'index'))
+    post.view_count = 1 if post.view_count is None else post.view_count + 1
+    post.update_record()
+    return redirect(URL('default', 'viewall'))
 
 def produce_funny_button(row):
     if 'user' in row.post_title:
@@ -314,34 +284,6 @@ def listall():
 
     # List of additional links.
     links = []
-    links.append(
-        dict(header = "Profit",
-            body = lambda row : produce_profit(row)
-        )
-    )
-    links.append(
-        dict(header='',
-             body = lambda row : 
-             SPAN(A(I(_class='fa fa-eye'), ' ', 'View', 
-                    _href=URL('default', 'view_in_grid', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
-        )
-    )
-
-    if auth.user is not None and auth.user.email == row.product_author:
-        links.append(
-            dict(header='',
-                 body = lambda row : 
-                 SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
-                        _href=URL('default', 'edit_product', args=[row.id], 
-                                    user_signature=True),
-                        _class='btn'),
-                    _class="haha")
-            )
-        )
-
     # links.append(
     #     dict(header='',
     #          body = lambda row : 
@@ -357,14 +299,37 @@ def listall():
     #     dict(header="Rightback", body = lambda row : A('rb', _class='btn', 
     #         _href=URL('default', 'rightback', args=[row.id], user_signature=True)))
     # )
-
+    links.append(
+        dict(header = "Profit",
+            body = lambda row : produce_profit(row)
+        )
+    )
+    links.append(
+        dict(header='',
+             body = lambda row : 
+             SPAN(A(I(_class='fa fa-eye'), ' ', 'View', 
+                    _href=URL('default', 'view_in_grid', args=[row.id], 
+                                user_signature=True),
+                    _class='btn'),
+                _class="haha")
+        )
+    )
+    links.append(
+        dict(header='',
+             body = lambda row : 
+             SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+                    _href=URL('default', 'edit_product', args=[row.id], 
+                                user_signature=True),
+                    _class='btn'),
+                _class="haha")
+        )
+    )
     # Let's get rid of some fields in the add form.
     # Are we in the add form?
     if len(request.args) > 0 and request.args[0] == 'new':
         db.product.prod_poster.readable = False
         db.product.prod_post_time.writable = False
         db.product.prod_sold.writable = False
-
     # Grid definition.
     grid = SQLFORM.grid(
         query, 
@@ -388,14 +353,6 @@ def listall():
 
 
 
-@auth.requires_signature()
-def rightback():
-    post = db.post(request.args(0))
-    if post is None:
-        redirect(URL('default', 'index'))
-    post.view_count = 1 if post.view_count is None else post.view_count + 1
-    post.update_record()
-    return redirect(URL('default', 'viewall'))
 
 
 @auth.requires_signature()
@@ -436,39 +393,6 @@ def urls():
     return dict()
 
 
-# /start/default/delete/2
-@auth.requires_signature()
-@auth.requires_login()
-def delete():
-    post = db.post(request.args(0))
-    # We must validate everything we receive.
-    if post is None:
-        logging.info("Invalid edit call")
-        redirect(URL('default', 'index'))
-    # One can edit only one's own posts.
-    if post.post_author != auth.user.email:
-        logging.info("Attempt to edit some one else's post by: %r" % auth.user.email)
-        redirect(URL('default', 'index'))
-    db(db.post.id == post.id).delete()
-    redirect(URL('default', 'index'))
-
-@auth.requires_signature()
-@auth.requires_login()
-def toggle_star():
-    star_record = db((db.star.post_id == int(request.args[0])) &
-        (db.star.user_id == auth.user_id)).select().first()
-    if star_record is not None:
-        # Removes star.
-        db(db.star.id == star_record.id).delete()
-    else:
-        # Adds the star.
-        db.star.insert(
-            user_id = auth.user.id,
-            post_id = int(request.args[0]))
-    redirect(URL('default', 'index_inefficient'))
-
-
-
 def user():
     """
     exposes:
@@ -506,4 +430,68 @@ def call():
     """
     return service()
 
+#def attacker():
+    """This controller simply produces the attack page for Form 1.
+    The interesting bits are found in the corresponding view."""
+ #   return dict()
 
+# def simple_index():
+#     """Unlike the real index, this does not take data from the database."""
+#     post1 = Post()
+#     post1.id = 1
+#     post1.post_title = "Synthetic post 1 title"
+#     post1.post_content = "Synthetic post 1 content"
+#     post1.post_author = "luca@ucsc.edu"
+#     post1.post_time = datetime.datetime.utcnow()
+#     post2 = Post()
+#     post2.id = 2
+#     post2.post_title = "Synthetic post 2 title"
+#     post2.post_content = "Synthetic post 2 content"
+#     post2.post_author = "luca@ucsc.edu"
+#     post2.post_time = datetime.datetime.utcnow()
+#     return dict(
+#         rows=[post1, post2]
+#     )
+
+# @auth.requires_login()
+# def add1():
+#     """INSECURE -- form does not contain token -- do not use."""
+#     """Very simple way to insert records."""
+#     logger.info("Request method: %r", request.env.request_method)
+#     if request.env.request_method == 'POST':
+#         # This is a postback.  Insert the record.
+#         logger.info("We are inserting: title: %r content: %r" % (
+#             # I could also access the title via request.post_vars.post_title,
+#             # but I don't care to differentiate betw post and get variables.
+#             request.vars.post_title, request.vars.post_content
+#         ))
+#         db.post.insert(
+#             post_title=request.vars.post_title,
+#             post_content=request.vars.post_content
+#         )
+#         redirect(URL('default', 'index'))
+#     else:
+#         # This is a GET request.  Returns the form.
+#         return dict()
+
+
+# @auth.requires_login()
+# def add2():
+#     """More sophisticated way, in which we use web2py to come up with the form."""
+#     form = SQLFORM.factory(
+#         Field('post_title'),
+#         Field('post_content', 'text'),
+#     )
+#     # We can process the form.  This will check that the request is a POST,
+#     # and also perform validation, but in this case there is no validation.
+#     if form.process().accepted:
+#         # We insert the result, as in add1.
+#         db.post.insert(
+#             post_title=form.vars.post_title,
+#             post_content=form.vars.post_content
+#         )
+#         # And we load default/index via redirect.
+#         redirect(URL('default', 'index'))
+#     # We ask web2py to lay out the form for us.
+#     logger.info("My session is: %r" % session)
+#     return dict(form=form)
