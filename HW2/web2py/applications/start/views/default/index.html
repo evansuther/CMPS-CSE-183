@@ -6,12 +6,12 @@
 <div class="main_content">
 
   <div class="button_div">
-    <p>
+   <!--  <p>
       <a href="{{=URL('default', 'add1')}}" class="btn">Add Post (method 1)</a>
-    </p>
+    </p>-->
     <p>
-      <a href="{{=URL('default', 'add2')}}" class="btn">Add Post (method 2)</a>
-    </p>
+      <a href="{{=URL('default', 'add_product')}}" class="btn">Add product (method 3)</a>
+    </p> 
     <p>
       {{=A('Add Post (method 3)', _href=URL('default', 'add3'), _class='btn')}}
     </p>
@@ -29,6 +29,27 @@
       <a href="{{=URL('default', 'edit', args=[r.id])}}", class="btn"><i class="fa fa-pencil-square-o"></i> Edit</a>
       {{=A('Edit', _href=URL('default', 'edit1', vars=dict(id=r.id)), _class='btn')}}
       {{=A('Delete Immediately', _href=URL('default', 'delete', args=[r.id], user_signature=True), _class='btn')}}
+      <a><i class="fa fa-star-o"></i></a>
+    {{pass}}
+    </div>
+  </div>
+  {{pass}}
+
+  <!-- beginning my list page based on above blog post list -->
+  <h3>Products </h3>
+  {{for p in prods:}}
+  <div class="product">
+    <div class="author">Author: {{=p.prod_poster}}</div>
+    <div class="title">Product name: {{=p.prod_name}}</div>
+    <div class="content">Content: {{=p.prod_desc}}</div>
+    <div class="price">Price: ${{=p.prod_price}}</div>
+    <div class="button_row">
+      <a href="{{=URL('default', 'view1', args=[p.id])}}" class="btn">View 1</a>
+      <!-- <a href="{{=URL('default', 'view2', args=[p.id])}}" class="btn">View 2</a> -->
+    {{if auth.user is not None and auth.user.email == p.prod_poster:}}
+      <a href="{{=URL('default', 'edit', args=[p.id])}}", class="btn"><i class="fa fa-pencil-square-o"></i> Edit</a>
+      {{=A('Edit', _href=URL('default', 'edit1', vars=dict(id=p.id)), _class='btn')}}
+      {{=A('Delete Immediately', _href=URL('default', 'delete', args=[p.id], user_signature=True), _class='btn')}}
       <a><i class="fa fa-star-o"></i></a>
     {{pass}}
     </div>
