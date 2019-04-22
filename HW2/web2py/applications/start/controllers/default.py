@@ -330,17 +330,17 @@ def listall():
         )
     )
 
-
-    links.append(
-        dict(header='',
-             body = lambda row : 
-             SPAN(A('Edit', 
-                    _href=URL('default', 'edit_product', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
+    if auth.user is not None and auth.user.email == row.product_author:
+        links.append(
+            dict(header='',
+                 body = lambda row : 
+                 SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+                        _href=URL('default', 'edit_product', args=[row.id], 
+                                    user_signature=True),
+                        _class='btn'),
+                    _class="haha")
+            )
         )
-    )
 
     # links.append(
     #     dict(header='',
@@ -363,6 +363,7 @@ def listall():
     if len(request.args) > 0 and request.args[0] == 'new':
         db.product.prod_poster.readable = False
         db.product.prod_post_time.writable = False
+        db.product.prod_sold.writable = False
 
     # Grid definition.
     grid = SQLFORM.grid(

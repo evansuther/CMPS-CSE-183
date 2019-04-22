@@ -34,17 +34,17 @@ db.post.id.readable = False
 db.define_table('product',
                 Field('prod_name'), # At most 512 characters
                 Field('prod_desc', 'text'), # "unlimited"
-                Field('prod_in_stock', 'integer', IS_INT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_sold', 'integer', IS_INT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_price', 'float', IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_cost', 'float', IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
+                Field('prod_in_stock', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
+                Field('prod_sold', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
+                Field('prod_price', 'float', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
+                Field('prod_cost', 'float', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
                 Field('prod_poster', default=get_user_email()),
                 Field('prod_post_time', 'datetime', update=get_current_time()),
+                
                 )
 
 db.product.prod_post_time.readable = db.post.post_time.writable = False
 db.product.prod_poster.writable = False
-db.product.prod_sold.writable = False
 db.product.id.readable = False
 
 # Stars
