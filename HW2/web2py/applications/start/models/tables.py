@@ -28,8 +28,7 @@ db.define_table('post',
 db.post.post_time.readable = db.post.post_time.writable = False
 db.post.post_author.writable = False
 db.post.id.readable = False
-# after defining tables, uncomment below to enable auditing
-# auth.enable_record_versioning(db)
+
 
 db.define_table('product',
                 Field('prod_name'), # At most 512 characters
@@ -54,3 +53,5 @@ db.define_table('star',
                 Field('post_id', 'reference post'), # The starred post
                 Field('product_id', 'reference product'), # The starred post
                 )
+# after defining tables, uncomment below to enable auditing
+# auth.enable_record_versioning(db)

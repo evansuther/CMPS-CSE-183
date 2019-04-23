@@ -33,6 +33,7 @@ def setup():
     return "ok"
 
 def index():
+    redirect(URL('default', 'listall'))
     """Displays the list of rows"""
     rows = db(db.post).select()
     prods = db(db.product).select()
@@ -129,7 +130,15 @@ def edit_product():
                         % auth.user.email)
         redirect(URL('default', 'listall'))
     # Now we must generate a form that allows editing the post.
-    form = SQLFORM(db.product, record=product)
+    form = SQLFORM(db.product, record=product,
+                    labels = {'prod_name': 'Product Name',
+                    'prod_desc':'Description',
+                    'prod_in_stock':'In Stock',
+                     'prod_sold':'Sold', 
+                     'prod_price':'Price(for consumer)', 
+                     'prod_cost':'Cost(for producer)'},
+                   )
+    form.add_button('Back', URL('default', 'listall'))
     if form.process().accepted:
         # The deed is done.
         redirect(URL('default', 'listall'))
@@ -157,6 +166,21 @@ def delete():
         redirect(URL('default', 'index'))
     db(db.post.id == post.id).delete()
     redirect(URL('default', 'index'))
+
+@auth.requires_signature()
+@auth.requires_login()
+def delete_product():
+    product = db.product(request.args(0))
+    # We must validate everything we receive.
+    if product is None:
+        logging.info("Invalid delete_product call")
+        redirect(URL('default', 'listall'))
+    # One can edit only one's own posts.
+    if product.prod_poster != auth.user.email:
+        logging.info("Attempt to edit some one else's product by: %r" % auth.user.email)
+        redirect(URL('default', 'listall'))
+    db(db.product.id == product.id).delete()
+    redirect(URL('default', 'listall'))
 
 @auth.requires_signature()
 @auth.requires_login()
@@ -201,6 +225,40 @@ def produce_profit(row):
     return SPAN('$%.2f'%(row.prod_sold*(row.prod_price-row.prod_cost)),
                                  _class='green')
 
+def produce_edit_btn(id):
+    _btn = ""
+    row = db.product(id)
+    #row = db.product(request.row.id)
+    if auth.user is not None:
+        if row.prod_poster == auth.user.email:
+            _btn =  SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+                        _href=URL('default', 'edit_product', args=[row.id], 
+                                    user_signature=True),
+                        _class='btn'),
+                    _class="haha")
+        # else:
+        #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','Edit', 
+        #                 _href=URL('#'),
+        #                 _class='btn'),
+        #             _class="haha")
+    return _btn
+
+def produce_delete_btn(id):
+    _btn = ""
+    row = db.product(id)
+    if auth.user is not None:
+        if row.prod_poster == auth.user.email:
+            _btn =  SPAN(A(I(_class='fa fa-trash'), ' ','delete', 
+                        _href=URL('default', 'delete_product', args=[row.id], 
+                                    user_signature=True),
+                        _class='btn'),
+                    _class="haha")
+        # else:
+        #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','D', 
+        #                 _href=URL('#'),
+        #                 _class='btn'),
+        #             _class="haha")
+    return _btn
 
 def viewall():
     """This controller uses a grid to display all posts."""
@@ -270,8 +328,8 @@ def viewall():
         links = links,
         # And now some generic defaults.
         details=False,
-        create=True, editable=False, deletable=False,
-        csv=True, 
+        create=False, editable=False, deletable=False,
+        csv=False, 
         user_signature=True, # We don't need it as one cannot take actions directly from the form.
     )
     return dict(grid=grid)
@@ -306,22 +364,23 @@ def listall():
     )
     links.append(
         dict(header='',
-             body = lambda row : 
-             SPAN(A(I(_class='fa fa-eye'), ' ', 'View', 
-                    _href=URL('default', 'view_in_grid', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
+             body = lambda row : produce_delete_btn(row.id)
+
+             # SPAN(A(I(_class='fa fa-trash'), ' ', 'Delete', 
+             #        _href=URL('default', 'delete_product', args=[row.id], 
+             #                    user_signature=True),
+             #        _class='btn'),
+             #    _class="haha")
         )
     )
     links.append(
         dict(header='',
-             body = lambda row : 
-             SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
-                    _href=URL('default', 'edit_product', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
+             body = lambda row : produce_edit_btn(row.id)
+             # SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+             #        _href=URL('default', 'edit_product', args=[row.id], 
+             #                    user_signature=True),
+             #        _class='btn'),
+             #    _class="haha")
         )
     )
     # Let's get rid of some fields in the add form.
@@ -346,7 +405,7 @@ def listall():
         # And now some generic defaults.
         details=False,
         create=True, editable=False, deletable=False,
-        csv=True, 
+        csv=False, 
         user_signature=True, # We don't need it as one cannot take actions directly from the form.
     )
     return dict(grid=grid)
@@ -362,6 +421,16 @@ def view_in_grid():
         redirect(URL('default', 'index'))
     post.view_count = 1 if post.view_count is None else post.view_count + 1
     form = SQLFORM(db.post, record = post, readonly=True)
+    post.update_record()
+    return dict(form=form)
+
+@auth.requires_signature()
+def increment_stock():
+    product = db.product(request.args(0))
+    if product is None:
+        redirect(URL('default', 'listall'))
+    product.prod_in_stock = 1 if product.prod_in_stock is None else product.prod_in_stock + 1
+    form = SQLFORM(db.product, record = post, readonly=True)
     post.update_record()
     return dict(form=form)
 
