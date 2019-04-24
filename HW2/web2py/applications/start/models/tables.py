@@ -31,14 +31,27 @@ db.post.id.readable = False
 
 
 db.define_table('product',
-                Field('prod_name'), # At most 512 characters
-                Field('prod_desc', 'text'), # "unlimited"
-                Field('prod_in_stock', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_sold', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_price', 'double', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0, represent = lambda val, row: '${:10,.2f}'.format(val) ), 
-                Field('prod_cost', 'double', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,represent = lambda val, row: '${:10,.2f}'.format(val) ), 
+                Field('prod_name', label='Product Name'), # At most 512 characters
+                Field('prod_desc', 'text', label= 'Description'), # "unlimited"
+                Field('prod_in_stock', 'integer',
+                        requires=IS_INT_IN_RANGE(0, 1e100), default=0,
+                        label='Quantity in Stock'), 
+                Field('prod_sold', 'integer', 
+                        requires=IS_INT_IN_RANGE(0, 1e100), default=0, 
+                        label='Quantity Sold'), 
+                Field('prod_price', 'double', 
+                        requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,
+                        represent =
+                         lambda val, row: '${:10,.2f}'.format(val),
+                        label='Price (to Customer)' ), 
+                Field('prod_cost', 'double', 
+                        requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,
+                        represent = 
+                          lambda val, row: '${:10,.2f}'.format(val),
+                        label='Cost (to bring to Market)'), 
                 Field('prod_poster', default=get_user_email()),
-                Field('prod_post_time', 'datetime', update=get_current_time()),
+                Field('prod_post_time', 'datetime',
+                         update=get_current_time()),
                 
                 )
 

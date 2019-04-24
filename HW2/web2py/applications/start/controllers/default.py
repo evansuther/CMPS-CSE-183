@@ -33,7 +33,8 @@ def setup():
     return "ok"
 
 def index():
-    redirect(URL('default', 'listall'))
+    #redir to appname/default/listall if you end up on index
+    redirect(URL('default', 'listall')) 
     """Displays the list of rows"""
     rows = db(db.post).select()
     prods = db(db.product).select()
