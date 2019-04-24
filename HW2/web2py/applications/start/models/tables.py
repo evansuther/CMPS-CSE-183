@@ -35,8 +35,8 @@ db.define_table('product',
                 Field('prod_desc', 'text'), # "unlimited"
                 Field('prod_in_stock', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
                 Field('prod_sold', 'integer', requires=IS_INT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_price', 'float', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
-                Field('prod_cost', 'float', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0), 
+                Field('prod_price', 'double', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0, represent = lambda val, row: '${:10,.2f}'.format(val) ), 
+                Field('prod_cost', 'double', requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,represent = lambda val, row: '${:10,.2f}'.format(val) ), 
                 Field('prod_poster', default=get_user_email()),
                 Field('prod_post_time', 'datetime', update=get_current_time()),
                 

@@ -41,24 +41,24 @@ def index():
         rows=rows, prods = prods
     )
 
-@auth.requires_login()
-def add3():
-    """More sophisticated way, in which we use web2py to come up with the form."""
-    form = SQLFORM(db.post)
-    # We can process the form.  This will check that the request is a POST,
-    # and also perform validation, but in this case there is no validation.
-    # THIS process() also inserts.
-    if form.process().accepted:
-        # NOT NEEDED We insert the result, as in add1.
-        # db.post.insert(
-        #     post_title=form.vars.post_title,
-        #     post_content=form.vars.post_content
-        # )
-        # And we load default/index via redirect.
-        redirect(URL('default', 'index'))
-    # We ask web2py to lay out the form for us.
-    logger.info("My session is: %r" % session)
-    return dict(form=form)
+# @auth.requires_login()
+# def add3():
+#     """More sophisticated way, in which we use web2py to come up with the form."""
+#     form = SQLFORM(db.post)
+#     # We can process the form.  This will check that the request is a POST,
+#     # and also perform validation, but in this case there is no validation.
+#     # THIS process() also inserts.
+#     if form.process().accepted:
+#         # NOT NEEDED We insert the result, as in add1.
+#         # db.post.insert(
+#         #     post_title=form.vars.post_title,
+#         #     post_content=form.vars.post_content
+#         # )
+#         # And we load default/index via redirect.
+#         redirect(URL('default', 'index'))
+#     # We ask web2py to lay out the form for us.
+#     logger.info("My session is: %r" % session)
+#     return dict(form=form)
 
 @auth.requires_login()
 def add_product():
@@ -81,32 +81,32 @@ def add_product():
 
 
 
-# We require login.
-@auth.requires_login()
-def edit():
-    """Allows editing of a post.  URL form: /default/edit/<n> where n is the post id."""
+# # We require login.
+# @auth.requires_login()
+# def edit():
+#     """Allows editing of a post.  URL form: /default/edit/<n> where n is the post id."""
 
-    # For this controller only, we hide the author.
-    db.post.post_author.readable = False
+#     # For this controller only, we hide the author.
+#     db.post.post_author.readable = False
 
-    # post = db(db.post.id == int(request.args[0])).select().first()
+#     # post = db(db.post.id == int(request.args[0])).select().first()
 
-    post = db.post(request.args(0))
-    # We must validate everything we receive.
-    if post is None:
-        logging.info("Invalid edit call")
-        redirect(URL('default', 'index'))
-    # One can edit only one's own posts.
-    if post.post_author != auth.user.email:
-        logging.info("Attempt to edit some one else's post by: %r" 
-                        % auth.user.email)
-        redirect(URL('default', 'index'))
-    # Now we must generate a form that allows editing the post.
-    form = SQLFORM(db.post, record=post)
-    if form.process().accepted:
-        # The deed is done.
-        redirect(URL('default', 'index'))
-    return dict(form=form)
+#     post = db.post(request.args(0))
+#     # We must validate everything we receive.
+#     if post is None:
+#         logging.info("Invalid edit call")
+#         redirect(URL('default', 'index'))
+#     # One can edit only one's own posts.
+#     if post.post_author != auth.user.email:
+#         logging.info("Attempt to edit some one else's post by: %r" 
+#                         % auth.user.email)
+#         redirect(URL('default', 'index'))
+#     # Now we must generate a form that allows editing the post.
+#     form = SQLFORM(db.post, record=post)
+#     if form.process().accepted:
+#         # The deed is done.
+#         redirect(URL('default', 'index'))
+#     return dict(form=form)
 
 # We require login.
 @auth.requires_login()
@@ -151,21 +151,22 @@ def mychecks(form):
     # form.vars contains what the user put in.
     if form.vars.view_count % 2 == 1:
         form.errors.view_count = "I am sorry but it's odd that you wrote %d" % form.vars.view_count
-# /start/default/delete/2
-@auth.requires_signature()
-@auth.requires_login()
-def delete():
-    post = db.post(request.args(0))
-    # We must validate everything we receive.
-    if post is None:
-        logging.info("Invalid edit call")
-        redirect(URL('default', 'index'))
-    # One can edit only one's own posts.
-    if post.post_author != auth.user.email:
-        logging.info("Attempt to edit some one else's post by: %r" % auth.user.email)
-        redirect(URL('default', 'index'))
-    db(db.post.id == post.id).delete()
-    redirect(URL('default', 'index'))
+
+# # /start/default/delete/2
+# @auth.requires_signature()
+# @auth.requires_login()
+# def delete():
+#     post = db.post(request.args(0))
+#     # We must validate everything we receive.
+#     if post is None:
+#         logging.info("Invalid edit call")
+#         redirect(URL('default', 'index'))
+#     # One can edit only one's own posts.
+#     if post.post_author != auth.user.email:
+#         logging.info("Attempt to edit some one else's post by: %r" % auth.user.email)
+#         redirect(URL('default', 'index'))
+#     db(db.post.id == post.id).delete()
+#     redirect(URL('default', 'index'))
 
 @auth.requires_signature()
 @auth.requires_login()
@@ -173,14 +174,46 @@ def delete_product():
     product = db.product(request.args(0))
     # We must validate everything we receive.
     if product is None:
-        logging.info("Invalid delete_product call")
+        logger.info("Invalid delete_product call")
         redirect(URL('default', 'listall'))
     # One can edit only one's own posts.
     if product.prod_poster != auth.user.email:
-        logging.info("Attempt to edit some one else's product by: %r" % auth.user.email)
+        logger.info("Attempt to edit some one else's product by: %r" % auth.user.email)
         redirect(URL('default', 'listall'))
     db(db.product.id == product.id).delete()
     redirect(URL('default', 'listall'))
+
+@auth.requires_signature()
+@auth.requires_login()
+def increment_stock():
+    product = db.product(request.args(0))
+    if product is None:
+        redirect(URL('default', 'listall'))
+    product.prod_in_stock = 1 if product.prod_in_stock is None else product.prod_in_stock + 1
+    product.update_record()
+    return redirect(URL('default', 'listall'))
+
+@auth.requires_signature()
+@auth.requires_login()
+def increment_stock():
+    product = db.product(request.args(0))
+    if product is None:
+        redirect(URL('default', 'listall'))
+    product.prod_in_stock = 1 if product.prod_in_stock is None else product.prod_in_stock + 1
+    product.update_record()
+    return redirect(URL('default', 'listall'))
+
+@auth.requires_signature()
+@auth.requires_login()
+def decrement_stock():
+    product = db.product(request.args(0))
+    if product is None:
+        redirect(URL('default', 'listall'))
+    if product.prod_in_stock > 0:
+        product.prod_in_stock = product.prod_in_stock - 1
+    product.prod_sold = 1 if product.prod_sold is None else product.prod_sold + 1
+    product.update_record()
+    return redirect(URL('default', 'listall'))
 
 @auth.requires_signature()
 @auth.requires_login()
@@ -197,32 +230,41 @@ def toggle_star():
             post_id = int(request.args[0]))
     redirect(URL('default', 'index_inefficient'))
 
-@auth.requires_signature()
-def rightback():
-    #update viewcount
-    post = db.post(request.args(0))
-    if post is None:
-        redirect(URL('default', 'index'))
-    post.view_count = 1 if post.view_count is None else post.view_count + 1
-    post.update_record()
-    return redirect(URL('default', 'viewall'))
+# @auth.requires_signature()
+# def rightback():
+#     #update viewcount
+#     post = db.post(request.args(0))
+#     if post is None:
+#         redirect(URL('default', 'index'))
+#     post.view_count = 1 if post.view_count is None else post.view_count + 1
+#     post.update_record()
+#     return redirect(URL('default', 'viewall'))
 
-def produce_funny_button(row):
-    if 'user' in row.post_title:
-        return A(I(_class='fa fa-eye'), ' ', 'View user post', 
-                    _href=URL('default', 'view_in_grid', args=[row.id],
-                                 user_signature=True),
-                    _class='btn')
-    else:
-        return SPAN(auth.user.email if auth.user is not None else 'bleh',
-                                                         _class='red')
+# def produce_funny_button(row):
+#     if 'user' in row.post_title:
+#         return A(I(_class='fa fa-eye'), ' ', 'View user post', 
+#                     _href=URL('default', 'view_in_grid', args=[row.id],
+#                                  user_signature=True),
+#                     _class='btn')
+#     else:
+#         return SPAN(auth.user.email if auth.user is not None else 'bleh',
+#                                                          _class='red')
 
+# I made a wrapper to hide buttons when user is not logged in
+def hide_if_no_user(func):
+    def wrapper(*args, **kwargs):
+        _btn = func(*args, **kwargs)
+        if auth.user is not None:
+            return _btn
+        else:   
+            return ""
+    return wrapper
 
 def produce_profit(row):
     # uses span helper to build span html elem with float of 
     #               quantity_sold * (sales_price - cost)
     # truncated to 2 decimal points
-    return SPAN('$%.2f'%(row.prod_sold*(row.prod_price-row.prod_cost)),
+    return SPAN('${:20,.2f}'.format(row.prod_sold*(row.prod_price-row.prod_cost)),
                                  _class='green')
 
 def produce_edit_btn(id):
@@ -260,79 +302,107 @@ def produce_delete_btn(id):
         #             _class="haha")
     return _btn
 
-def viewall():
-    """This controller uses a grid to display all posts."""
-    # I like to define the query separately.
-    query = db.post
 
-    # List of additional links.
-    links = []
-    links.append(
-        dict(header='',
-             body = lambda row : 
-             SPAN(A(I(_class='fa fa-eye'), ' ', 'View', 
-                    _href=URL('default', 'view_in_grid', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
-        )
-    )
 
-    links.append(
-        dict(header='',
-             body = lambda row : 
-             SPAN(A(I(_class='fa fa-eye'), ' ', 'View Incognito', 
-                    _href=URL('default', 'view_in_grid_v', 
-                        vars=dict(id=row.id), user_signature=True),
-                    _class='btn'),
-                _class="haha")
-        )
-    )
+@hide_if_no_user
+def produce_pls_minus_btn(row):
+    in_stock = row.prod_in_stock > 0
+    # decrement_link = URL('default', 'decrement_stock',
+    #                             args=[row.id], user_signature=True)
+    #                 if in_stock
+    _btns =  DIV(
+             SPAN(A( I(_class='fa fa-plus'), 
+                     _href=URL('default', 'increment_stock',
+                                args=[row.id], user_signature=True),
+                        _class='btn'),
+                    _class="haha"),
+             SPAN(A(  I(_class='fa fa-minus'), 
+                     _href=URL('default', 'decrement_stock',
+                                args=[row.id], user_signature=True)
+                           if in_stock else URL('#'),
+                     _class='btn'
+                        if in_stock else 'btn grayed') ,
+                  _class="haha")
+             )
+        # else:
+        #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','Edit', 
+        #                 _href=URL('#'),
+        #                 _class='btn'),
+        #             _class="haha")
+    return _btns
+# def viewall():
+#     """This controller uses a grid to display all posts."""
+#     # I like to define the query separately.
+#     query = db.post
 
-    links.append(
-        dict(header='',
-             body = lambda row : 
-             SPAN(A('Edit', 
-                    _href=URL('default', 'edit', args=[row.id], 
-                                user_signature=True),
-                    _class='btn'),
-                _class="haha")
-        )
-    )
-    links.append(
-        dict(header = "Optional",
-            body = lambda row : produce_funny_button(row)
-        )
-    )
+#     # List of additional links.
+#     links = []
+#     links.append(
+#         dict(header='',
+#              body = lambda row : 
+#              SPAN(A(I(_class='fa fa-eye'), ' ', 'View', 
+#                     _href=URL('default', 'view_in_grid', args=[row.id], 
+#                                 user_signature=True),
+#                     _class='btn'),
+#                 _class="haha")
+#         )
+#     )
 
-    #update viewcount
-    links.append(
-        dict(header="Rightback", 
-                body = lambda row : A('rb', _class='btn', 
-                 _href=URL('default', 'rightback',
-                     args=[row.id], user_signature=True)))
-    )
+#     links.append(
+#         dict(header='',
+#              body = lambda row : 
+#              SPAN(A(I(_class='fa fa-eye'), ' ', 'View Incognito', 
+#                     _href=URL('default', 'view_in_grid_v', 
+#                         vars=dict(id=row.id), user_signature=True),
+#                     _class='btn'),
+#                 _class="haha")
+#         )
+#     )
 
-    # Let's get rid of some fields in the add form.
-    # Are we in the add form?
-    if len(request.args) > 0 and request.args[0] == 'new':
-        db.post.post_author.readable = False
-        db.post.post_time.readable = False
+#     links.append(
+#         dict(header='',
+#              body = lambda row : 
+#              SPAN(A('Edit', 
+#                     _href=URL('default', 'edit', args=[row.id], 
+#                                 user_signature=True),
+#                     _class='btn'),
+#                 _class="haha")
+#         )
+#     )
+#     links.append(
+#         dict(header = "Optional",
+#             body = lambda row : produce_funny_button(row)
+#         )
+#     )
 
-    # Grid definition.
-    grid = SQLFORM.grid(
-        query, 
-        field_id = db.post.id, # Useful, not mandatory.
-        fields = [db.post.id, db.post.post_title, db.post.view_count,
-                    db.post.post_author, db.post.post_time], 
-        links = links,
-        # And now some generic defaults.
-        details=False,
-        create=False, editable=False, deletable=False,
-        csv=False, 
-        user_signature=True, # We don't need it as one cannot take actions directly from the form.
-    )
-    return dict(grid=grid)
+#     #update viewcount
+#     links.append(
+#         dict(header="Rightback", 
+#                 body = lambda row : A('rb', _class='btn', 
+#                  _href=URL('default', 'rightback',
+#                      args=[row.id], user_signature=True)))
+#     )
+
+#     # Let's get rid of some fields in the add form.
+#     # Are we in the add form?
+#     if len(request.args) > 0 and request.args[0] == 'new':
+#         db.post.post_author.readable = False
+#         db.post.post_time.readable = False
+
+#     # Grid definition.
+#     grid = SQLFORM.grid(
+#         query, 
+#         field_id = db.post.id, # Useful, not mandatory.
+#         fields = [db.post.id, db.post.post_title, db.post.view_count,
+#                     db.post.post_author, db.post.post_time], 
+#         links = links,
+#         # And now some generic defaults.
+#         details=False,
+#         create=False, editable=False, deletable=False,
+#         csv=False, 
+#         user_signature=True, # We don't need it as one cannot take actions directly from the form.
+#     )
+#     return dict(grid=grid)
 
 
 def listall():
@@ -363,14 +433,8 @@ def listall():
         )
     )
     links.append(
-        dict(header='',
-             body = lambda row : produce_delete_btn(row.id)
-
-             # SPAN(A(I(_class='fa fa-trash'), ' ', 'Delete', 
-             #        _href=URL('default', 'delete_product', args=[row.id], 
-             #                    user_signature=True),
-             #        _class='btn'),
-             #    _class="haha")
+        dict(header = "",
+            body = lambda row : produce_pls_minus_btn(row)
         )
     )
     links.append(
@@ -383,8 +447,18 @@ def listall():
              #    _class="haha")
         )
     )
+    links.append(
+        dict(header='',
+             body = lambda row : produce_delete_btn(row.id)
+
+             # SPAN(A(I(_class='fa fa-trash'), ' ', 'Delete', 
+             #        _href=URL('default', 'delete_product', args=[row.id], 
+             #                    user_signature=True),
+             #        _class='btn'),
+             #    _class="haha")
+        )
+    )
     # Let's get rid of some fields in the add form.
-    # Are we in the add form?
     if len(request.args) > 0 and request.args[0] == 'new':
         db.product.prod_poster.readable = False
         db.product.prod_post_time.writable = False
@@ -414,46 +488,37 @@ def listall():
 
 
 
-@auth.requires_signature()
-def view_in_grid():
-    post = db.post(request.args(0))
-    if post is None:
-        redirect(URL('default', 'index'))
-    post.view_count = 1 if post.view_count is None else post.view_count + 1
-    form = SQLFORM(db.post, record = post, readonly=True)
-    post.update_record()
-    return dict(form=form)
-
-@auth.requires_signature()
-def increment_stock():
-    product = db.product(request.args(0))
-    if product is None:
-        redirect(URL('default', 'listall'))
-    product.prod_in_stock = 1 if product.prod_in_stock is None else product.prod_in_stock + 1
-    form = SQLFORM(db.product, record = post, readonly=True)
-    post.update_record()
-    return dict(form=form)
-
-@auth.requires_signature()
-def view_in_grid_v():
-    post = db.post(request.vars.id)
-    if post is None:
-        redirect(URL('default', 'index'))
-    form = SQLFORM(db.post, record = post, readonly=True)
-    return dict(form=form)
+# @auth.requires_signature()
+# def view_in_grid():
+#     post = db.post(request.args(0))
+#     if post is None:
+#         redirect(URL('default', 'index'))
+#     post.view_count = 1 if post.view_count is None else post.view_count + 1
+#     form = SQLFORM(db.post, record = post, readonly=True)
+#     post.update_record()
+#     return dict(form=form)
 
 
-def view1():
-    post = db.post(request.args(0))
-    if post is None:
-        redirect(URL('default', 'index'))
-    form = SQLFORM(db.post, record = post, readonly=True)
-    return dict(form=form)
+# @auth.requires_signature()
+# def view_in_grid_v():
+#     post = db.post(request.vars.id)
+#     if post is None:
+#         redirect(URL('default', 'index'))
+#     form = SQLFORM(db.post, record = post, readonly=True)
+#     return dict(form=form)
 
 
-def view2():
-    post = db.post(request.args(0))
-    return dict(post=post)
+# def view1():
+#     post = db.post(request.args(0))
+#     if post is None:
+#         redirect(URL('default', 'index'))
+#     form = SQLFORM(db.post, record = post, readonly=True)
+#     return dict(form=form)
+
+
+# def view2():
+#     post = db.post(request.args(0))
+#     return dict(post=post)
 
 
 def urls():

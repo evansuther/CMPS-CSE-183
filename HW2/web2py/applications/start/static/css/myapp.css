@@ -21,3 +21,8 @@ div.main_content form table.input_table {
 div.main_content form table.input_table tr:last-child {
   border-bottom: none;
 }
+
+.btn.grayed{
+	background-color: #dddddd;
+}
+.btn.grayed:hover, button:hover, [type=button]:hover, [type=submit]:hover {box-shadow:0 0 0px #666}
