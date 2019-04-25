@@ -216,20 +216,33 @@ def decrement_stock():
     product.update_record()
     return redirect(URL('default', 'listall'))
 
+# @auth.requires_signature()
+# @auth.requires_login()
+# def toggle_star():
+#     star_record = db((db.star.post_id == int(request.args[0])) &
+#         (db.star.user_id == auth.user_id)).select().first()
+#     if star_record is not None:
+#         # Removes star.
+#         db(db.star.id == star_record.id).delete()
+#     else:
+#         # Adds the star.
+#         db.star.insert(
+#             user_id = auth.user.id,
+#             post_id = int(request.args[0]))
+#     redirect(URL('default', 'index_inefficient'))
+
 @auth.requires_signature()
 @auth.requires_login()
 def toggle_star():
-    star_record = db((db.star.post_id == int(request.args[0])) &
-        (db.star.user_id == auth.user_id)).select().first()
-    if star_record is not None:
-        # Removes star.
-        db(db.star.id == star_record.id).delete()
+    product = db.product(request.args(0))
+    if product is None:
+        redirect(URL('default', 'listall'))
+    if product.prod_starred is None:
+        product.prod_starred = True
     else:
-        # Adds the star.
-        db.star.insert(
-            user_id = auth.user.id,
-            post_id = int(request.args[0]))
-    redirect(URL('default', 'index_inefficient'))
+        product.prod_starred = not product.prod_starred
+    product.update_record()
+    return redirect(URL('default', 'listall'))
 
 # @auth.requires_signature()
 # def rightback():
@@ -268,41 +281,59 @@ def produce_profit(row):
     return SPAN('${:20,.2f}'.format(row.prod_sold*(row.prod_price-row.prod_cost)),
                                  _class='green')
 
-def produce_edit_btn(id):
+# def produce_edit_btn(id):
+#     _btn = ""
+#     row = db.product(id)
+#     #row = db.product(request.row.id)
+#     if auth.user is not None:
+#         if row.prod_poster == auth.user.email:
+#             _btn =  SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+#                         _href=URL('default', 'edit_product', args=[row.id], 
+#                                     user_signature=True),
+#                         _class='btn'),
+#                     _class="haha")
+#         # else:
+#         #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','Edit', 
+#         #                 _href=URL('#'),
+#         #                 _class='btn'),
+#         #             _class="haha")
+#     return _btn
+
+# def produce_delete_btn(id):
+#     _btn = ""
+#     row = db.product(id)
+#     if auth.user is not None:
+#         if row.prod_poster == auth.user.email:
+#             _btn =  SPAN(A(I(_class='fa fa-trash'), ' ','delete', 
+#                         _href=URL('default', 'delete_product', args=[row.id], 
+#                                     user_signature=True),
+#                         _class='btn'),
+#                     _class="haha")
+#         # else:
+#         #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','D', 
+#         #                 _href=URL('#'),
+#         #                 _class='btn'),
+#         #             _class="haha")
+#     return _btn
+
+def produce_poster_btns(id):
     _btn = ""
     row = db.product(id)
-    #row = db.product(request.row.id)
     if auth.user is not None:
         if row.prod_poster == auth.user.email:
-            _btn =  SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
+            _btn =  DIV(
+                SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
                         _href=URL('default', 'edit_product', args=[row.id], 
                                     user_signature=True),
                         _class='btn'),
-                    _class="haha")
-        # else:
-        #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','Edit', 
-        #                 _href=URL('#'),
-        #                 _class='btn'),
-        #             _class="haha")
-    return _btn
-
-def produce_delete_btn(id):
-    _btn = ""
-    row = db.product(id)
-    if auth.user is not None:
-        if row.prod_poster == auth.user.email:
-            _btn =  SPAN(A(I(_class='fa fa-trash'), ' ','delete', 
+                    _class="haha"),
+             SPAN(A(I(_class='fa fa-trash'), ' ','delete', 
                         _href=URL('default', 'delete_product', args=[row.id], 
                                     user_signature=True),
                         _class='btn'),
                     _class="haha")
-        # else:
-        #     _btn =  SPAN(A(I(_class='fa fa-lock'), ' ','D', 
-        #                 _href=URL('#'),
-        #                 _class='btn'),
-        #             _class="haha")
+             )
     return _btn
-
 
 
 @hide_if_no_user
@@ -331,6 +362,26 @@ def produce_pls_minus_btn(row):
         #                 _class='btn'),
         #             _class="haha")
     return _btns
+
+def produce_star_btn(id):
+    row = db.product(id)
+    if row.prod_starred == None:
+        row.prod_starred = False
+    _btn =  DIV(
+        SPAN(A(I(_class='fa fa-star-o blkstr' if row.prod_starred == False
+                 else 'fa fa-star goldstr'), 
+             _href=URL('default', 'toggle_star', args=[row.id], 
+                    user_signature=True)if auth.user is not None else URL('#'),
+                    _class = "noeffect")
+         )
+        # SPAN(A(I(_class='fa fa-star-o' if row.prod_starred == False
+        #          else 'fa fa-star'), 
+        #      _href=URL('default', 'toggle_star', args=[row.id], 
+        #             user_signature=True),
+        #             _class='btn') if auth.user is not None else URL('#'),
+        #             _class="haha")
+        )
+    return _btn
 # def viewall():
 #     """This controller uses a grid to display all posts."""
 #     # I like to define the query separately.
@@ -435,12 +486,17 @@ def listall():
     )
     links.append(
         dict(header = "",
+            body = lambda row : produce_star_btn(row.id)
+        )
+    )
+    links.append(
+        dict(header = "",
             body = lambda row : produce_pls_minus_btn(row)
         )
     )
     links.append(
         dict(header='',
-             body = lambda row : produce_edit_btn(row.id)
+             body = lambda row : produce_poster_btns(row.id)
              # SPAN(A(I(_class='fa fa-pencil-square-o'), ' ','Edit', 
              #        _href=URL('default', 'edit_product', args=[row.id], 
              #                    user_signature=True),
@@ -448,17 +504,17 @@ def listall():
              #    _class="haha")
         )
     )
-    links.append(
-        dict(header='',
-             body = lambda row : produce_delete_btn(row.id)
+    # links.append(
+    #     dict(header='',
+    #          body = lambda row : produce_delete_btn(row.id)
 
              # SPAN(A(I(_class='fa fa-trash'), ' ', 'Delete', 
              #        _href=URL('default', 'delete_product', args=[row.id], 
              #                    user_signature=True),
              #        _class='btn'),
              #    _class="haha")
-        )
-    )
+        # )
+    # )
     # Let's get rid of some fields in the add form.
     if len(request.args) > 0 and request.args[0] == 'new':
         db.product.prod_poster.readable = False

@@ -33,6 +33,7 @@ db.post.id.readable = False
 db.define_table('product',
                 Field('prod_name', label='Product Name'), # At most 512 characters
                 Field('prod_desc', 'text', label= 'Description'), # "unlimited"
+                Field('prod_starred', 'boolean', label= 'Starred', default = False), 
                 Field('prod_in_stock', 'integer',
                         requires=IS_INT_IN_RANGE(0, 1e100), default=0,
                         label='Quantity in Stock'), 
