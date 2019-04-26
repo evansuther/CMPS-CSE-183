@@ -1,0 +1,23 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+{{end}}
+
+<div class="main_content">
+
+  
+
+  
+  <!-- beginning my homepage only displays name and price as per spec -->
+  <h3>Products Homepage </h3>
+  <h5>Starred Products </h5>
+  <div class = "product_container">
+  {{for p in prods:}}
+    <div class="product fixed">
+      <div class="title">Product name: {{=p.prod_name}}</div>
+      <div class="price">Sales Price: ${{='{:20,.2f}'.format(p.prod_price)}}</div>
+    </div>  
+  {{pass}}
+  </div>
+</div>
+
