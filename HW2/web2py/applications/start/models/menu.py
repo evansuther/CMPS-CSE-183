@@ -30,7 +30,7 @@ response.google_analytics_id = None
 
 response.menu = [
     (T('Home'), False, URL('default', 'homepage'), []),
-    (T('Listall'), False, URL('default', 'listall'), [])
+    (T('List'), False, URL('default', 'listall'), [])
 ]
 
 DEVELOPMENT_MENU = True

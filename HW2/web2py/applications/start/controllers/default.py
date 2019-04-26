@@ -17,13 +17,7 @@ class Post(object):
 
 @auth.requires_login()
 def setup():
-    """Inserts a couple of posts just to bring the database to a known state.
-    This is done for debugging purposes ony, and should not be part of a real web site."""
-    db(db.post).delete() # Deletes the content of the post table.
-    db.post.insert(post_title="First Post",
-                   post_content="Content of first post")
-    db.post.insert(post_title="Second Post",
-                   post_content="Content of second post")
+    
     db(db.product).delete() # Deletes the content of the post table.
     db.product.insert(prod_name="first prod",
                    prod_desc="Content of first product")
@@ -76,6 +70,7 @@ def edit_product():
     # For this controller only, we hide the author.
     db.product.prod_poster.readable = False
     db.product.prod_post_time.writable =False
+    db.product.prod_starred.readable, db.product.prod_starred.writable =False, False
 
     # post = db(db.post.id == int(request.args[0])).select().first()
 
@@ -86,7 +81,7 @@ def edit_product():
         redirect(URL('default', 'listall'))
     # One can edit only one's own posts.
     if product.prod_poster != auth.user.email:
-        logging.info("Attempt to edit some one else's post by: %r" 
+        logging.info("Attempt to edit some one else's product by: %r" 
                         % auth.user.email)
         redirect(URL('default', 'listall'))
     # Now we must generate a form that allows editing the post.
@@ -122,7 +117,7 @@ def delete_product():
     if product is None:
         logger.info("Invalid delete_product call")
         redirect(URL('default', 'listall'))
-    # One can edit only one's own posts.
+    # One can delete only one's own products.
     if product.prod_poster != auth.user.email:
         logger.info("Attempt to edit some one else's product by: %r" % auth.user.email)
         redirect(URL('default', 'listall'))
@@ -248,7 +243,7 @@ def produce_star_btn(id):
 
 
 def listall():
-    """This controller uses a grid to display all posts."""
+    """This controller uses a grid to display all products."""
     # I like to define the query separately.
     query = db.product
 
@@ -282,6 +277,7 @@ def listall():
         db.product.prod_poster.readable = False
         db.product.prod_post_time.writable = False
         db.product.prod_sold.writable = False
+        db.product.prod_starred.readable, db.product.prod_starred.writable =False, False
     # Grid definition.
     grid = SQLFORM.grid(
         query, 
