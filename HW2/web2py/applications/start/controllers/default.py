@@ -17,7 +17,7 @@ class Post(object):
 
 @auth.requires_login()
 def setup():
-    
+    #db(db.post).delete()
     db(db.product).delete() # Deletes the content of the post table.
     db.product.insert(prod_name="first prod",
                    prod_desc="Content of first product")
