@@ -57,6 +57,7 @@ db.define_table('product',
                 )
 
 db.product.prod_post_time.readable = db.product.prod_post_time.writable = False
+db.product.prod_sold.writable  =False
 db.product.prod_poster.writable = False
 db.product.id.readable = False
 

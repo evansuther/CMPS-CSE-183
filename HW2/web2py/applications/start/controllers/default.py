@@ -89,7 +89,6 @@ def edit_product():
                     labels = {'prod_name': 'Product Name',
                     'prod_desc':'Description',
                     'prod_in_stock':'In Stock',
-                     'prod_sold':'Sold', 
                      'prod_price':'Price(for consumer)', 
                      'prod_cost':'Cost(for producer)'},
                    )
