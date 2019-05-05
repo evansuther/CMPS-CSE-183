@@ -10,6 +10,7 @@
 
 import datetime
 
+
 class Post(object):
     """Simple class to create synthetic posts"""
     def __init__(self):
