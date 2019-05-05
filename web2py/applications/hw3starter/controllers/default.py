@@ -84,19 +84,20 @@ def create_order():
                 next=URL('default', 'create_order', args=[product]), 
                 edit='y'
                 )))
-    # form = SQLFORM(db.orders, labels = {'order_quantity': 'Quantity of %r' %product.prod_name})
-    # form.add_button('Back', URL('default', 'store'))
-    # if form.process().accepted:
-    #     # And we load default/listall via redirect.
-    #     amt_paid = form.vars.order_quantity * product.prod_price
-    #     id = db.orders.insert(product_id =product,
-    #                     order_quantity=form.vars.order_quantity,
-    #                           order_amt_paid=amt_paid)
-    #     logger.info("someone ordered %r " %form.vars.order_quantity)
-    #     redirect(URL('default', 'store'))
-    form = FORM('%s Quantity' %product.prod_name,
-              INPUT(_name='Quantity', requires=IS_NOT_EMPTY()),
-              INPUT(_type='submit'))
+    form = SQLFORM(db.orders, labels = {'order_quantity': 'Quantity of %r' %product.prod_name})
+    form.add_button('Back', URL('default', 'store'))
+    if form.process().accepted:
+        # And we load default/listall via redirect.
+
+        # form.order_amt_paid = form.vars.order_quantity * product.prod_price
+        # id = db.orders.insert(product_id =product,
+        #                 order_quantity=form.vars.order_quantity,
+        #                       order_amt_paid=amt_paid)
+        logger.info("someone ordered %r " %form.vars.order_quantity)
+        redirect(URL('default', 'store'))
+    # form = FORM('%s Quantity' %product.prod_name,
+    #           INPUT(_name='Quantity', requires=IS_NOT_EMPTY()),
+    #           INPUT(_type='submit'))
     # We ask web2py to lay out the form for us.
     logger.info("Session: (%r) added a product" % session)
     return dict(form=form)

@@ -42,7 +42,7 @@ db.define_table('user_profile',
 )
 
 db.define_table('orders',
-	Field('order_email', default=get_user_email()),
+	Field('order_email', 'reference user_profile'),
 	Field('product_id', 'reference products'),
 	Field('order_quantity', 'integer',
             requires=IS_INT_IN_RANGE(0, 1e100), default=0,
@@ -55,9 +55,9 @@ db.define_table('orders',
         label='Amount Paid' )
 )
 
-db.orders.order_email.writable = False
-db.orders.product_id.writable = False
-db.orders.order_date.readable = db.orders.order_date.writable = False
-db.orders.order_amt_paid.writable = readable = False
+# db.orders.order_email.writable = False
+# db.orders.product_id.writable = False
+db.orders.order_date.writable = False
+db.orders.order_amt_paid.writable = db.orders.order_amt_paid.readable = False
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
