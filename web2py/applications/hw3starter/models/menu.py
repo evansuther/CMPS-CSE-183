@@ -29,7 +29,7 @@ response.google_analytics_id = None
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), [])
+    (T('Home'), False, URL('default', 'store'), [])
 ]
 
 DEVELOPMENT_MENU = True
@@ -50,10 +50,7 @@ def _():
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
         (T('My Sites'), False, URL('admin', 'default', 'site')),
-        (T('Sample Menu 1'), False, '#', [
-            (T('Entry1'), False, URL('default', 'entry1')),
-            (T('Entry2'), False, URL('default', 'entry2')),
-        ]),
+        (T('Orders List'), False, URL('default', 'order_list')),
         (T('Sample Menu 2'), False, URL('default', 'index'))
     ]
 
