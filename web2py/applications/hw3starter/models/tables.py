@@ -9,14 +9,25 @@
 
 import datetime
 
+
 def get_user_email():
     return None if auth.user is None else auth.user.email
+
 
 def get_current_time():
     return datetime.datetime.utcnow()
 
+
 def get_user_profile():
-    return db(db.user_profile.usr_email == get_user_email()).select().first().id
+    try :
+        return db(db.user_profile.usr_email == get_user_email()).select().first().id
+    except: 
+        return None
+
+
+def represent_money(val):
+    return None if val is None else '${:10,.2f}'.format(val)
+
 
 db.define_table('products',
     Field('prod_name', label='Product Name'), # At most 512 characters
@@ -36,6 +47,7 @@ db.products.prod_post_time.readable = db.products.prod_post_time.writable = Fals
 db.products.prod_poster.writable = False
 db.products.id.readable = False
 
+
 db.define_table('user_profile',
     Field('usr_email', default=get_user_email()),
     Field('usr_name','string'),
@@ -43,6 +55,7 @@ db.define_table('user_profile',
     Field('usr_city', 'string'),
     Field('usr_zip', 'integer')
 )
+
 
 db.define_table('orders',
 	Field('order_email', 'reference user_profile', ondelete='SET NULL', default = get_user_profile()),
@@ -53,16 +66,14 @@ db.define_table('orders',
 	Field('order_date', 'datetime',
             update=get_current_time()),
 	Field('order_amt_paid', 'double',
-        requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,
-        represent = lambda val, row: '${:10,.2f}'.format(val),
+        requires=IS_FLOAT_IN_RANGE(0, 1e100), 
+        default=0,
+        represent = lambda val, row: represent_money(val),
         label='Amount Paid' )
 )
-
-
-
-# db.orders.order_email.writable = False
-# db.orders.product_id.writable = False
+db.orders.order_email.writable = False
+db.orders.product_id.writable = False
 db.orders.order_date.writable = False
-db.orders.order_amt_paid.writable = db.orders.order_amt_paid.readable = False
+db.orders.order_amt_paid.writable  = False
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)

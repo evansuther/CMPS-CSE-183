@@ -20,6 +20,13 @@ def hide_if_no_user(func):
     return wrapper
 
 
+def get_product_name(p):
+    return None if p is None else p.prod_name
+
+def get_db_email(p):
+    return None if p is None else db.user_profile(p).usr_email
+
+
 def index():
     """
     example action using the internationalization operator T and flash
@@ -34,9 +41,19 @@ def index():
 
 def order_list():
     query = db.orders
-    grid = SQLFORM.grid(query)
+    db.orders.order_email.represent = lambda v, r : A(
+        get_db_email(v), _href=URL('default', 'profile', vars=dict(email=get_db_email(v))))
+    db.orders.product_id.represent = lambda v, r : A(
+        get_product_name(db.products(v)), _href=URL('default', 'view_product', args=[v]))
+    grid = SQLFORM.grid(query, 
+        create=False,editable=False, deletable=False,
+        csv=False, details=False)
     return dict(grid=grid)
 
+def view_product():
+    product = db.products(request.args(0))
+    form = SQLFORM(db.products, product, readonly=T)
+    return dict(form=form)
 
 def store():
     # list of all products
@@ -81,45 +98,54 @@ def create_order():
     if usr_profile is None:
         redirect(
             URL('default', 'profile', vars=dict(
-                next=URL('default', 'create_order', args=[product]), 
+                next=URL('default', 'create_order', args=[product.id], user_signature=True), 
                 edit='y'
                 )))
+    db.orders.order_email.readable = db.orders.product_id.readable = False
+    db.orders.order_date.readable = False
+    db.orders.product_id.default = product.id
+    db.orders.order_quantity.requires = IS_INT_IN_RANGE(1, product.prod_in_stock+1)
     form = SQLFORM(db.orders, labels = {'order_quantity': 'Quantity of %r' %product.prod_name})
     form.add_button('Back', URL('default', 'store'))
     logger.info("The product.id is %s" % product.id)
-    db.orders.product_id.default = product.id
     if form.process().accepted:
-        new_order = db.orders(form.vars.id)
-        new_order.product_id = product.id
-        db.orders.update_or_insert(new_order)
+        # this was another way of making sure price paid was set properly
+        # form.vars.id contains id of newly inserted record
+        new_order = db.orders(form.vars.id) 
+        new_order.order_amt_paid = product.prod_price * form.vars.order_quantity
+        new_order.update_record()
+        # then update stock of product being ordered
+        product.prod_in_stock = product.prod_in_stock - new_order.order_quantity
+        product.update_record()
         logger.info("the new order is %s " % new_order)
         # And we load default/listall via redirect.
-
-        # form.order_amt_paid = form.vars.order_quantity * product.prod_price
-        # id = db.orders.insert(product_id =product,
-        #                 order_quantity=form.vars.order_quantity,
-        #                       order_amt_paid=amt_paid)
         logger.info("someone ordered %s " %form.vars.order_quantity)
         redirect(URL('default', 'store'))
-    # form = FORM('%s Quantity' %product.prod_name,
-    #           INPUT(_name='Quantity', requires=IS_NOT_EMPTY()),
-    #           INPUT(_type='submit'))
-    # We ask web2py to lay out the form for us.
     logger.info("Session: (%r) added an order" % session)
     return dict(form=form)
 
 
 def profile():
     usr_profile = db(db.user_profile.usr_email == get_user_email()).select().first()
-    if request.vars.edit == 'y' and usr_profile is not None:
-        logger.info("first if in profile() for %r" %get_user_email())
-        form = SQLFORM(db.user_profile, usr_profile)
+    email = request.vars.email or get_user_email()
+
+    email_profile = db(db.user_profile.usr_email == email).select().first()
+    logger.info("email_profile: %r" %email_profile)
+    db.user_profile.id.readable = False
+    if request.vars.edit == 'y' and email_profile is not None:
+        logger.info("first if in profile() for %r" %email)
+        form = SQLFORM(db.user_profile, email_profile)
     elif request.vars.edit == 'y':
-        logger.info("elif in profile() for %r" %get_user_email())
+        logger.info("elif in profile() for %r" %email)
         form = SQLFORM(db.user_profile)
-    form.add_button('Back', URL('default', 'store'))
+    else:
+        logger.info("else in profile() for %r, " %email)
+        form = SQLFORM(db.user_profile, email_profile, readonly=True,)
+    # form.add_button('Back', URL('default', 'store'))
     if form.process().accepted:
         # The deed is done.
+        if request.vars.next is None:
+            redirect(URL('default','store'))
         redirect(request.vars.next)
     return dict(form=form)
 

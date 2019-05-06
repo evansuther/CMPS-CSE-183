@@ -29,7 +29,7 @@ response.google_analytics_id = None
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'store'), [])
+    (T('Store'), False, URL('default', 'store'), [])
 ]
 
 DEVELOPMENT_MENU = True
@@ -38,6 +38,8 @@ DEVELOPMENT_MENU = True
 # ----------------------------------------------------------------------------------------------------------------------
 # provide shortcuts for development. remove in production
 # ----------------------------------------------------------------------------------------------------------------------
+def get_user_email():
+    return None if auth.user is None else auth.user.email
 
 def _():
     # ------------------------------------------------------------------------------------------------------------------
@@ -49,9 +51,10 @@ def _():
     # useful links to internal and external resources
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
-        (T('My Sites'), False, URL('admin', 'default', 'site')),
+        (T('admin'), False, URL('admin', 'default', 'site')),
         (T('Orders List'), False, URL('default', 'order_list')),
-        (T('Sample Menu 2'), False, URL('default', 'index'))
+        (T('View Profile'), False, URL('default', 'profile', )),#vars={'email':get_user_email()}
+        (T('Edit Profile'), False, URL('default', 'profile', vars={'edit':'y'}))
     ]
 
 
