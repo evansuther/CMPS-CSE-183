@@ -15,6 +15,9 @@ def get_user_email():
 def get_current_time():
     return datetime.datetime.utcnow()
 
+def get_user_profile():
+    return db(db.user_profile.usr_email == get_user_email()).select().first().id
+
 db.define_table('products',
     Field('prod_name', label='Product Name'), # At most 512 characters
     Field('prod_in_stock', 'integer',
@@ -42,8 +45,8 @@ db.define_table('user_profile',
 )
 
 db.define_table('orders',
-	Field('order_email', 'reference user_profile'),
-	Field('product_id', 'reference products'),
+	Field('order_email', 'reference user_profile', ondelete='SET NULL', default = get_user_profile()),
+	Field('product_id', 'reference products', ondelete='SET NULL'),
 	Field('order_quantity', 'integer',
             requires=IS_INT_IN_RANGE(0, 1e100), default=0,
             label='Order Quantity'),
@@ -54,6 +57,8 @@ db.define_table('orders',
         represent = lambda val, row: '${:10,.2f}'.format(val),
         label='Amount Paid' )
 )
+
+
 
 # db.orders.order_email.writable = False
 # db.orders.product_id.writable = False
