@@ -103,6 +103,7 @@ def create_order():
                 )))
     db.orders.order_email.readable = db.orders.product_id.readable = False
     db.orders.order_date.readable = False
+    # tie the order to the product
     db.orders.product_id.default = product.id
     db.orders.order_quantity.requires = IS_INT_IN_RANGE(1, product.prod_in_stock+1)
     form = SQLFORM(db.orders, labels = {'order_quantity': 'Quantity of %r' %product.prod_name})
@@ -122,7 +123,7 @@ def create_order():
         logger.info("someone ordered %s " %form.vars.order_quantity)
         redirect(URL('default', 'store'))
     logger.info("Session: (%r) added an order" % session)
-    return dict(form=form)
+    return dict(form=form, prod_name=product.prod_name)
 
 
 def profile():
