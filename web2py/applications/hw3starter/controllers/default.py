@@ -35,6 +35,7 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
+    redirect(URL('default','store'))
     response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
 
@@ -53,21 +54,25 @@ def order_list():
 def view_product():
     product = db.products(request.args(0))
     form = SQLFORM(db.products, product, readonly=T)
-    return dict(form=form)
+    return dict(form=form, prod_name=product.prod_name)
 
 def store():
     # list of all products
     # button to buy, redir to create_order()
     query = db.products
     links = []
-    links.append(
-        dict(header = "Profit",
-            body =  lambda row : produce_buy_btn(row))
-    )
+    if auth.user is not None:
+        links.append(
+            dict(header = "Purchase",
+                body =  lambda row : produce_buy_btn(row))
+        )
     # Let's get rid of some fields in the add form.
     if len(request.args) > 0 and request.args[0] == 'new':
         db.products.prod_poster.readable = False
         db.products.prod_post_time.writable = False
+
+    db.products.prod_name.represent = lambda v, r : A(
+        v, _href=URL('default', 'view_product', args=[r.id]))
     # Grid definition.
     grid = SQLFORM.grid(
         query, 
