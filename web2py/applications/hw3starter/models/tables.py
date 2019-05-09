@@ -51,17 +51,18 @@ db.products.id.readable = False
 
 
 db.define_table('user_profile',
-    Field('usr_email', update=get_user_email()), 
-    Field('usr_name','string'),
-    Field('usr_street', 'string'),
-    Field('usr_city', 'string'),
-    Field('usr_zip', 'integer')
+    Field('usr_email', update=get_user_email(), label='Email'), 
+    Field('usr_name','string', label='Name'),
+    Field('usr_street', 'string', label='Street Address'),
+    Field('usr_city', 'string', label='City'),
+    Field('usr_zip', 'integer', label='Zip')
 )
 db.user_profile.usr_email.writable=False
 
 db.define_table('orders',
 	Field('order_email', 'reference user_profile', ondelete='SET NULL'),
-	Field('product_id', 'reference products', ondelete='SET NULL'),
+	Field('product_id', 'reference products', ondelete='SET NULL',
+            label='Product Ordered'),
 	Field('order_quantity', 'integer',
             requires=IS_INT_IN_RANGE(1, 1e100), default=1,
             label='Order Quantity'),

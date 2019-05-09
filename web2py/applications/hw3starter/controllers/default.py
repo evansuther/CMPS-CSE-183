@@ -54,7 +54,8 @@ def order_list():
 def view_product():
     product = db.products(request.args(0))
     form = SQLFORM(db.products, product, readonly=T)
-    return dict(form=form, prod_name=product.prod_name)
+    btns = produce_buy_btn(product)
+    return dict(form=form, prod_name=product.prod_name, btns=btns)
 
 def store():
     # list of all products
@@ -87,13 +88,14 @@ def store():
         links = links,
         # And now some generic defaults.
         details=False,
-        create=True, editable=False, deletable=False,
+        create=True, editable=lambda r: decide_if_poster(r.id), 
+        deletable=lambda r: decide_if_poster(r.id),
         csv=False, 
         user_signature=True, # We don't need it as one cannot take actions directly from the form.
     )
     return dict(grid=grid)
 
-
+@auth.requires_signature()
 @auth.requires_login()
 def create_order():
     # make sure user has a profile, diff from auth.login obj
@@ -110,6 +112,7 @@ def create_order():
     db.orders.order_date.readable = False
     # tie the order to the product
     db.orders.product_id.default = product.id
+    db.orders.order_email.default = usr_profile.id
     db.orders.order_quantity.requires = IS_INT_IN_RANGE(1, product.prod_in_stock+1)
     form = SQLFORM(db.orders, labels = {'order_quantity': 'Quantity of %r' %product.prod_name})
     form.add_button('Back', URL('default', 'store'))
@@ -130,9 +133,8 @@ def create_order():
     logger.info("Session: (%r) added an order" % session)
     return dict(form=form, prod_name=product.prod_name)
 
-
 def profile():
-    usr_profile = db(db.user_profile.usr_email == get_user_email()).select().first()
+    # usr_profile = db(db.user_profile.usr_email == get_user_email()).select().first()
     email = request.vars.email or get_user_email()
 
     email_profile = db(db.user_profile.usr_email == email).select().first()
@@ -144,27 +146,42 @@ def profile():
     elif request.vars.edit == 'y':
         logger.info("elif in profile() for %r" %email)
         form = SQLFORM(db.user_profile)
-    else:
+    elif email_profile is not None:
         logger.info("else in profile() for %r, " %email)
         form = SQLFORM(db.user_profile, email_profile, readonly=True,)
+    else:
+        redirect('default', 'store')
     # form.add_button('Back', URL('default', 'store'))
     if form.process().accepted:
         # The deed is done.
         if request.vars.next is None:
-            redirect(URL('default','store'))
+            redirect(URL('default','profile'))
         redirect(request.vars.next)
     return dict(form=form)
 
 
 @hide_if_no_user
 def produce_buy_btn(row):
-    _btns =  SPAN(A( I(_class='fa fa-cart-plus'), 
-                 _href=URL('default', 'create_order',
-                            args=[row.id], user_signature=True),
-                    _class='btn'),
-                _class="haha")
+    in_stock = row.prod_in_stock > 0
+    _btns = A( I(_class='fa fa-cart-plus'), 
+                    _href=URL('default', 'create_order',
+                            args=[row.id], user_signature=True)
+                          if in_stock else '#',
+                    _class='btn'
+                       if in_stock else 'btn grayed')
+                 
+
     return _btns
 
+def decide_if_poster(row):
+    prod=db.products(row)
+    # logger.info("row is %s"%row)
+    # logger.info("prod is %s"%prod)
+    res = False
+    if auth.user is not None:
+        if prod.prod_poster == auth.user.email:
+            res = True
+    return res
 
 def user():
     """
