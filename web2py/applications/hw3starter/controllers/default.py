@@ -134,20 +134,20 @@ def create_order():
     return dict(form=form, prod_name=product.prod_name)
 
 def profile():
-    # usr_profile = db(db.user_profile.usr_email == get_user_email()).select().first()
     email = request.vars.email or get_user_email()
-
     email_profile = db(db.user_profile.usr_email == email).select().first()
     logger.info("email_profile: %r" %email_profile)
     db.user_profile.id.readable = False
     if request.vars.edit == 'y' and email_profile is not None:
-        logger.info("first if in profile() for %r" %email)
+        logger.info("in profile() edit is y and trying to view %r" %email)
+        if email != get_user_email:
+            redirect(URL('default', 'store'))
         form = SQLFORM(db.user_profile, email_profile)
     elif request.vars.edit == 'y':
-        logger.info("elif in profile() for %r" %email)
+        logger.info("in profile() edit is y and trying to create profile for %r" %email)
         form = SQLFORM(db.user_profile)
     elif email_profile is not None:
-        logger.info("else in profile() for %r, " %email)
+        logger.info("view case in profile() for %r, " %email)
         form = SQLFORM(db.user_profile, email_profile, readonly=True,)
     else:
         redirect('default', 'store')
