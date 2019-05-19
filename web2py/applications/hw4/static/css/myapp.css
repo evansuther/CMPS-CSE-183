@@ -2,3 +2,19 @@
 .colorful {
   color: #bb8833;
 }
+
+.main_content, .form-horizontal{
+	margin-left: 2.5%;
+}
+
+.pyform{
+	margin-left: 1.5%;
+}
+.col-sm-9{
+	margin-left: 1%;
+}
+
+.btn.grayed{
+	background-color: #dddddd;
+}
+.btn.grayed:hover, button:hover, [type=button]:hover, [type=submit]:hover {box-shadow:0 0 0px #666}

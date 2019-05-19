@@ -11,7 +11,57 @@
 
 def index():
     return dict()
-    
+
+
+def products():
+    # list of all products
+    # button to buy, redir to create_order()
+    query = db.products
+    links = []
+    # if auth.user is not None:
+        # links.append(
+        #     dict(header = "Purchase",
+        #         body =  lambda row : produce_buy_btn(row))
+        # )
+    # Let's get rid of some fields in the add form.
+    if len(request.args) > 0 and request.args[0] == 'new':
+        db.products.prod_poster.readable = False
+        db.products.prod_post_time.writable = False
+
+    db.products.prod_name.represent = lambda v, r : A(
+        v, _href=URL('default', 'view_product', args=[r.id]))
+    # Grid definition.
+    grid = SQLFORM.grid(
+        query, 
+        field_id = db.products.id, # Useful, not mandatory.
+        fields = [db.products.id, 
+                    db.products.prod_name,
+                    # db.products.prod_in_stock,
+                    db.products.prod_price], 
+        headers = {'products.prod_name': 'products Name',
+                    'products.prod_in_stock':'In Stock',
+                    'products.prod_price':'Price'},
+        links = links,
+        # And now some generic defaults.
+        details=False,
+        create=True, editable=lambda r: decide_if_poster(r.id), 
+        deletable=lambda r: decide_if_poster(r.id),
+        csv=False, 
+        user_signature=True, # We don't need it as one cannot take actions directly from the form.
+    )
+    return dict(grid=grid)
+
+
+def decide_if_poster(row):
+    prod=db.products(row)
+    # logger.info("row is %s"%row)
+    # logger.info("prod is %s"%prod)
+    res = False
+    if auth.user is not None:
+        if prod.prod_poster == auth.user.email:
+            res = True
+    return res
+
 
 def user():
     """
