@@ -1,18 +1,37 @@
 {{extend 'layout.html'}}
 
 {{block head}}
+<!-- load vue js 'scaffolding' -->
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var my_url = "{{=URL('api', 'my_method')}}";
-</script>
-{{end}}
+	var my_url = "{{=URL('api', 'my_method')}}";
+   	// var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
+   	var get_product_list_url = "{{=URL('api', 'get_product_list')}}";
+   	var is_logged_in = {{='false' if auth.user is None else 'true'}};
 
-<div class="main_content">
+   </script>
+   {{end}}
 
-    <div id="vue-div" class="display:none">
-        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
-    </div>
+   <div class="main_content">
 
-</div>
+   	<div id="vue-div" class="display:none">
+   		<!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
 
-<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+   		<!-- Message in case there are no posts. -->
+   		<div v-if="product_list.length === 0">There are no posts.</div>
+
+   		<!-- We display the posts. -->
+   		<div id="product_list">
+   			<div class="product-container" v-for="prod in product_list">
+   				<div class="product-top-row">
+   					<div class="prod_name">${prod.prod_name}</div>
+   					<div class="prod_price">${prod.prod_price}</div>
+   				</div>
+				<div class="prod_desc">${prod.prod_desc}</div>	
+   			</div>
+   		</div>
+   	</div>
+
+   </div>
+   <!-- load my js -->
+   <script src="{{=URL('static', 'js/default_index.js')}}"></script>

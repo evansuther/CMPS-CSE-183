@@ -18,3 +18,23 @@
 	background-color: #dddddd;
 }
 .btn.grayed:hover, button:hover, [type=button]:hover, [type=submit]:hover {box-shadow:0 0 0px #666}
+
+/* took this style from https://austinkellarmsi.pythonanywhere.com/hw4 */
+.product-container {
+    background-color: lightgray;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: 800px;
+    margin-bottom: 20px;
+}
+
+.product-top-row {
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+}
+
+.prod_price {
+    margin-left: 10px;
+}

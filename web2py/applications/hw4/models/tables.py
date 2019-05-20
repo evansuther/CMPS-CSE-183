@@ -18,7 +18,7 @@ def get_current_time():
     return datetime.datetime.utcnow()
 
 def represent_money(val):
-    return None if val is None else '${:10,.2f}'.format(val)
+    return None if val is None else '${:,.2f}'.format(val)
 
 db.define_table('products',
     Field('prod_name', label='Product Name'), # At most 512 characters
