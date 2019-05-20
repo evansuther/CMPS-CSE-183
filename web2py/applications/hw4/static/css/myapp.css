@@ -38,3 +38,11 @@
 .prod_price {
     margin-left: 10px;
 }
+
+.product_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px;
+}
