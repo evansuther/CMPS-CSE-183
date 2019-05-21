@@ -42,8 +42,17 @@ db.products.prod_poster.writable = False
 db.products.id.readable = False
 
 
-# db.define_table('stars',
-#     Field('prod')    
-# )
+# Stars ratings
+db.define_table('stars',
+                Field('user_email'), # The user who starred
+                Field('prod_id', 'reference products'), # The starred prod
+                Field('rating', 'integer', default=None) # The star rating.
+                )
+# text reviews
+db.define_table('reviews',
+                Field('user_email'), # The user who reviewed
+                Field('prod_id', 'reference products'), # The reviewd prod
+                Field('review_content', 'text', label= 'Review Content') # The text content rating.
+                )
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
