@@ -7,6 +7,7 @@
 	var my_url = "{{=URL('api', 'my_method')}}";
    	// var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
    	var get_product_list_url = "{{=URL('api', 'get_product_list')}}";
+   	var get_review_list_url = "{{=URL('api', 'get_review_list')}}";
    	var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
    	var is_logged_in = {{='false' if auth.user is None else 'true'}};
 
@@ -28,20 +29,38 @@
    					<div class="prod_name">${prod.prod_name}</div>
    					<div class="prod_price">${prod.prod_price}</div>
    				</div>
-   				<div class="prod_desc">${prod.prod_desc}</div>
+   				<p class="prod_desc">${prod.prod_desc}</p>
    				<!-- Code for start ratings. -->
-   				<div v-if="is_logged_in" class="star_rating">
-   					<span v-on:mouseout="stars_out(prod._idx)">
+   				<!-- v-if="is_logged_in" -->
+   				<div class="review_box" v-if="!prod._show_reviews"> 
+   					<span class="star_rating" v-on:mouseout="stars_out(prod._idx)">
    						<span v-on:mouseover="stars_over(prod._idx, idx)"
    						v-on:click="set_stars(prod._idx, idx)"
    						v-for="idx in star_indices">
-   						<i v-if="idx <= prod._num_stars_display" class="fa fa-star"></i>
-   						<i v-if="idx > prod._num_stars_display" class="fa fa-star-o"></i>
+   							<i v-if="idx <= prod._num_stars_display" class="fa fa-star"></i>
+   							<i v-if="idx > prod._num_stars_display" class="fa fa-star-o"></i>
+   						</span>
    					</span>
-   				</span>
-   			</div>	
+   					
+   					<button class="review_btn" v-on:click="get_reviews(prod._idx)">
+   						Reviews
+   					</button>
+   				</div>
+   				<div class="review_list" v-if="prod._show_reviews">
+					<div class="inner_review"
+						v-for="rev in prod._review_list">
+						<div class="review_star_row">
+						 		<span v-for="idx in star_indices">
+									<i v-if="idx <= rev.rating" class="fa fa-star"></i>
+									<i v-if="idx > rev.rating" class="fa fa-star-o"></i>
+								</span>	
+						</div>
+					 		<div class="review_content">${rev.review_content}</div>
+					 		<div class="review_name">${rev.reviewer}</div>
+					</div>
+				</div>	
+   			</div>
    		</div>
-   	</div>
    </div>
 
 </div>

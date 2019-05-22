@@ -9,23 +9,42 @@
 
 import datetime
 
-
+# HELPER FUNCTIONS
 def get_user_email():
     return None if auth.user is None else auth.user.email
+
+def get_name_by_email(_email):
+    name=""
+    row = db(db.auth_user.email == _email).select().first()
+    name = name + row.first_name + row.last_name
+    return name
 
 
 def get_current_time():
     return datetime.datetime.utcnow()
 
+
 def represent_money(val):
     return None if val is None else '${:,.2f}'.format(val)
 
+
+def calc_avg_rating(_id):
+    rows = db(db.stars.prod_id == _id).select()
+    total = 0
+    count = 0
+    for row in rows:
+        if row.id is not None:
+            logger.info("calc_avg_rating: row = %s" %row)
+            total = total + row.rating
+            count = count + 1
+    logger.info("total, count = %s"%[total, count])
+    return total//count if count != 0 else 0
+
+
+# TABLES
 db.define_table('products',
     Field('prod_name', label='Product Name'), # At most 512 characters
     Field('prod_desc', 'text', label= 'Description'), # "unlimited"
-    # Field('prod_in_stock', 'integer',
-    #         requires=IS_INT_IN_RANGE(0, 1e100), default=0,
-    #         label='Quantity in Stock'),
     Field('prod_price', 'double', 
             requires=IS_FLOAT_IN_RANGE(0, 1e100), default=0,
             represent =
@@ -35,7 +54,6 @@ db.define_table('products',
     Field('prod_post_time', 'datetime',
             update=get_current_time(),
             label='Posted'),
-
 )
 db.products.prod_post_time.readable = db.products.prod_post_time.writable = False
 db.products.prod_poster.writable = False
@@ -48,11 +66,15 @@ db.define_table('stars',
                 Field('prod_id', 'reference products'), # The starred prod
                 Field('rating', 'integer', default=None) # The star rating.
                 )
+
+
 # text reviews
 db.define_table('reviews',
                 Field('user_email'), # The user who reviewed
                 Field('prod_id', 'reference products'), # The reviewd prod
                 Field('review_content', 'text', label= 'Review Content') # The text content rating.
                 )
+
+
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)

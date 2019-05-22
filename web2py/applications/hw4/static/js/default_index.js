@@ -90,6 +90,8 @@ var app = function() {
             // Vue.set(e, '_show_likers', false);
             // Number of stars to display.
             Vue.set(e, '_num_stars_display', e.rating);
+            Vue.set(e, '_show_reviews', false);
+            Vue.set(e, '_review_list', []);
         });
     };
 
@@ -119,16 +121,29 @@ var app = function() {
     };
 
     self.set_stars = function(prod_idx, star_idx) {
+        if (is_logged_in){
         // The user has set this as the number of stars for the post.
-        var p = self.vue.product_list[prod_idx];
-        p.rating = star_idx;
-        // Sends the rating to the server.
-        $.post(set_stars_url, {
-            prod_id: p.id,
-            rating: star_idx
-        });
+            var p = self.vue.product_list[prod_idx];
+            p.rating = star_idx;
+            // Sends the rating to the server.
+            $.post(set_stars_url, {
+                prod_id: p.id,
+                rating: star_idx
+            });
+        }
     };
 
+    //Code for reviews
+    self.get_reviews = function(prod_idx) {
+        var p = self.vue.product_list[prod_idx];
+        $.getJSON(get_review_list_url, 
+            {prod_id: p.id}, 
+            function (data) {
+                p._review_list = data.review_list
+                p._show_reviews = true;
+            }
+        );
+    };
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -147,7 +162,8 @@ var app = function() {
              // Star ratings.
             stars_out: self.stars_out,
             stars_over: self.stars_over,
-            set_stars: self.set_stars
+            set_stars: self.set_stars,
+            get_reviews: self.get_reviews
         }
 
     });
