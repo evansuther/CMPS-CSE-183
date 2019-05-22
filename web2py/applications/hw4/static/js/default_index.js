@@ -135,15 +135,23 @@ var app = function() {
 
     //Code for reviews
     self.get_reviews = function(prod_idx) {
+        // hide all other reviews
+        for (prod in self.vue.product_list){
+            self.hide_reviews(prod);
+        }
         var p = self.vue.product_list[prod_idx];
         $.getJSON(get_review_list_url, 
-            {prod_id: p.id}, 
-            function (data) {
-                p._review_list = data.review_list
+            {prod_id: p.id}, // args sent in the get request
+            function (data) { // called when data sent back
+                p._review_list = data.review_list;
                 p._show_reviews = true;
             }
         );
     };
+    self.hide_reviews = function(prod_idx){
+        var p = self.vue.product_list[prod_idx];
+        p._show_reviews = false;
+    }
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -163,7 +171,8 @@ var app = function() {
             stars_out: self.stars_out,
             stars_over: self.stars_over,
             set_stars: self.set_stars,
-            get_reviews: self.get_reviews
+            get_reviews: self.get_reviews,
+            hide_reviews: self.hide_reviews
         }
 
     });
