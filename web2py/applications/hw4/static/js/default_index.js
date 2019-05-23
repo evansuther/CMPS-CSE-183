@@ -128,11 +128,10 @@ var app = function() {
                     // filtering the user's review
                     for (i in data.review_list){
                         var rev = data.review_list[i];
-                        console.log("rev: ");
-                        console.log(rev);
+                        console.log(`rev.reviewer: ${rev.reviewer}`);
 
-                        if (!rev.reviewer === user_name){
-                            p._review_list += rev;
+                        if (rev.reviewer !== user_name){
+                            p._review_list.push(rev);
                         }
                         else{
                             Vue.set(p, "_user_reviewed", true);//currently unused****
