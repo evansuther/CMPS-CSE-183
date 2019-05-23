@@ -60,13 +60,14 @@
 	   							<i v-if="idx > prod._num_stars_display" class="fa fa-star-o"></i>
 	   						</span>
    						</span>
-	   					<div class = "usr_rev_content">
-	   						<textarea v-model="prod._user_review.review_content">
-	   							
-	   						</textarea>
-	   					</div>
-	   					<div class = "lower_row">lower_row
-	   						<button class="review_btn" v-on:click="save_review(prod._idx)">
+   						<textarea v-model="prod._user_review.review_content"
+   								class = "user_review_content"
+   							>
+   							
+   						</textarea>
+	   					<div class = "flex_between">
+	   						<i class="user_name">${user_name}</i>
+	   						<button class="review_btn rounded red" v-on:click="save_review(prod._idx)">
 	   							Save
 	   						</button>
 	   					</div>
