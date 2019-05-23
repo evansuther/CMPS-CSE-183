@@ -2,18 +2,26 @@
 
 def get_product_list():
     results = []
-    rows = db().select(db.products.ALL,  db.stars.ALL,
-        left=[
-            db.stars.on((db.stars.prod_id == db.products.id) ),#& (db.stars.user_email == auth.user.email)
-        ],
+    rows = db(db.products).select(
+        # db.products.ALL,  db.stars.ALL,
+        # left=[
+        #     db.stars.on((db.stars.prod_id == db.products.id) ),#& (db.stars.user_email == auth.user.email)
+        # ],
         orderby=~db.products.prod_post_time)
     for row in rows:
         results.append(dict(
-            id=row.products.id,
-            prod_name=row.products.prod_name,
-            prod_price=represent_money(row.products.prod_price),
-            prod_desc=row.products.prod_desc,
-            rating = calc_avg_rating(row.products.id) #None if row.stars.id is None else row.stars.rating,
+            # id=row.products.id,
+            # prod_name=row.products.prod_name,
+            # prod_price=represent_money(row.products.prod_price),
+            # prod_desc=row.products.prod_desc,
+            # rating = calc_avg_rating(row.products.id) #None if row.stars.id is None else row.stars.rating,
+
+            id=row.id,
+            prod_name=row.prod_name,
+            prod_price=represent_money(row.prod_price),
+            prod_desc=row.prod_desc,
+            rating = calc_avg_rating(row.id) #None if row.stars.id is None else row.stars.rating,
+
         ))
     # product_list = db(db.products).select(db.products.id, 
     #     db.products.prod_name, db.products.prod_desc,
