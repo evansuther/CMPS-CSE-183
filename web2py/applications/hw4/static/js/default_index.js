@@ -116,19 +116,23 @@ var app = function() {
                 p._review_list = [];
                 console.log(data.review_list);
                 if (is_logged_in){
-                    Vue.set(p, "_user_reviewed", false);
+                    Vue.set(p, "_user_reviewed", false);//currently unused****
                     // filtering the user's review
+                    Vue.set(p, "_user_review", {rating:0, review_content:"", reviewer:user_name});
                     for (i in data.review_list){
                         var rev = data.review_list[i];
                         console.log("rev: ");
                         console.log(rev);
+
                         if (!rev.reviewer === user_name){
                             p._review_list += rev;
+                            
+
                         }
                         else{
-                            Vue.set(p, "_user_reviewed", true);
-                            Vue.set(p, "_user_review", rev);
-                            p._review_list.user_rev = rev;
+                            Vue.set(p, "_user_reviewed", true);//currently unused****
+                            Vue.set(p, "_user_review", rev); // hopefully takes care of tracking the whole review object?
+                            // p._review_list.user_rev = rev;
                         };
                         console.log(`p._user_reviewed: ${p._user_reviewed}`);
                     };
