@@ -46,48 +46,15 @@ var app = function() {
     //     // If you put code here, it is run BEFORE the call comes back.
     // };
 
-
-    // Code for star ratings.
-    // self.stars_out = function (post_idx) {
-    //     // Out of the star rating; set number of visible back to rating.
-    //     var p = self.vue.post_list[post_idx];
-    //     p._num_stars_display = p.rating;
-    // };
-
-    // self.stars_over = function(post_idx, star_idx) {
-    //     // Hovering over a star; we show that as the number of active stars.
-    //     var p = self.vue.post_list[post_idx];
-    //     p._num_stars_display = star_idx;
-    // };
-
-    // self.set_stars = function(post_idx, star_idx) {
-    //     // The user has set this as the number of stars for the post.
-    //     var p = self.vue.post_list[post_idx];
-    //     p.rating = star_idx;
-    //     // Sends the rating to the server.
-    //     $.post(set_stars_url, {
-    //         post_id: p.id,
-    //         rating: star_idx
-    //     });
-    // };
-
     self.process_products = function() {
-        // This function is used to post-process posts, after the list has been modified
-        // or after we have gotten new posts. 
-        // We add the _idx attribute to the posts. 
+        // This function is used to post-process products, after the list has been modified
+        // or after we have gotten new products. 
+        // We add the _idx attribute to the products. 
         enumerate(self.vue.product_list);
         // We initialize the smile status to match the like. 
         self.vue.product_list.map(function (e) {
             // I need to use Vue.set here, because I am adding a new watched attribute
             // to an object.  See https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats
-            // Did I like it? 
-            // Vue.set(e, '_smile', e.like);
-            // Who liked it?
-            // Vue.set(e, '_likers', []);
-            // Do I know who liked it? (This could also be a timestamp to limit refresh)
-            // Vue.set(e, '_likers_known', false);
-            // Do I show who liked? 
-            // Vue.set(e, '_show_likers', false);
             // Number of stars to display.
             Vue.set(e, '_num_stars_display', e.rating);
             Vue.set(e, '_show_reviews', false);
@@ -133,6 +100,7 @@ var app = function() {
         }
     };
 
+
     //Code for reviews
     self.get_reviews = function(prod_idx) {
         // hide all other reviews
@@ -140,10 +108,35 @@ var app = function() {
             self.hide_reviews(prod);
         }
         var p = self.vue.product_list[prod_idx];
+        console.log("user_name: " + user_name)
         $.getJSON(get_review_list_url, 
             {prod_id: p.id}, // args sent in the get request
             function (data) { // called when data sent back
-                p._review_list = data.review_list;
+                // p._review_list = data.review_list;
+                p._review_list = [];
+                console.log(data.review_list);
+                if (is_logged_in){
+                    Vue.set(p, "_user_reviewed", false);
+                    // filtering the user's review
+                    for (i in data.review_list){
+                        var rev = data.review_list[i];
+                        console.log("rev: ");
+                        console.log(rev);
+                        if (!rev.reviewer === user_name){
+                            p._review_list += rev;
+                        }
+                        else{
+                            Vue.set(p, "_user_reviewed", true);
+                            Vue.set(p, "_user_review", rev);
+                            p._review_list.user_rev = rev;
+                        };
+                        console.log(`p._user_reviewed: ${p._user_reviewed}`);
+                    };
+
+                }
+                else{
+                    p._review_list = data.review_list;
+                };
                 p._show_reviews = true;
             }
         );

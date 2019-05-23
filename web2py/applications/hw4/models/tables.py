@@ -14,6 +14,8 @@ def get_user_email():
     return None if auth.user is None else auth.user.email
 
 def get_name_by_email(_email):
+    if _email is None:
+        return "None"
     row = db(db.auth_user.email == _email).select().first()
     name = "" + row.first_name + " " + row.last_name
     return name
