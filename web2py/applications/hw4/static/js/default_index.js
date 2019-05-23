@@ -148,10 +148,12 @@ var app = function() {
             }
         );
     };
+
     self.hide_reviews = function(prod_idx){
         var p = self.vue.product_list[prod_idx];
         p._show_reviews = false;
-    }
+    };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
