@@ -45,6 +45,8 @@ def get_review_list():
         ],
         )
     for row in rows:
+        # move the email joining logic down here to have stars but no content?
+           # i think that the email join in the query above is causing the rating to not appear
         _email = row.stars.user_email if row.reviews.user_email is None else row.reviews.user_email
         _rvw_cont = row.reviews.review_content if row.reviews.review_content is not None else ""
         results.append(dict(
