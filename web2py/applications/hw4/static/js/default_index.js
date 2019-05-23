@@ -162,7 +162,7 @@ var app = function() {
                 prod_id: p.id,
                 content: p._user_review.review_content
             });
-    }
+    };
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",

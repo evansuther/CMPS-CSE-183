@@ -69,9 +69,9 @@ def set_stars():
 def save_review():
     """Sets the star rating of a post."""
     prod_id = int(request.vars.prod_id)
-    logger.info("changing stars on prod_id {%s}" %prod_id)
+    logger.info("saving review on prod_id {%s}" %prod_id)
     content = request.vars.content
-    db.stars.update_or_insert(
+    db.reviews.update_or_insert(
         (db.reviews.prod_id == prod_id) & (db.reviews.user_email == auth.user.email),
         prod_id = prod_id,
         user_email = auth.user.email,
