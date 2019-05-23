@@ -3,10 +3,10 @@
 def get_product_list():
     results = []
     rows = db().select(db.products.ALL,  db.stars.ALL,
-                            left=[
-                                db.stars.on((db.stars.prod_id == db.products.id) ),#& (db.stars.user_email == auth.user.email)
-                            ],
-                            orderby=~db.products.prod_post_time)
+        left=[
+            db.stars.on((db.stars.prod_id == db.products.id) ),#& (db.stars.user_email == auth.user.email)
+        ],
+        orderby=~db.products.prod_post_time)
     for row in rows:
         results.append(dict(
             id=row.products.id,
@@ -46,6 +46,7 @@ def get_review_list():
         ))
     return response.json(dict(review_list=results))
 
+
 # copied from vue-5-stars
 @auth.requires_signature(hash_vars=False)
 def set_stars():
@@ -53,10 +54,27 @@ def set_stars():
     prod_id = int(request.vars.prod_id)
     logger.info("changing stars on prod_id {%s}" %prod_id)
     rating = int(request.vars.rating)
+    logger.info("auth.user from api: %s"%auth.user.email )
     db.stars.update_or_insert(
         (db.stars.prod_id == prod_id) & (db.stars.user_email == auth.user.email),
         prod_id = prod_id,
         user_email = auth.user.email,
         rating = rating
+    )
+    return "ok" # Might be useful in debugging.
+
+
+# copied from vue-5-stars
+@auth.requires_signature(hash_vars=False)
+def save_review():
+    """Sets the star rating of a post."""
+    prod_id = int(request.vars.prod_id)
+    logger.info("changing stars on prod_id {%s}" %prod_id)
+    content = request.vars.content
+    db.stars.update_or_insert(
+        (db.reviews.prod_id == prod_id) & (db.reviews.user_email == auth.user.email),
+        prod_id = prod_id,
+        user_email = auth.user.email,
+        review_content = content
     )
     return "ok" # Might be useful in debugging.

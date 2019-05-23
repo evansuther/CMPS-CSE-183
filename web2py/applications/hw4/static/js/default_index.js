@@ -93,11 +93,15 @@ var app = function() {
             var p = self.vue.product_list[prod_idx];
             p.rating = star_idx;
             // Sends the rating to the server.
+            $.web2py.disableElement($("#user_stars"));
             $.post(set_stars_url, {
                 prod_id: p.id,
                 rating: star_idx
-            });
-        }
+                }, function(data){
+                    $.web2py.enableElement($("#user_stars"));
+                }
+            );
+        };
     };
 
 
@@ -117,8 +121,11 @@ var app = function() {
                 console.log(data.review_list);
                 if (is_logged_in){
                     Vue.set(p, "_user_reviewed", false);//currently unused****
+                    // inserting a dummy fake review to be filled in by user
+                    Vue.set(p, "_user_review", 
+                        {rating:0, review_content:"", reviewer:user_name}
+                    );
                     // filtering the user's review
-                    Vue.set(p, "_user_review", {rating:0, review_content:"", reviewer:user_name});
                     for (i in data.review_list){
                         var rev = data.review_list[i];
                         console.log("rev: ");
@@ -126,8 +133,6 @@ var app = function() {
 
                         if (!rev.reviewer === user_name){
                             p._review_list += rev;
-                            
-
                         }
                         else{
                             Vue.set(p, "_user_reviewed", true);//currently unused****
@@ -151,6 +156,13 @@ var app = function() {
         p._show_reviews = false;
     };
 
+    self.save_review = function(prod_idx){
+        var p = self.vue.product_list[prod_idx];
+        $.post(save_review_url, {
+                prod_id: p.id,
+                content: p._user_review.review_content
+            });
+    }
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -171,7 +183,8 @@ var app = function() {
             stars_over: self.stars_over,
             set_stars: self.set_stars,
             get_reviews: self.get_reviews,
-            hide_reviews: self.hide_reviews
+            hide_reviews: self.hide_reviews,
+            save_review: self.save_review
         }
 
     });
