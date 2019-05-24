@@ -39,14 +39,57 @@ def get_product_list():
 def get_review_list():
     results = []
     prod_id = int(request.vars.prod_id)
-    rows = db(db.reviews.prod_id == prod_id).select(db.reviews.ALL,  db.stars.ALL,
+    
+    revs = db((db.reviews.prod_id == prod_id) & (db.stars.prod_id == prod_id)).select(db.reviews.ALL,  db.stars.ALL,
         left=[
-            db.stars.on((db.stars.prod_id == prod_id)  & (db.reviews.user_email == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
+            db.stars.on( (db.reviews.user_email == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
+        ],
+        ) #(db.stars.prod_id == prod_id)  &
+    print "revs = ", revs
+    rats = db( (db.stars.prod_id == prod_id)).select(db.reviews.ALL,  db.stars.ALL,
+        left=[
+            db.reviews.on( (db.stars.user_email == db.reviews.user_email)),#& & (db.reviews.prod_id == prod_id)
         ],
         )
+    print "rats = ", rats
+    rows = revs | rats
+    # rows = db().select(
+            # db.reviews.ALL,  db.stars.ALL,
+    #     # left=[
+    #     #     db.stars.on((prod_id  == db.stars.prod_id)  ),#& & (db.reviews.prod_id == prod_id) #& (db.stars.user_email  == db.reviews.user_email)
+    #     #     db.reviews.on((prod_id  == db.reviews.prod_id)  ),#& & (db.reviews.prod_id == prod_id) #& (db.stars.user_email  == db.reviews.user_email)
+    #     # #     # db.reviews.on((    ==  db.stars.user_email) | (db.reviews.review_content is None) ),#& & (db.reviews.prod_id == prod_id) #& (db.stars.user_email  == db.reviews.user_email)
+    #     # ,
+    #     # groupby=prod_id
+        # )
+    # rows = db((db.reviews.prod_id == prod_id) | (db.stars.prod_id == prod_id)).select(db.reviews.ALL,  db.stars.ALL,
+    #     left=[
+    #         db.stars.on((db.stars.user_email  == db.reviews.user_email)|(db.stars.user_email  == None)),#& & (db.reviews.prod_id == prod_id)
+            # db.reviews.on((db.reviews.user_email  == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
+    #     ],
+    #     )
+    # revs = db(db.reviews.prod_id == prod_id).select().as_list()
+    ratings = db(db.stars.prod_id == prod_id).select().as_list()
+    # print 'revs = ', revs
+    # print 'ratings = ', ratings
+    # i, j = 0,0
+    # while i < len(revs) and j < len(ratings):
+    #     rev = revs[i]
+    #     rating = ratings[j]
+    #     i += 1
+    #     j += 1
+    #     if rev['user_email'] ==
+
+
+
+
     for row in rows:
         # move the email joining logic down here to have stars but no content?
            # i think that the email join in the query above is causing the rating to not appear
+        print "row = ", row
+        # print "row.reviews.user_email is None = ", (row.reviews.user_email is None)
+        # print "row.reviews.user_email = ", row.reviews.user_email
+        # print "row.stars.user_email = ", row.stars.user_email
         _email = row.stars.user_email if row.reviews.user_email is None else row.reviews.user_email
         _rvw_cont = row.reviews.review_content if row.reviews.review_content is not None else ""
         results.append(dict(
