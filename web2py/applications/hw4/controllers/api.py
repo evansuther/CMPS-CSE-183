@@ -40,19 +40,24 @@ def get_review_list():
     results = []
     prod_id = int(request.vars.prod_id)
     
-    revs = db((db.reviews.prod_id == prod_id) & (db.stars.prod_id == prod_id)).select(db.reviews.ALL,  db.stars.ALL,
+    #from yesterday basically
+    revs = db((db.reviews.prod_id == prod_id)  ).select(db.reviews.ALL,  db.stars.ALL,
         left=[
-            db.stars.on( (db.reviews.user_email == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
+            # this joins the ratings to the reviews if a rating exists
+            db.stars.on( (db.stars.prod_id == prod_id) & (db.reviews.user_email == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
         ],
         ) #(db.stars.prod_id == prod_id)  &
     print "revs = ", revs
-    rats = db( (db.stars.prod_id == prod_id)).select(db.reviews.ALL,  db.stars.ALL,
+    # got me the stars from haha 2 with no review
+    rats = db( (db.stars.prod_id == prod_id) ).select(db.reviews.ALL,  db.stars.ALL,
         left=[
-            db.reviews.on( (db.stars.user_email == db.reviews.user_email)),#& & (db.reviews.prod_id == prod_id)
+            # this joins the reviews to the rating if a review exists
+            db.reviews.on( (db.reviews.prod_id == prod_id) & (db.stars.user_email == db.reviews.user_email)),#& & (db.reviews.prod_id == prod_id)
+            # db.stars.on( db.reviews.user_email == db.stars.user_email),
         ],
         )
     print "rats = ", rats
-    rows = revs | rats
+    rows =  rats | revs
 
     for row in rows:
         # move the email joining logic down here to have stars but no content?
