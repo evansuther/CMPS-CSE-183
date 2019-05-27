@@ -32,13 +32,13 @@
    					<div class="prod_price">${prod.prod_price}</div>
    				</div>
    				<p class="prod_desc">${prod.prod_desc}</p>
-   				<!-- Code for start ratings. -->
+   				<!-- Code for star ratings. -->
    				<!-- v-if="is_logged_in" -->
    				<div class="review_box row" v-if="!prod._show_reviews"> 
    					<span class="star_rating" >
    						<span v-for="idx in star_indices">
-   							<i v-if="idx <= prod._num_stars_display" class="fa fa-star"></i>
-   							<i v-if="idx > prod._num_stars_display" class="fa fa-star-o"></i>
+   							<i v-if="idx <= prod._avg_stars" class="fa fa-star"></i>
+   							<i v-if="idx > prod._avg_stars" class="fa fa-star-o"></i>
    						</span>
    					</span>
    					
@@ -48,16 +48,19 @@
    				</div>
 
    				<div class="review_list" v-if="prod._show_reviews">
-
+   					<!-- display and allow updating of user's star rating -->
 	   				<div class = "user_review"  v-if="is_logged_in">
-	   					<span class="star_rating" v-on:mouseout="stars_out(prod._idx)">
+	   					<span class="star_rating" >
 	   						<b>Your Review:</b>
-	   						<span v-on:mouseover="stars_over(prod._idx, idx)"
-	   						v-on:click="set_stars(prod._idx, idx)"
-	   						v-for="idx in star_indices"
-	   						id="user_stars">
-	   							<i v-if="idx <= prod._num_stars_display" class="fa fa-star"></i>
-	   							<i v-if="idx > prod._num_stars_display" class="fa fa-star-o"></i>
+	   						<span v-on:mouseout="stars_out(prod._idx)">
+		   						<span 
+		   						v-for="idx in star_indices"
+		   						v-on:mouseover="stars_over(prod._idx, idx)"
+		   						v-on:click="set_stars(prod._idx, idx)"
+		   						id="user_stars">
+		   							<i v-if="idx <= prod._user_stars" class="fa fa-star"></i>
+		   							<i v-if="idx > prod._user_stars" class="fa fa-star-o"></i>
+		   						</span>
 	   						</span>
    						</span>
    						<textarea v-model="prod._user_review.review_content"

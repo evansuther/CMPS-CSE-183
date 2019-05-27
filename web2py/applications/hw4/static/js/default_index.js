@@ -55,8 +55,10 @@ var app = function() {
         self.vue.product_list.map(function (e) {
             // I need to use Vue.set here, because I am adding a new watched attribute
             // to an object.  See https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats
-            // Number of stars to display.
-            Vue.set(e, '_num_stars_display', e.rating);
+            // Number of stars to display, separate avg and user ratings
+            Vue.set(e, '_avg_stars', e.rating);
+            Vue.set(e, '_user_stars', 0);
+            // Vue.set(e, '_num_stars_display', e.rating);
             Vue.set(e, '_show_reviews', false);
             Vue.set(e, '_review_list', []);
         });
@@ -78,20 +80,20 @@ var app = function() {
     self.stars_out = function (prod_idx) {
         // Out of the star rating; set number of visible back to rating.
         var p = self.vue.product_list[prod_idx];
-        p._num_stars_display = p.rating;
+        p._user_stars = p._user_review.rating;
     };
 
     self.stars_over = function(prod_idx, star_idx) {
         // Hovering over a star; we show that as the number of active stars.
         var p = self.vue.product_list[prod_idx];
-        p._num_stars_display = star_idx;
+        p._user_stars = star_idx;
     };
 
     self.set_stars = function(prod_idx, star_idx) {
         if (is_logged_in){
         // The user has set this as the number of stars for the post.
             var p = self.vue.product_list[prod_idx];
-            p.rating = star_idx;
+            p._user_review.rating = star_idx;
             // Sends the rating to the server.
             $.web2py.disableElement($("#user_stars"));
             $.post(set_stars_url, {
@@ -136,6 +138,7 @@ var app = function() {
                         else{
                             Vue.set(p, "_user_reviewed", true);//currently unused****
                             Vue.set(p, "_user_review", rev); // hopefully takes care of tracking the whole review object?
+                            Vue.set(p, "_user_stars", rev.rating)
                             // p._review_list.user_rev = rev;
                         };
                         console.log(`p._user_reviewed: ${p._user_reviewed}`);

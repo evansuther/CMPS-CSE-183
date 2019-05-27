@@ -3,75 +3,58 @@
 def get_product_list():
     results = []
     rows = db(db.products).select(
-        # db.products.ALL,  db.stars.ALL,
-        # left=[
-        #     db.stars.on((db.stars.prod_id == db.products.id) ),#& (db.stars.user_email == auth.user.email)
-        # ],
         orderby=~db.products.prod_post_time)
     for row in rows:
         results.append(dict(
-            # id=row.products.id,
-            # prod_name=row.products.prod_name,
-            # prod_price=represent_money(row.products.prod_price),
-            # prod_desc=row.products.prod_desc,
-            # rating = calc_avg_rating(row.products.id) #None if row.stars.id is None else row.stars.rating,
-
             id=row.id,
             prod_name=row.prod_name,
             prod_price=represent_money(row.prod_price),
             prod_desc=row.prod_desc,
             rating = calc_avg_rating(row.id) #None if row.stars.id is None else row.stars.rating,
-
         ))
-    # product_list = db(db.products).select(db.products.id, 
-    #     db.products.prod_name, db.products.prod_desc,
-    #     db.products.prod_price,
-    #      orderby=~db.products.prod_post_time).as_list()
-    # # format the price, stored internally as float
-    # for prod in product_list:
-    #     prod['prod_price'] = represent_money(prod['prod_price'])
-    # logger.info("product_list= %s" %product_list)
-    # I like to always return a dictionary.
-    # return response.json(dict(product_list=product_list))
     return response.json(dict(product_list=results))
 
 
 def get_review_list():
     results = []
     prod_id = int(request.vars.prod_id)
-    
-    #from yesterday basically
-    revs = db((db.reviews.prod_id == prod_id)  ).select(db.reviews.ALL,  db.stars.ALL,
+    # someone said on piazza they could grab all reviews with a simple
+    # inner join query but I found the left joins necessary
+    # to grab reviews without ratings and ratings without reviews 
+    revs = db(db.reviews.prod_id == prod_id).select(db.reviews.ALL,  db.stars.ALL,
         left=[
             # this joins the ratings to the reviews if a rating exists
-            db.stars.on( (db.stars.prod_id == prod_id) & (db.reviews.user_email == db.stars.user_email)),#& & (db.reviews.prod_id == prod_id)
-        ],
-        ) #(db.stars.prod_id == prod_id)  &
-    print "revs = ", revs
+            db.stars.on( (db.stars.prod_id == prod_id) & (db.reviews.user_email == db.stars.user_email)),
+            ],
+        ) 
+    logger.info("revs = %s"% revs)
     # got me the stars from haha 2 with no review
-    rats = db( (db.stars.prod_id == prod_id) ).select(db.reviews.ALL,  db.stars.ALL,
+    rats = db(db.stars.prod_id == prod_id).select(db.reviews.ALL,  db.stars.ALL,
         left=[
             # this joins the reviews to the rating if a review exists
-            db.reviews.on( (db.reviews.prod_id == prod_id) & (db.stars.user_email == db.reviews.user_email)),#& & (db.reviews.prod_id == prod_id)
-            # db.stars.on( db.reviews.user_email == db.stars.user_email),
-        ],
+            db.reviews.on( (db.reviews.prod_id == prod_id) & (db.stars.user_email == db.reviews.user_email)),
+            ],
         )
-    print "rats = ", rats
+    logger.info("rats = %s"%rats)
     rows =  rats | revs
 
     for row in rows:
-        # move the email joining logic down here to have stars but no content?
-           # i think that the email join in the query above is causing the rating to not appear
-        print "row = ", row
+        # logger.info("row = %s"%row)
         # print "row.reviews.user_email is None = ", (row.reviews.user_email is None)
         # print "row.reviews.user_email = ", row.reviews.user_email
         # print "row.stars.user_email = ", row.stars.user_email
-        _email = row.stars.user_email if row.reviews.user_email is None else row.reviews.user_email
-        _rvw_cont = row.reviews.review_content if row.reviews.review_content is not None else ""
+        email = ""
+        if row.reviews.user_email is None:
+            email = row.stars.user_email
+        else:
+            email = row.reviews.user_email
+        _rvw_cont = ""
+        if row.reviews.review_content is not None:
+            _rvw_cont = row.reviews.review_content 
         results.append(dict(
-            rating=row.stars.rating,
+            rating= 0 if row.stars.rating is None else row.stars.rating,
             review_content= _rvw_cont,
-            reviewer=get_name_by_email(_email),
+            reviewer=get_name_by_email(email),
         ))
     return response.json(dict(review_list=results))
 
