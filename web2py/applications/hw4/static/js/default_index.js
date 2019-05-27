@@ -15,37 +15,6 @@ var app = function() {
     // Enumerates an array.
     var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
 
-    // self.add = function () {
-    //     // We disable the button, to prevent double submission.
-    //     $.web2py.disableElement($("#add-post"));
-    //     var sent_title = self.vue.form_title; // Makes a copy 
-    //     var sent_content = self.vue.form_content; // 
-    //     $.post(add_post_url,
-    //         // Data we are sending.
-    //         {
-    //             post_title: self.vue.form_title,
-    //             post_content: self.vue.form_content
-    //         },
-    //         // What do we do when the post succeeds?
-    //         function (data) {
-    //             // Re-enable the button.
-    //             $.web2py.enableElement($("#add-post"));
-    //             // Clears the form.
-    //             self.vue.form_title = "";
-    //             self.vue.form_content = "";
-    //             // Adds the post to the list of posts. 
-    //             var new_post = {
-    //                 id: data.post_id,
-    //                 post_title: sent_title,
-    //                 post_content: sent_content
-    //             };
-    //             self.vue.post_list.unshift(new_post);
-    //             // We re-enumerate the array.
-    //             enumerate(self.vue.post_list);
-    //         });
-    //     // If you put code here, it is run BEFORE the call comes back.
-    // };
-
     self.process_products = function() {
         // This function is used to post-process products, after the list has been modified
         // or after we have gotten new products. 
