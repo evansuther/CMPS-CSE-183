@@ -20,16 +20,26 @@ var app = function() {
         // mostly to add attributes to products that Vue can track dynamically
         // We add the _idx attribute to the products with enumerate
         enumerate(self.vue.product_list);
+        // when starting up, just having all products displayed is fine
+        // display_list is changed by filter_prods(the search bar)
         self.vue.display_list = self.vue.product_list;
-        // We initialize the smile status to match the like. 
         self.vue.product_list.map(function (e) {
             // I need to use Vue.set here, because I am adding a new watched attribute
             // to an object.  See https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats
             // Number of stars to display, separate avg and user ratings
             Vue.set(e, '_avg_stars', e.rating);
+            // user stars can be set by get_reviews
             Vue.set(e, '_user_stars', 0);
-            // Vue.set(e, '_num_stars_display', e.rating);
+            // Vue.set(e, '_num_stars_display', e.rating); *** old stars code
             Vue.set(e, '_show_reviews', false);
+            if (is_logged_in){
+                // inserting a dummy fake review to be filled in by user
+                // this attribute can also be replaced by the user's
+                // review if one already exists
+                Vue.set(e, "_user_review", 
+                    {rating:0, review_content:"", reviewer:user_name}
+                );
+            }
             Vue.set(e, '_review_list', []);
         });
     };
@@ -71,6 +81,7 @@ var app = function() {
     }
 
     // Code for star ratings.
+    // copied from vue-5-stars branch changed to _user_stars
     self.stars_out = function (prod_idx) {
         // Out of the star rating; set number of visible back to rating.
         var p = self.vue.product_list[prod_idx];
@@ -118,9 +129,9 @@ var app = function() {
                 console.log(data.review_list);
                 if (is_logged_in){
                     // inserting a dummy fake review to be filled in by user
-                    Vue.set(p, "_user_review", 
-                        {rating:0, review_content:"", reviewer:user_name}
-                    );
+                    // Vue.set(p, "_user_review", 
+                    //     {rating:0, review_content:"", reviewer:user_name}
+                    // );
                     // filtering the user's review
                     for (i in data.review_list){
                         var rev = data.review_list[i];
@@ -130,16 +141,15 @@ var app = function() {
                         }
                         else{
                             // hopefully takes care of tracking the whole review object?
-                            Vue.set(p, "_user_review", rev); 
-                            Vue.set(p, "_user_stars", rev.rating);
-                            // p._review_list.user_rev = rev;
+                            // Vue.set(p, "_user_review", rev); 
+                            // Vue.set(p, "_user_stars", rev.rating);
+                            p._user_review = rev;
+                            p._user_stars = rev.rating;
                         };
-                        console.log(`p._user_reviewed: ${p._user_reviewed}`);
                     };
-
                 }
-                // not logged in, just fill reviews
                 else{
+                    // not logged in, just fill reviews
                     p._review_list = data.review_list;
                 };
                 p._show_reviews = true;

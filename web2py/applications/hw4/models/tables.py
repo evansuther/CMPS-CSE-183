@@ -13,6 +13,7 @@ import datetime
 def get_user_email():
     return None if auth.user is None else auth.user.email
 
+
 def get_name_by_email(_email):
     if _email is None:
         return "None"
@@ -73,8 +74,10 @@ db.define_table('stars',
 db.define_table('reviews',
                 Field('user_email'), # The user who reviewed
                 Field('prod_id', 'reference products'), # The reviewd prod
-                Field('review_content', 'text', label= 'Review Content') # The text content rating.
+                Field('review_content', 'text', label= 'Review Content') # The text content.
                 )
+# I set less defaults and writable/readables becuase the stars and 
+# reviews data is only accessed through api or admin
 
 
 # after defining tables, uncomment below to enable auditing
