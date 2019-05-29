@@ -43,6 +43,7 @@ def get_review_list():
         # print "row.reviews.user_email is None = ", (row.reviews.user_email is None)
         # print "row.reviews.user_email = ", row.reviews.user_email
         # print "row.stars.user_email = ", row.stars.user_email
+        # here i set the email and review content depending on what exists
         email = ""
         if row.reviews.user_email is None:
             email = row.stars.user_email
@@ -51,6 +52,7 @@ def get_review_list():
         _rvw_cont = ""
         if row.reviews.review_content is not None:
             _rvw_cont = row.reviews.review_content 
+        # build results as list of dictionaries
         results.append(dict(
             rating= 0 if row.stars.rating is None else row.stars.rating,
             review_content= _rvw_cont,

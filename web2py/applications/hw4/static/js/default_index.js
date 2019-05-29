@@ -16,9 +16,9 @@ var app = function() {
     var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
 
     self.process_products = function() {
-        // This function is used to post-process products, after the list has been modified
-        // or after we have gotten new products. 
-        // We add the _idx attribute to the products. 
+        // This function is used to post-process products, 
+        // mostly to add attributes to products that Vue can track dynamically
+        // We add the _idx attribute to the products with enumerate
         enumerate(self.vue.product_list);
         self.vue.display_list = self.vue.product_list;
         // We initialize the smile status to match the like. 
@@ -34,28 +34,37 @@ var app = function() {
         });
     };
 
+
+    // this function takes the search_term from the top search bar,
+    // then filters the overall product list for names containing the 
+    // term, modifying the displayed list
     self.filter_prods = function(){
         var results = [];
+        // not sure if neccessary but for my sanity
         if (self.vue.search_term === ""){
             self.vue.display_list = self.vue.product_list;
             return;
         }
         for (i in self.vue.product_list){
             var prod = self.vue.product_list[i];
-            if(prod.prod_name.includes(self.vue.search_term)){
+            var name = prod.prod_name.toLowerCase()
+            if(name.includes(self.vue.search_term.toLowerCase())){
                 results.push(prod);
             }
         }
+        // change whats displayed in the browser
         self.vue.display_list = results;
     }
 
+    // fills vue's product list, called when index is loading
     self.get_products = function() {
+        // an AJAX call to app/api/get_product_list
         $.getJSON(get_product_list_url,
             function(data) {
                 // I am assuming here that the server gives me a nice list
                 // of products, all ready for display.
                 self.vue.product_list = data.product_list;
-                // We enumerate the products, adding an _idx to each of them.
+                // add dynamic attributes and _idx to products
                 self.process_products();
             }
         );
@@ -103,11 +112,11 @@ var app = function() {
         $.getJSON(get_review_list_url, 
             {prod_id: p.id}, // args sent in the get request
             function (data) { // called when data sent back
-                // p._review_list = data.review_list;
+                // instead of just taking the reviews I have to filter them
+                // for the user review
                 p._review_list = [];
                 console.log(data.review_list);
                 if (is_logged_in){
-                    Vue.set(p, "_user_reviewed", false);//currently unused****
                     // inserting a dummy fake review to be filled in by user
                     Vue.set(p, "_user_review", 
                         {rating:0, review_content:"", reviewer:user_name}
@@ -116,20 +125,20 @@ var app = function() {
                     for (i in data.review_list){
                         var rev = data.review_list[i];
                         console.log(`rev.reviewer: ${rev.reviewer}`);
-
                         if (rev.reviewer !== user_name){
                             p._review_list.push(rev);
                         }
                         else{
-                            Vue.set(p, "_user_reviewed", true);//currently unused****
-                            Vue.set(p, "_user_review", rev); // hopefully takes care of tracking the whole review object?
-                            Vue.set(p, "_user_stars", rev.rating)
+                            // hopefully takes care of tracking the whole review object?
+                            Vue.set(p, "_user_review", rev); 
+                            Vue.set(p, "_user_stars", rev.rating);
                             // p._review_list.user_rev = rev;
                         };
                         console.log(`p._user_reviewed: ${p._user_reviewed}`);
                     };
 
                 }
+                // not logged in, just fill reviews
                 else{
                     p._review_list = data.review_list;
                 };
@@ -155,7 +164,7 @@ var app = function() {
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
-        // data to be kept in sync with the view
+        // data to be kept in sync with the browser view
         data: {
             form_title: "",
             form_content: "",
@@ -166,27 +175,23 @@ var app = function() {
         },
         // these methods are viewable to the browser js
         methods: {
-            // add_post: self.add_post
              // Star ratings.
             stars_out: self.stars_out,
             stars_over: self.stars_over,
             set_stars: self.set_stars,
+            // review methods
             get_reviews: self.get_reviews,
             hide_reviews: self.hide_reviews,
             save_review: self.save_review,
+            // search bar
             filter_prods: self.filter_prods
         }
 
     });
 
-    // If we are logged in, shows the form to add posts.
-    if (is_logged_in) {
-        // $("#add_post").show();
-    }
-
     // Gets the posts.
     self.get_products();
-    // $("#vue-div").show()
+    $("#vue-div").show()
     return self;
 };
 

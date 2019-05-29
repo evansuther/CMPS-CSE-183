@@ -16,7 +16,7 @@
    </script>
    {{end}}
 
-   <div class="main_content">
+   <div class="main_content product_list">
 
    	<div id="vue-div" class="display:none">
    		<!-- search bar -->
@@ -29,7 +29,8 @@
    		<div v-if="product_list.length === 0">There are no products.</div>
 
    		<!-- We display the products. -->
-   		<div class="product_list">
+   		<!-- <div class=""> -->
+   		<div>
    			<div class="product-container" v-for="prod in display_list">
    				<div class="product-top-row">
    					<div class="prod_name">${prod.prod_name}</div>
@@ -52,11 +53,12 @@
    				</div>
 
    				<div class="review_list" v-if="prod._show_reviews">
-   					<!-- display and allow updating of user's star rating -->
 	   				<div class = "user_review"  v-if="is_logged_in">
+   						<!-- display and allow updating of user's star rating -->	
 	   					<span class="star_rating" >
 	   						<b>Your Review:</b>
 	   						<span v-on:mouseout="stars_out(prod._idx)">
+	   							<!-- server stars updated on click -->
 		   						<span 
 		   						v-for="idx in star_indices"
 		   						v-on:mouseover="stars_over(prod._idx, idx)"
@@ -67,6 +69,7 @@
 		   						</span>
 	   						</span>
    						</span>
+
    						<textarea v-model="prod._user_review.review_content"
    								class = "user_review_content">
    							
