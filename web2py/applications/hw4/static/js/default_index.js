@@ -164,10 +164,13 @@ var app = function() {
     };
 
     self.save_review = function(prod_idx){
+        $.web2py.disableElement($("#save_btn"));
         var p = self.vue.product_list[prod_idx];
         $.post(save_review_url, {
                 prod_id: p.id,
                 content: p._user_review.review_content
+            }, function(data){
+                $.web2py.enableElement($("#save_btn"));
             });
     };
     // Complete as needed.
