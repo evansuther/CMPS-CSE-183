@@ -120,3 +120,15 @@
     display: flex;
     justify-content: space-between;
 }
+
+.top-search-bar {
+    border: 1px solid black;
+    width: 800px;
+    margin-bottom: 20px;
+}
+
+.top-search-bar {
+    border: 1px solid black;
+    width: 800px;
+    margin-bottom: 20px;
+}

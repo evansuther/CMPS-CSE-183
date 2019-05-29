@@ -20,6 +20,7 @@ var app = function() {
         // or after we have gotten new products. 
         // We add the _idx attribute to the products. 
         enumerate(self.vue.product_list);
+        self.vue.display_list = self.vue.product_list;
         // We initialize the smile status to match the like. 
         self.vue.product_list.map(function (e) {
             // I need to use Vue.set here, because I am adding a new watched attribute
@@ -32,6 +33,21 @@ var app = function() {
             Vue.set(e, '_review_list', []);
         });
     };
+
+    self.filter_prods = function(){
+        var results = [];
+        if (self.vue.search_term === ""){
+            self.vue.display_list = self.vue.product_list;
+            return;
+        }
+        for (i in self.vue.product_list){
+            var prod = self.vue.product_list[i];
+            if(prod.prod_name.includes(self.vue.search_term)){
+                results.push(prod);
+            }
+        }
+        self.vue.display_list = results;
+    }
 
     self.get_products = function() {
         $.getJSON(get_product_list_url,
@@ -143,7 +159,9 @@ var app = function() {
         data: {
             form_title: "",
             form_content: "",
+            search_term: "",
             product_list: [],
+            display_list: [],
             star_indices: [1, 2, 3, 4, 5]
         },
         // these methods are viewable to the browser js
@@ -155,7 +173,8 @@ var app = function() {
             set_stars: self.set_stars,
             get_reviews: self.get_reviews,
             hide_reviews: self.hide_reviews,
-            save_review: self.save_review
+            save_review: self.save_review,
+            filter_prods: self.filter_prods
         }
 
     });

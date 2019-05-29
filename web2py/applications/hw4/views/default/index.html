@@ -19,14 +19,18 @@
    <div class="main_content">
 
    	<div id="vue-div" class="display:none">
-   		<!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
-
-   		<!-- Message in case there are no posts. -->
+   		<!-- search bar -->
+   		<textarea v-model="search_term"
+   				  class = "top-search-bar"
+   				  v-on:input = "filter_prods">
+   							
+   						</textarea>
+   		<!-- Message in case there are no products. -->
    		<div v-if="product_list.length === 0">There are no products.</div>
 
-   		<!-- We display the posts. -->
+   		<!-- We display the products. -->
    		<div class="product_list">
-   			<div class="product-container" v-for="prod in product_list">
+   			<div class="product-container" v-for="prod in display_list">
    				<div class="product-top-row">
    					<div class="prod_name">${prod.prod_name}</div>
    					<div class="prod_price">${prod.prod_price}</div>
