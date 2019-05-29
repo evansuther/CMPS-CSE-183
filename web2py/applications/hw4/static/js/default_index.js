@@ -106,6 +106,7 @@ var app = function() {
                 rating: star_idx
                 }, function(data){
                     $.web2py.enableElement($("#user_stars"));
+                    p._avg_stars = data.new_avg
                 }
             );
         };

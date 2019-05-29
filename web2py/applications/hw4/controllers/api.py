@@ -75,7 +75,9 @@ def set_stars():
         user_email = auth.user.email,
         rating = rating
     )
-    return "ok" # Might be useful in debugging.
+    new_avg = calc_avg_rating(prod_id)
+    return response.json(dict(new_avg=new_avg))
+    # return "ok" # Might be useful in debugging.
 
 
 # copied from vue-5-stars
