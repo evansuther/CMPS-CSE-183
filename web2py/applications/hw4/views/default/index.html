@@ -4,8 +4,6 @@
 <!-- load vue js 'scaffolding' -->
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-	var my_url = "{{=URL('api', 'my_method')}}";
-   	// var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
    	var get_product_list_url = "{{=URL('api', 'get_product_list')}}";
    	var get_review_list_url = "{{=URL('api', 'get_review_list')}}";
    	var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
@@ -20,8 +18,8 @@
 
    	<div id="vue-div" class="display:none">
    		<!-- search bar -->
-   		<textarea v-model="search_term"
-   				  class = "top-search-bar"
+   		<input v-model="search_term"
+   				  id = "top-search-bar"
    				  v-on:input = "filter_prods">
    							
    						</textarea>

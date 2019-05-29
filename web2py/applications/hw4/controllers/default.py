@@ -43,14 +43,22 @@ def products():
                     'products.prod_price':'Price'},
         links = links,
         # And now some generic defaults.
-        details=False,
-        create=True, editable=lambda r: decide_if_poster(r.id), 
-        deletable=lambda r: decide_if_poster(r.id),
+        details=True,
+        # create=True, editable=lambda r: decide_if_poster(r.id), 
+        create=True, editable=True, 
+        # deletable=lambda r: decide_if_poster(r.id),
+        deletable=True,
         csv=False, 
         user_signature=True, # We don't need it as one cannot take actions directly from the form.
     )
     return dict(grid=grid)
 
+
+def view_product():
+    product = db.products(request.args(0))
+    form = SQLFORM(db.products, product, readonly=T)
+    # btns = []
+    return dict(form=form, prod_name=product.prod_name,  )
 
 def decide_if_poster(row):
     prod=db.products(row)
