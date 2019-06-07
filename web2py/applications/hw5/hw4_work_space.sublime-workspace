@@ -1,0 +1,1343 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"save_",
+				"save_btn\t(index.html)"
+			],
+			[
+				"new",
+				"new_avg\t(api.py)"
+			],
+			[
+				"filter",
+				"filter_prods"
+			],
+			[
+				"sear",
+				"search_term\t(default_index.js)"
+			],
+			[
+				"disp",
+				"display_list"
+			],
+			[
+				"_",
+				"_user_review"
+			],
+			[
+				"_av",
+				"_avg_stars\t(default_index.js)"
+			],
+			[
+				"_USER",
+				"_user_review\t(default_index.js)"
+			],
+			[
+				"revi",
+				"review_content"
+			],
+			[
+				"user",
+				"user_email"
+			],
+			[
+				"em",
+				"email_join"
+			],
+			[
+				"prod_id",
+				"prod_id"
+			],
+			[
+				"rev",
+				"reviews"
+			],
+			[
+				"review",
+				"reviews"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"save",
+				"save_review_url\t(default_index.js)"
+			],
+			[
+				"logg",
+				"logger"
+			],
+			[
+				"_u",
+				"_user_review"
+			],
+			[
+				"review_",
+				"review_content\t(tables.py)"
+			],
+			[
+				"_us",
+				"_user_review\t(default_index.js)"
+			],
+			[
+				"Vue",
+				"Vue.set"
+			],
+			[
+				"get_",
+				"get_user_email\t(tables.py)"
+			],
+			[
+				"v",
+				"v-if"
+			],
+			[
+				"hide",
+				"hide_reviews\t(default_index.js)"
+			],
+			[
+				"ri",
+				"right_\t(myapp.css)"
+			],
+			[
+				"hi",
+				"hide_reviews"
+			],
+			[
+				"get_rev",
+				"get_review_list_url\t(index.html)"
+			],
+			[
+				"revie",
+				"review_list\t(index.html)"
+			],
+			[
+				"prod_",
+				"prod_id"
+			],
+			[
+				"proc",
+				"process_products"
+			],
+			[
+				"rep",
+				"represent_money\t(tables.py)"
+			],
+			[
+				"pro",
+				"prod_price"
+			],
+			[
+				"prod",
+				"product_list"
+			],
+			[
+				"get",
+				"get_product_list\t(api.py)"
+			],
+			[
+				"prod_po",
+				"prod_post_time\t(default.py)"
+			],
+			[
+				"URL",
+				"URL('default\t(default.py)"
+			],
+			[
+				"redir",
+				"redirect\t(default.py)"
+			],
+			[
+				"usr",
+				"usr_profile"
+			],
+			[
+				"deci",
+				"decide_if_poster"
+			],
+			[
+				"require",
+				"requires_signature"
+			],
+			[
+				"requ",
+				"requires_signature"
+			],
+			[
+				"requires",
+				"requires_login"
+			],
+			[
+				"margin",
+				"margin-left\tproperty"
+			],
+			[
+				"max",
+				"max900\t(stupid.css)"
+			],
+			[
+				"redi",
+				"redirect"
+			],
+			[
+				"order_",
+				"order_date\t(tables.py)"
+			],
+			[
+				"rea",
+				"readable"
+			],
+			[
+				"order",
+				"order_email"
+			],
+			[
+				"email",
+				"email_profile"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"upd",
+				"update_record"
+			],
+			[
+				"req",
+				"requires\t(objects.py)"
+			],
+			[
+				"product",
+				"product_id"
+			],
+			[
+				"update_",
+				"update_record\t(objects.py)"
+			],
+			[
+				"us",
+				"usr_email"
+			],
+			[
+				"qua",
+				"Quantity"
+			],
+			[
+				"def",
+				"default"
+			],
+			[
+				"ord",
+				"order_quantity"
+			],
+			[
+				"am",
+				"amt_paid"
+			],
+			[
+				"proud",
+				"product"
+			],
+			[
+				"or",
+				"order_quantity"
+			],
+			[
+				"read",
+				"readable"
+			],
+			[
+				"produc",
+				"product_id"
+			],
+			[
+				"produce_",
+				"produce_buy_btn"
+			],
+			[
+				"crea",
+				"create_order"
+			],
+			[
+				"fa-car",
+				"fa-cart-plus\t(font-awesome.css)"
+			],
+			[
+				"logger",
+				"logger.info(\"The\t(tables.py)"
+			],
+			[
+				"usr_",
+				"usr_email\t(tables.py)"
+			],
+			[
+				"S",
+				"SQLFORM"
+			],
+			[
+				"wid",
+				"width\tproperty"
+			],
+			[
+				"produce",
+				"produce_pls_minus_btn"
+			],
+			[
+				"hid",
+				"hide_if_no_user"
+			],
+			[
+				"list",
+				"listall"
+			],
+			[
+				"d",
+				"db.post.insert"
+			],
+			[
+				"de",
+				"default"
+			],
+			[
+				"int",
+				"integer"
+			],
+			[
+				"p",
+				"p\tTag"
+			],
+			[
+				"res",
+				"result_name"
+			],
+			[
+				"resu",
+				"result_name"
+			],
+			[
+				"wor",
+				"wordCount"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"FILE",
+				"FILEOUT"
+			],
+			[
+				"cix",
+				"cix_exit"
+			],
+			[
+				"fi",
+				"file_size"
+			],
+			[
+				"data",
+				"data_buffer"
+			],
+			[
+				"ci",
+				"cix_exit"
+			],
+			[
+				"re",
+				"reply"
+			],
+			[
+				"size",
+				"sizeof"
+			],
+			[
+				"n",
+				"nbytes"
+			],
+			[
+				"fil",
+				"FILENAME_SIZE"
+			],
+			[
+				"buf",
+				"buffer"
+			],
+			[
+				"clien",
+				"client_sock"
+			],
+			[
+				"send",
+				"send_packet"
+			],
+			[
+				"filen",
+				"FILENAME_SIZE"
+			],
+			[
+				"reply",
+				"reply_put"
+			],
+			[
+				"rec",
+				"recv_packet"
+			],
+			[
+				"str",
+				"str_str_map"
+			],
+			[
+				"it",
+				"iterator"
+			],
+			[
+				"D",
+				"DEBUGF"
+			],
+			[
+				"key",
+				"key_type"
+			],
+			[
+				"ke",
+				"key_type"
+			],
+			[
+				"m",
+				"my_map"
+			],
+			[
+				"fs",
+				"fstream"
+			],
+			[
+				"st",
+				"str_str_map"
+			],
+			[
+				"beg",
+				"begin"
+			],
+			[
+				"deb",
+				"DEBUGF"
+			],
+			[
+				"ss",
+				"str_str_pair"
+			],
+			[
+				"print_",
+				"print_subdirs"
+			],
+			[
+				"exi",
+				"exit_status"
+			],
+			[
+				"rm",
+				"rm_me_size"
+			],
+			[
+				"ino",
+				"inode_itor"
+			],
+			[
+				"word",
+				"words"
+			],
+			[
+				"in",
+				"inode_type"
+			],
+			[
+				"pat",
+				"path_part"
+			],
+			[
+				"pa",
+				"parent_ptr"
+			],
+			[
+				"par",
+				"parent_ptr"
+			],
+			[
+				"fina",
+				"final_path"
+			],
+			[
+				"di",
+				"DIRECTORY_TYPE"
+			],
+			[
+				"dire",
+				"directory"
+			],
+			[
+				"ma",
+				"maybe_me"
+			],
+			[
+				"map",
+				"map_itr"
+			],
+			[
+				"ex",
+				"exit_status"
+			],
+			[
+				"dir",
+				"directory"
+			],
+			[
+				"part",
+				"parts_itor"
+			],
+			[
+				"parent",
+				"parent_ptr"
+			],
+			[
+				"prin",
+				"print"
+			],
+			[
+				"pr",
+				"print_from_rec"
+			],
+			[
+				"fin",
+				"find_name"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "controllers/default.py",
+			"settings":
+			{
+				"buffer_size": 3591,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Evan/Documents/Scripts/Chrome/My First Homepage.html",
+			"settings":
+			{
+				"buffer_size": 4603,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "controllers/api.py",
+			"settings":
+			{
+				"buffer_size": 3683,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "models/tables.py",
+			"settings":
+			{
+				"buffer_size": 2740,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "static/js/default_index.js",
+			"settings":
+			{
+				"buffer_size": 8085,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "views/default/index.html",
+			"settings":
+			{
+				"buffer_size": 3886,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "views/layout.html",
+			"settings":
+			{
+				"buffer_size": 2378,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "static/css/myapp.css",
+			"settings":
+			{
+				"buffer_size": 2314,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "static/css/stupid.css",
+			"settings":
+			{
+				"buffer_size": 13841,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "models/menu.py",
+			"settings":
+			{
+				"buffer_size": 3299,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"conda show",
+				"Anaconda: Show error list"
+			],
+			[
+				"lint",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"mip",
+				"Set Syntax: MIPS"
+			],
+			[
+				"inde",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"beat",
+				"HTMLBeautify"
+			],
+			[
+				"htm",
+				"Set Syntax: HTML"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"python",
+				"Build With: Python - Syntax Check"
+			],
+			[
+				"inden",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"Package Control: add",
+				"Package Control: Add Repository"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"package control in",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"About"
+			],
+			[
+				"Install Package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 287.0,
+		"history":
+		[
+			"python",
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Evan/Desktop/CMPS183",
+		"/C/Users/Evan/Desktop/CMPS183/web2py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/controllers",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/models",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/static",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/static/css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/static/js",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/views",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/views/default",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4vues",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4vues/static"
+	],
+	"file_history":
+	[
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/views/default/view_product.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/controllers/default.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/views/default/view_product.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/controllers/api.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/models/tables.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw4/controllers/appadmin.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/static/css/myapp.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/static/font-awesome-4.6.3/css/font-awesome.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/static/css/stupid.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/start/static/css/myapp.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/views/default/create_order.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/start/controllers/default.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/start/static/css/stupid.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/start/static/css/custom.css",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/models/menu.py",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/gluon/packages/dal/pydal/validators.py",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/applications/start/models/tables.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/admin/views/layout.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/views/default/profile.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/applications/hw3starter/views/default/index.html",
+		"/C/Users/Evan/Documents/Scripts/Chrome/My First Homepage.html",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/gluon/packages/dal/pydal/objects.py",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/gluon/packages/dal/pydal/objects.py",
+		"/C/Users/Evan/AppData/Roaming/Sublime Text 3/Packages/All Autocomplete/All Autocomplete.sublime-settings",
+		"/C/Users/Evan/AppData/Roaming/Sublime Text 3/Packages/User/All Autocomplete.sublime-settings",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/applications/start/controllers/appadmin.py",
+		"/C/Users/Evan/Desktop/CMPS183/CS183WorkingProj.sublime-project",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/applications/start/controllers/default.py",
+		"/C/Users/Evan/AppData/Roaming/Sublime Text 3/Packages/Anaconda/Default (Windows).sublime-keymap",
+		"/C/Users/Evan/Desktop/CMPS183/.gitignore",
+		"/C/Users/Evan/Desktop/CMPS183/HW2/web2py/applications/start/views/default/add1.html",
+		"/C/Users/Evan/AppData/Roaming/Sublime Text 3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/web2py/gluon/tools.py",
+		"/C/Users/Evan/Desktop/CMPS183/web2py/web2py/applications/start/controllers/default.py",
+		"/C/Users/Evan/Desktop/CMPS 183/web2py/web2py/applications/start/models/tables.py",
+		"/C/Users/Evan/Desktop/CMPS 183/web2py/web2py/applications/start/views/default/index.html",
+		"/C/Users/Evan/Desktop/CMPS 183/web2py/web2py/applications/start/controllers/default.py",
+		"/C/Users/Evan/Desktop/CMPS 183/web2py/web2py/applications/start/routes.example.py",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/server_to_zip/server.py",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/server_to_zip/css/myapp.css",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/server_to_zip/views/news_template.tpl",
+		"/C/Users/Evan/Desktop/CMPE 12/lab6/EncryptChar.asm",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/main.cpp",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/server_to_zip/text for page.txt",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/bottle_intro/css/stupid.css",
+		"/C/Users/Evan/Desktop/CMPS 183/HW1/bottle_intro/css/myapp.css",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/CSE183/HW1/bottle_intro/views/greet_template.tpl",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/CSE183/HW1/bottle_intro/css/welcome.css",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/CSE183/HW1/bottle_intro/css/myapp.css",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/CSE183/HW1/bottle_intro/server.py",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/CSE183/HW1/bottle_intro/views/welcome.tpl",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/bottle_intro/server.py",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/bottle_intro/views/welcome.tpl.tpl",
+		"/C/Users/Evan/Desktop/webscrape/craigslist_scrape.py",
+		"/C/Users/Evan/Desktop/bs.html",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/parse_midterms.py",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/words_on_lines.py",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/109-final-0.8",
+		"/C/Users/Evan/Desktop/CMPS109/exams/final/soln-cmps109-2016q2-final.txt",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/109-final",
+		"/C/Users/Evan/Desktop/CMPS109/bs/Makefile",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/.bash_aliases",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/.ssh/id_rsa",
+		"/C/Users/Evan/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/home/evan/.ssh/id_rsa.pub",
+		"/C/Users/Evan/AppData/Local/CrashDumps/ForzaHorizon4.exe.12648.dmp",
+		"/C/Users/Evan/Desktop/CMPS109/bs/wordCount.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/wordsmid.txt",
+		"/C/Users/Evan/Desktop/CMPS109/Mackey-word-dump-comparer/words.txt",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/shape.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/interp.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/interp.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/graphics.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/README",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/.score/ellipse-etc.gd",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/graphics.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/shape.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/code/Makefile",
+		"/C/Users/Evan/Desktop/CMPS109/bs/Makefile.make",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/.score/SCORE",
+		"/C/Users/Evan/Desktop/CMPS109/asg5-oop-opengl/.score/rgbcmy.gd",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/Makefile",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/README",
+		"/C/Users/Evan/Downloads/interp.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/logstream.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/sockets.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/sockets.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/protocol.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/protocol.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/.score/SCORE",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/cixd.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/cix.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/derrick/cixd (1).cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/xless.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/derrick/cixd.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/code/derrick/cix.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/linux-sockets-in-c++-lg-74/ServerSocket.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/linux-sockets-in-c++-lg-74/Socket.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg4-client-server/linux-sockets-in-c++-lg-74/simple_server_main.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/xpair.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/listmap.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/listmap.tcc",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/main.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/README",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/util.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/util.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/util.tcc",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/Makefile",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/debug.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/debug.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/commands.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/misc/insertlist.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/misc/catfile.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/outfiles/valgrind.out",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/derrick/listmap (1).tcc",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/derrick/main (9).cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/derrick/main (8).cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/.score/test1.in",
+		"/C/Users/Evan/Desktop/CMPS109/asg3-listmap-templates/code/derrick/main.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/README",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/.score/SCORE",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/util.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/util.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/Makefile",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/file_sys.cpp",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/file_sys.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/commands.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/debug.h",
+		"/C/Users/Evan/Desktop/CMPS109/asg2-shell-fnptrs-oop/code/debug.cpp"
+	],
+	"find":
+	{
+		"height": 40.8
+	},
+	"find_in_files":
+	{
+		"height": 107.2,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"None",
+			";\n",
+			"_user",
+			");\n",
+			"justify-content",
+			"post",
+			"decide",
+			"produce",
+			"'default",
+			"profile",
+			"max",
+			"produce_buy_btn",
+			"redire",
+			"h1",
+			"False",
+			"update",
+			"update_or",
+			"update",
+			"insert",
+			"update_record",
+			"8px",
+			"hide_if",
+			"args",
+			"starre",
+			"query",
+			"product",
+			"listall",
+			"list"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "controllers/default.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3591,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2205,
+								2205
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Evan/Documents/Scripts/Chrome/My First Homepage.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4603,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1290,
+								1290
+							],
+							[
+								1318,
+								1318
+							],
+							[
+								1341,
+								1341
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 912.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "controllers/api.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3683,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3095,
+								3095
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "models/tables.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2740,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2501,
+								2501
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "static/js/default_index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8085,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6853,
+								6853
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2280.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "views/default/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3886,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3008,
+								3008
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "views/layout.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2378,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "static/css/myapp.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2314,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2219,
+								2219
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "static/css/stupid.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13841,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1252,
+								1252
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "models/menu.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3299,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1070,
+								1070
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 38.4
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 114.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "hw4_work_space.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"layou",
+				"web2py\\applications\\admin\\views\\layout.html"
+			],
+			[
+				"fa",
+				"web2py\\applications\\hw3starter\\static\\font-awesome-4.6.3\\css\\font-awesome.css"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 263.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

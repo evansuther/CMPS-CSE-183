@@ -1,0 +1,111 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<!-- load vue js 'scaffolding' -->
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+   	var get_product_list_url = "{{=URL('api', 'get_product_list')}}";
+   	var get_review_list_url = "{{=URL('api', 'get_review_list')}}";
+   	var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
+   	var save_review_url = "{{=URL('api', 'save_review', user_signature=True, hash_vars=False)}}";
+   	var is_logged_in = {{='false' if auth.user is None else 'true'}};
+   	var user_name = "{{=get_name_by_email(get_user_email()) }}";
+
+   </script>
+   {{end}}
+
+   <div class="main_content product_list">
+
+   	<div id="vue-div" class="display:none">
+   		<!-- search bar -->
+   		<input v-model="search_term"
+   				  id = "top-search-bar"
+   				  v-on:input = "filter_prods">
+   							
+         <!-- ADD SHOPPING CART BUTTON -->
+   		<!-- Message in case there are no products. -->
+   		<div v-if="product_list.length === 0">There are no products.</div>
+
+   		<!-- We display the products. -->
+   		<!-- <div class=""> -->
+   		<div>
+   			<div class="product-container" v-for="prod in display_list">
+   				<div class="product-top-row">
+   					<div class="prod_name">${prod.prod_name}</div>
+   					<div class="prod_price">${prod.prod_price}</div>
+   				</div>
+               <!-- ADD BUY BUTTON -->
+   				<p class="prod_desc">${prod.prod_desc}</p>
+   				<!-- Code for star ratings. -->
+   				<!-- v-if="is_logged_in" -->
+   				<div class="review_box row" v-if="!prod._show_reviews"> 
+   					<span class="star_rating" >
+   						<span v-for="idx in star_indices">
+   							<i v-if="idx <= prod._avg_stars" class="fa fa-star"></i>
+   							<i v-if="idx > prod._avg_stars" class="fa fa-star-o"></i>
+   						</span>
+   					</span>
+   					
+   					<button class="review_btn" v-on:click="get_reviews(prod._idx)">
+   						Reviews
+   					</button>
+   				</div>
+
+   				<div class="review_list" v-if="prod._show_reviews">
+	   				<div class = "user_review"  v-if="is_logged_in">
+   						<!-- display and allow updating of user's star rating -->	
+	   					<span class="star_rating" >
+	   						<b>Your Review:</b>
+	   						<span v-on:mouseout="stars_out(prod._idx)">
+	   							<!-- server stars updated on click -->
+		   						<span 
+		   						v-for="idx in star_indices"
+		   						v-on:mouseover="stars_over(prod._idx, idx)"
+		   						v-on:click="set_stars(prod._idx, idx)"
+		   						id="user_stars">
+		   							<i v-if="idx <= prod._user_stars" class="fa fa-star"></i>
+		   							<i v-if="idx > prod._user_stars" class="fa fa-star-o"></i>
+		   						</span>
+	   						</span>
+   						</span>
+
+   						<textarea v-model="prod._user_review.review_content"
+   								class = "user_review_content">
+   							
+   						</textarea>
+	   					<div class = "flex_between">
+	   						<i class="user_name">${user_name}</i>
+	   						<button class="review_btn rounded red" v-on:click="save_review(prod._idx)"
+	   						 id="save_btn">
+	   							Save
+	   						</button>
+	   					</div>
+	   				</div>
+
+   					<div v-if="!(prod._review_list.length === 0)">
+	   					<b>Other people's reviews:</b>
+						<div class="inner_review"
+							v-for="rev in prod._review_list">
+							<div class="inner_review_stars row">
+						 		<span v-for="idx in star_indices">
+									<i v-if="idx <= rev.rating" class="fa fa-star"></i>
+									<i v-if="idx > rev.rating" class="fa fa-star-o"></i>
+								</span>	
+							</div>
+						 		<div class="review_content">${rev.review_content}</div>
+						 		<div class="review_name">${rev.reviewer}</div>
+						</div><!-- end v-for -->
+					</div>
+					<div class = "right_">
+						<button class="review_btn" v-on:click="hide_reviews(prod._idx)">
+	   						Close
+	   					</button>
+					</div>
+				</div>	
+   			</div>
+   		</div>
+   </div>
+
+</div>
+<!-- load my js -->
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
