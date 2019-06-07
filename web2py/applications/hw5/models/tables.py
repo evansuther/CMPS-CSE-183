@@ -21,6 +21,9 @@ def get_name_by_email(_email):
     name = "" + row.first_name + " " + row.last_name
     return name
 
+def get_prodname_by_id(prod_id):
+    prod = db.products(prod_id).select().first()
+    return prod.prod_name
 
 def get_current_time():
     return datetime.datetime.utcnow()

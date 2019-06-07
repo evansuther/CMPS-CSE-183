@@ -45,6 +45,14 @@ var app = function() {
         });
     };
 
+    self.find_prod_idx_by_id = function(xid){
+        for (i in self.vue.product_list){
+            var prod = self.vue.product_list[i];
+            if (prod.prod_id === xid){
+                return prod._idx;
+            };
+        };
+    };
 
     // this function takes the search_term from the top search bar,
     // then filters the overall product list for names containing the 
@@ -113,6 +121,10 @@ var app = function() {
         };
     };
 
+    self.goto = function(page){
+        self.vue.page=page;
+    };
+
     self.get_cart = function() {
         // an AJAX call to app/api/get_product_list
         $.getJSON(get_cart_url,
@@ -123,6 +135,13 @@ var app = function() {
                 // process cart?
             }
         );
+        var cart_sum = 0;
+        // cart total not working
+        for (i in self.vue.cart){
+            var p = self.vue.cart[i];
+            cart_sum = cart_sum + p._order_quant * p.prod_price;
+        };
+        self.vue.cart_total = cart_sum;
         // for (i in self.vue.cart){
         //     var p = self.vue.cart[i];
             
@@ -131,7 +150,13 @@ var app = function() {
 
     self.add_prod_to_cart = function(prod_idx){
         var p = self.vue.product_list[prod_idx];
-        self.vue.cart.push({prod_id: p.id, _order_quant: p._order_quant});
+        self.vue.cart.push({
+            prod_id: p.id,
+            _order_quant: p._order_quant,
+            prod_name: p.prod_name,
+            prod_price: p.prod_price,
+
+        });
         // p._user_review.rating = star_idx;
         // Sends the rating to the server.
         // $.web2py.disableElement($("#user_stars"));
@@ -139,6 +164,8 @@ var app = function() {
             prod_id: p.id,
             prod_quant: p._order_quant
             }, function(data){
+                p._order_quant = 0;
+
                 // $.web2py.enableElement($("#user_stars"));
                 // p._avg_stars = data.new_avg
             }
@@ -215,9 +242,11 @@ var app = function() {
             form_title: "",
             form_content: "",
             search_term: "",
+            page:'prods',
             product_list: [],
             display_list: [],
             cart: [],
+            cart_total:0,
             star_indices: [1, 2, 3, 4, 5]
         },
         // these methods are viewable to the browser js
@@ -232,6 +261,8 @@ var app = function() {
             save_review: self.save_review,
             // search bar
             filter_prods: self.filter_prods,
+            // cart
+            goto: self.goto,
             get_cart: self.get_cart,
             add_prod_to_cart: self.add_prod_to_cart
         }
@@ -241,6 +272,7 @@ var app = function() {
     // Gets the posts.
     self.get_products();
     self.get_cart();
+    
     $("#vue-div").show()
     return self;
 };

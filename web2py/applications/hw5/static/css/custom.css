@@ -6,3 +6,8 @@ a:not(.btn):not(.noeffect):after {background-color:#26a69a}
 .progress .indeterminate {background-color:#26a69a}
 .tags > span {background-color: #26a69a}
 .tags.dismissible > span.off:hover {background-color:#26a69a}
+
+.order_quantity {
+    width: 50px;
+    text-align: center;
+}

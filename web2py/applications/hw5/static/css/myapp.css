@@ -128,3 +128,8 @@
     width: 800px;
     margin-bottom: 20px;
 }
+
+#order_quantity {
+    width: 50px;
+    text-align: center;
+}

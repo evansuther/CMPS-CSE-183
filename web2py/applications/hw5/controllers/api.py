@@ -119,8 +119,11 @@ def get_cart():
     rows = db(db.cart.user_email == email).select()
     user_cart = []
     for row in rows:
+        prod_row=db.products(row.prod_id)
         user_cart.append(dict(
             prod_id= row.prod_id,
+            prod_name= prod_row.prod_name,
+            prod_price= prod_row.prod_price,
             _order_quant= row.quantity
         ))
 
