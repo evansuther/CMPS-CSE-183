@@ -112,6 +112,32 @@ var app = function() {
         };
     };
 
+    self.get_cart = function() {
+        // an AJAX call to app/api/get_product_list
+        $.getJSON(get_cart_url,
+            function(data) {
+                // I am assuming here that the server gives me a nice list
+                // of products, all ready for display.
+                self.vue.cart = data.cart;
+                // process cart?
+            }
+        );
+    };
+
+    self.add_prod_to_cart = function(prod_idx){
+        var p = self.vue.product_list[prod_idx];
+        // p._user_review.rating = star_idx;
+        // Sends the rating to the server.
+        // $.web2py.disableElement($("#user_stars"));
+        $.post(add_prod_to_cart_url, {
+            prod_id: p.id,
+            prod_quant: star_idx
+            }, function(data){
+                // $.web2py.enableElement($("#user_stars"));
+                // p._avg_stars = data.new_avg
+            }
+        );
+    };
 
     //Code for reviews
     self.get_reviews = function(prod_idx) {
@@ -185,6 +211,7 @@ var app = function() {
             search_term: "",
             product_list: [],
             display_list: [],
+            cart: [],
             star_indices: [1, 2, 3, 4, 5]
         },
         // these methods are viewable to the browser js

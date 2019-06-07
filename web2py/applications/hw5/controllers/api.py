@@ -101,11 +101,19 @@ def add_prod_to_cart():
     """Sets the star rating of a post."""
     prod_id = int(request.vars.prod_id)
     logger.info("adding prod_id {%s} to cart" %prod_id)
-    content = request.vars.content
+    prod_quant = request.vars.prod_quant
     db.cart.update_or_insert(
-        (db.cart.user_email == auth.user.email)& (db.cart.prod_id == prod_id) ,
+        # try to find a record of the user/prod_id combo or insert
+        (db.cart.user_email == auth.user.email) & (db.cart.prod_id == prod_id) ,
         prod_id = prod_id,
         user_email = auth.user.email,
-        review_content = content
+        quantity = prod_quant
     )
     return "ok" # Might be useful in debugging.
+
+@auth.requires_signature(hash_vars=False)
+def get_cart():
+    email = auth.user.email
+    # try to find all products in the user's cart
+    user_cart = db.cart(user_email == email).select().as_dict()
+    return response.json(dict(cart=user_cart))

@@ -6,6 +6,8 @@
 <script>
    	var get_product_list_url = "{{=URL('api', 'get_product_list')}}";
    	var get_review_list_url = "{{=URL('api', 'get_review_list')}}";
+      var get_cart_url = "{{=URL('api', 'get_cart', user_signature=True, hash_vars=False)}}";
+      var add_prod_to_cart_url = "{{=URL('api', 'add_prod_to_cart', user_signature=True, hash_vars=False)}}";
    	var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
    	var save_review_url = "{{=URL('api', 'save_review', user_signature=True, hash_vars=False)}}";
    	var is_logged_in = {{='false' if auth.user is None else 'true'}};

@@ -82,7 +82,7 @@ db.define_table('reviews',
 db.define_table('cart',
     Field('user_email'), # The user who starred
     Field('prod_id', 'reference products'),
-    Field('amount', 'integer'),
+    Field('quantity', 'integer'),
     )
 # after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
