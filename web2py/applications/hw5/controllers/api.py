@@ -102,6 +102,7 @@ def add_prod_to_cart():
     prod_id = int(request.vars.prod_id)
     logger.info("adding prod_id {%s} to cart" %prod_id)
     prod_quant = request.vars.prod_quant
+    logger.info("quantity {%s}" %prod_quant)
     db.cart.update_or_insert(
         # try to find a record of the user/prod_id combo or insert
         (db.cart.user_email == auth.user.email) & (db.cart.prod_id == prod_id) ,
@@ -115,5 +116,13 @@ def add_prod_to_cart():
 def get_cart():
     email = auth.user.email
     # try to find all products in the user's cart
-    user_cart = db.cart(user_email == email).select().as_dict()
+    rows = db(db.cart.user_email == email).select()
+    user_cart = []
+    for row in rows:
+        user_cart.append(dict(
+            prod_id= row.prod_id,
+            _order_quant= row.quantity
+        ))
+
+    logger.info("cart = {%s}" %user_cart)
     return response.json(dict(cart=user_cart))

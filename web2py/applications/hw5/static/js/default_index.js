@@ -123,10 +123,15 @@ var app = function() {
                 // process cart?
             }
         );
+        // for (i in self.vue.cart){
+        //     var p = self.vue.cart[i];
+            
+        // };
     };
 
     self.add_prod_to_cart = function(prod_idx){
         var p = self.vue.product_list[prod_idx];
+        self.vue.cart.push({prod_id: p.id, _order_quant: p._order_quant});
         // p._user_review.rating = star_idx;
         // Sends the rating to the server.
         // $.web2py.disableElement($("#user_stars"));
@@ -226,13 +231,16 @@ var app = function() {
             hide_reviews: self.hide_reviews,
             save_review: self.save_review,
             // search bar
-            filter_prods: self.filter_prods
+            filter_prods: self.filter_prods,
+            get_cart: self.get_cart,
+            add_prod_to_cart: self.add_prod_to_cart
         }
 
     });
 
     // Gets the posts.
     self.get_products();
+    self.get_cart();
     $("#vue-div").show()
     return self;
 };
