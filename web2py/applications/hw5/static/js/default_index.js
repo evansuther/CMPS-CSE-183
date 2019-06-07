@@ -30,6 +30,7 @@ var app = function() {
             Vue.set(e, '_avg_stars', e.rating);
             // user stars can be set by get_reviews
             Vue.set(e, '_user_stars', 0);
+            Vue.set(e, '_order_quant', 0);
             // Vue.set(e, '_num_stars_display', e.rating); *** old stars code
             Vue.set(e, '_show_reviews', false);
             if (is_logged_in){
@@ -131,7 +132,7 @@ var app = function() {
         // $.web2py.disableElement($("#user_stars"));
         $.post(add_prod_to_cart_url, {
             prod_id: p.id,
-            prod_quant: star_idx
+            prod_quant: p._order_quant
             }, function(data){
                 // $.web2py.enableElement($("#user_stars"));
                 // p._avg_stars = data.new_avg

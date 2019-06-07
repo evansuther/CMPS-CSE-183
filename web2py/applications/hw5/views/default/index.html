@@ -36,8 +36,15 @@
    					<div class="prod_name">${prod.prod_name}</div>
    					<div class="prod_price">${prod.prod_price}</div>
    				</div>
-               <!-- ADD BUY BUTTON -->
    				<p class="prod_desc">${prod.prod_desc}</p>
+               <!-- ADD BUY BUTTON 
+                  <div>
+                     <input type=”number” v-model=”prod._order_quant /> 
+                     <button v-on:click=”add_prod_to_cart(prod._idx)” class=”btn red”>Buy</button>
+                  </div>
+
+
+               -->
    				<!-- Code for star ratings. -->
    				<!-- v-if="is_logged_in" -->
    				<div class="review_box row" v-if="!prod._show_reviews"> 
