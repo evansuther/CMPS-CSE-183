@@ -190,6 +190,22 @@ var app = function() {
         );
     };
 
+    self.update_server_cart = function(prod_idx){
+       var p = self.vue.product_list[product_idx];
+       $.post(add_prod_to_cart_url, {
+            prod_id: p.id,
+            prod_quant: p.cart_quantity
+            }, function(data){
+                p.desired_quantity = 0;
+                p.server_quantity = p.cart_quantity;
+
+                // $.web2py.enableElement($("#user_stars"));
+                // p._avg_stars = data.new_avg
+                self.update_cart_total();
+            }
+        ); 
+    }
+
     self.buy_product = function(product_idx) {
         var p = self.vue.product_list[product_idx];
         // I need to put the product in the cart.
@@ -215,7 +231,6 @@ var app = function() {
             });
         };
         self.vue.cart[found_idx].cart_quantity += p.desired_quantity;
-        self.vue.cart[found_idx].server_quantity += p.desired_quantity;
         p.cart_quantity += p.desired_quantity;
         $.post(add_prod_to_cart_url, {
             prod_id: p.id,
@@ -223,6 +238,7 @@ var app = function() {
             }, function(data){
                 p.desired_quantity = 0;
                 p.server_quantity = p.cart_quantity;
+                self.vue.cart[found_idx].server_quantity = p.cart_quantity;
 
                 // $.web2py.enableElement($("#user_stars"));
                 // p._avg_stars = data.new_avg
@@ -242,8 +258,16 @@ var app = function() {
 
     self.inc_cart_quantity = function(product_idx, qty) {
         // Inc and dec to desired quantity.
-        var p = self.vue.cart[product_idx];
+        var p = self.vue.product_list[product_idx];
+        var found_idx=self.vue.cart.length;
+        for (i in self.vue.cart){
+            if(self.vue.cart[i].prod_id === p.id){
+                found_idx = i; 
+            }
+        };
+        var cart_prod = self.vue.cart[found_idx];
         p.cart_quantity = Math.max(0, p.cart_quantity + qty);
+        cart_prod.cart_quantity = Math.max(0, cart_prod.cart_quantity + qty);
         p._changed = true;
         // self.update_cart();
         // self.update_cart_total();
