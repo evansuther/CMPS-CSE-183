@@ -8,7 +8,8 @@ def get_product_list():
         results.append(dict(
             id=row.id,
             prod_name=row.prod_name,
-            prod_price=represent_money(row.prod_price),
+            prod_price=row.prod_price,
+            display_price=represent_money(row.prod_price),
             prod_desc=row.prod_desc,
             rating = calc_avg_rating(row.id) #None if row.stars.id is None else row.stars.rating,
         ))
@@ -36,7 +37,7 @@ def get_review_list():
             ],
         )
     logger.info("rats = %s"%rats)
-    rows =  rats | revs
+    rows =  rats | revs # join via web2py rows OR operator
 
     for row in rows:
         # logger.info("row = %s"%row)
@@ -77,7 +78,6 @@ def set_stars():
     )
     new_avg = calc_avg_rating(prod_id)
     return response.json(dict(new_avg=new_avg))
-    # return "ok" # Might be useful in debugging.
 
 
 @auth.requires_signature(hash_vars=False)
@@ -124,7 +124,9 @@ def get_cart():
             prod_id= row.prod_id,
             prod_name= prod_row.prod_name,
             prod_price= prod_row.prod_price,
-            _order_quant= row.quantity
+            display_price= represent_money(prod_row.prod_price),
+            cart_quantity= row.quantity,
+            server_quantity= row.quantity,
         ))
 
     logger.info("cart = {%s}" %user_cart)

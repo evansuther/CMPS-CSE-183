@@ -30,9 +30,11 @@ var app = function() {
             Vue.set(e, '_avg_stars', e.rating);
             // user stars can be set by get_reviews
             Vue.set(e, '_user_stars', 0);
-            Vue.set(e, '_order_quant', 0);
             // Vue.set(e, '_num_stars_display', e.rating); *** old stars code
             Vue.set(e, '_show_reviews', false);
+            Vue.set(e, 'desired_quantity', 0);
+            Vue.set(e, 'cart_quantity', 0);
+            Vue.set(e, 'server_quantity', 0)
             if (is_logged_in){
                 // inserting a dummy fake review to be filled in by user
                 // this attribute can also be replaced by the user's
@@ -48,10 +50,12 @@ var app = function() {
     self.find_prod_idx_by_id = function(xid){
         for (i in self.vue.product_list){
             var prod = self.vue.product_list[i];
-            if (prod.prod_id === xid){
+            console.log('prod = ', prod)
+            if (prod.id === xid){
                 return prod._idx;
             };
         };
+        return -1;
     };
 
     // this function takes the search_term from the top search bar,
@@ -85,6 +89,9 @@ var app = function() {
                 self.vue.product_list = data.product_list;
                 // add dynamic attributes and _idx to products
                 self.process_products();
+                if(is_logged_in){
+                  self.get_cart();
+                };
             }
         );
     }
@@ -125,6 +132,24 @@ var app = function() {
         self.vue.page=page;
     };
 
+    self.update_cart_total = function(){
+        var cart_sum = 0;
+        for (i in self.vue.cart){
+            var p = self.vue.cart[i];
+            p._changed = false;
+            console.log('var p = ', p);
+            cart_sum = cart_sum + p.cart_quantity * p.prod_price.toFixed(2);
+            // set cart quantity so that cart quantity can be properly incremented
+            var p_idx = self.find_prod_idx_by_id(p.prod_id);
+            p._idx = p_idx;
+            console.log('p_idx = ', p_idx);
+            var prod = self.vue.product_list[p_idx];
+            prod.cart_quantity=p.cart_quantity;
+        };
+        self.vue.cart_total = cart_sum.toFixed(2);
+        return;
+    };
+
     self.get_cart = function() {
         // an AJAX call to app/api/get_product_list
         $.getJSON(get_cart_url,
@@ -133,21 +158,13 @@ var app = function() {
                 // of products, all ready for display.
                 self.vue.cart = data.cart;
                 // process cart?
+                // cart total not working
+                self.update_cart_total();
             }
         );
-        var cart_sum = 0;
-        // cart total not working
-        for (i in self.vue.cart){
-            var p = self.vue.cart[i];
-            cart_sum = cart_sum + p._order_quant * p.prod_price;
-        };
-        self.vue.cart_total = cart_sum;
-        // for (i in self.vue.cart){
-        //     var p = self.vue.cart[i];
-            
-        // };
     };
 
+    // deprecated
     self.add_prod_to_cart = function(prod_idx){
         var p = self.vue.product_list[prod_idx];
         self.vue.cart.push({
@@ -155,6 +172,7 @@ var app = function() {
             _order_quant: p._order_quant,
             prod_name: p.prod_name,
             prod_price: p.prod_price,
+            display_price: p.display_price,
 
         });
         // p._user_review.rating = star_idx;
@@ -170,6 +188,66 @@ var app = function() {
                 // p._avg_stars = data.new_avg
             }
         );
+    };
+
+    self.buy_product = function(product_idx) {
+        var p = self.vue.product_list[product_idx];
+        // I need to put the product in the cart.
+        // Check if it is already there.
+        var already_present = false;
+        var found_idx = 0;
+        for (var i = 0; i < self.vue.cart.length; i++) {
+            if (self.vue.cart[i].prod_id === p.id) {
+                already_present = true;
+                found_idx = i;
+            }
+        }
+        // If it's there, just replace the quantity; otherwise, insert it.
+        if (!already_present) {
+            found_idx = self.vue.cart.length;
+            self.vue.cart.push({
+                prod_id: p.id,
+                cart_quantity: p.cart_quantity, // will be 0 or the quant from the server
+                server_quantity: p.server_quantity, // will be 0 or the quant from the server
+                prod_name: p.prod_name,
+                prod_price: p.prod_price,
+                display_price: p.display_price,
+            });
+        };
+        self.vue.cart[found_idx].cart_quantity += p.desired_quantity;
+        self.vue.cart[found_idx].server_quantity += p.desired_quantity;
+        p.cart_quantity += p.desired_quantity;
+        $.post(add_prod_to_cart_url, {
+            prod_id: p.id,
+            prod_quant: p.cart_quantity
+            }, function(data){
+                p.desired_quantity = 0;
+                p.server_quantity = p.cart_quantity;
+
+                // $.web2py.enableElement($("#user_stars"));
+                // p._avg_stars = data.new_avg
+                self.update_cart_total();
+            }
+        );
+        // Updates the amount of products in the cart.
+        // self.update_cart();
+        // self.store_cart();
+    };
+
+    self.inc_desired_quantity = function(product_idx, qty) {
+        // Inc and dec to desired quantity.
+        var p = self.vue.product_list[product_idx];
+        p.desired_quantity = Math.max(0, p.desired_quantity + qty);
+    };
+
+    self.inc_cart_quantity = function(product_idx, qty) {
+        // Inc and dec to desired quantity.
+        var p = self.vue.cart[product_idx];
+        p.cart_quantity = Math.max(0, p.cart_quantity + qty);
+        p._changed = true;
+        // self.update_cart();
+        // self.update_cart_total();
+        // self.store_cart();
     };
 
     //Code for reviews
@@ -264,14 +342,17 @@ var app = function() {
             // cart
             goto: self.goto,
             get_cart: self.get_cart,
+            inc_desired_quantity: self.inc_desired_quantity,
+            inc_cart_quantity: self.inc_cart_quantity,
+            buy_product: self.buy_product,
             add_prod_to_cart: self.add_prod_to_cart
         }
 
     });
 
-    // Gets the posts.
+    // Gets the products and cart.
     self.get_products();
-    self.get_cart();
+    
     
     $("#vue-div").show()
     return self;

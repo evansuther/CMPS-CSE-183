@@ -24,9 +24,14 @@
 	background-color: #cc1f00;
 }
 
+.top_bottom_margin{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 /* the rest of this css is from https://austinkellarmsi.pythonanywhere.com/hw4 
  * I've refactored and renamed some of it to match my conventions more
- * but its still pretty messy and long
+ * but its still mostly Austin Keller's CSS
  */
 .product-container {
     background-color: lightgray;
@@ -132,4 +137,28 @@
 #order_quantity {
     width: 50px;
     text-align: center;
+}
+
+.cart_list {
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+}
+
+.cart_item {
+    text-align: center;
+    background-color: #d3d3d3;
+    border: 1px solid #000;
+    border-radius: 15px;
+    margin-top: 20px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cart_prod_name {
+    font-weight: 700;
+    font-size: 18px;
 }

@@ -8,10 +8,10 @@
 	var get_review_list_url = "{{=URL('api', 'get_review_list')}}";
    var get_cart_url = "{{=URL('api', 'get_cart', user_signature=True, hash_vars=False)}}";
    var add_prod_to_cart_url = "{{=URL('api', 'add_prod_to_cart', user_signature=True, hash_vars=False)}}";
-	var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
-	var save_review_url = "{{=URL('api', 'save_review', user_signature=True, hash_vars=False)}}";
-	var is_logged_in = {{='false' if auth.user is None else 'true'}};
-	var user_name = "{{=get_name_by_email(get_user_email()) }}";
+   var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True, hash_vars=False)}}";
+   var save_review_url = "{{=URL('api', 'save_review', user_signature=True, hash_vars=False)}}";
+   var is_logged_in = {{='false' if auth.user is None else 'true'}};
+   var user_name = "{{=get_name_by_email(get_user_email()) }}";
 
 </script>
 {{end}}
@@ -19,120 +19,136 @@
 <div class="main_content product_list">
 
 	<div id="vue-div" class="display:none">
-      <div v-if="page === 'prods'">
-         <!-- ADD SHOPPING CART BUTTON -->
-         <span v-if="page ==='prods'">
-                    <button class="btn orange" v-on:click="goto('cart')">
-                        <i class="fa fa-lg fa-shopping-cart"></i> ${cart.length}
-                    </button>
-                </span>
-   		<!-- search bar -->
-   		<input v-model="search_term"
-   				  id = "top-search-bar"
-   				  v-on:input = "filter_prods">
-   							
-   		<!-- Message in case there are no products. -->
-   		<div v-if="product_list.length === 0">There are no products.</div>
+      <div >
+         <!--SHOPPING CART BUTTON -->
+         <span v-if="(page ==='prods') && (is_logged_in)">
+             <button class="btn orange" v-on:click="goto('cart')">
+               <i class="fa fa-lg fa-shopping-cart"></i> ${cart.length}
+            </button>
+         </span>
+         <span v-if="page=='cart'">
+            <button class="btn" v-on:click="goto('prods')"> 
+               Continue shopping 
+            </button>
+         </span>
+      </div>
 
-   		<!-- PRODUCT LIST -->
-   		<div>
-   			<div class="product-container" v-for="prod in display_list">
-   				<div class="product-top-row">
-   					<div class="prod_name">${prod.prod_name}</div>
-   					<div class="prod_price">${prod.prod_price}</div>
-   				</div>
-   				<p class="prod_desc">${prod.prod_desc}</p>
-               <!-- ADD BUY BUTTON  -->
-                  <div v-if="is_logged_in">
-                     <input v-model="prod._order_quant" id = "order_quantity" type="number"> 
-                     <button v-on:click="add_prod_to_cart(prod._idx)" class="btn red">Buy</button>
+    <!-- PRODUCT PAGE -->
+    <div v-if="page === 'prods'">
+       <!-- search bar -->
+       <input v-model="search_term"
+       id = "top-search-bar"
+       v-on:input = "filter_prods">
+
+       <!-- Message in case there are no products. -->
+       <div v-if="product_list.length === 0">There are no products.</div>
+
+       <!-- PRODUCT LIST -->
+       <div>
+         <div class="product-container" v-for="prod in display_list">
+            <div class="product-top-row">
+               <div class="prod_name">${prod.prod_name}</div>
+               <div class="prod_price">${prod.display_price}</div>
+            </div>
+            <p class="prod_desc">${prod.prod_desc}</p>
+            <!-- ADD BUY BUTTON  -->
+            <div v-if="is_logged_in">
+               <!-- <input v-model="prod.cart_quantity" id = "order_quantity" type="number">  -->
+               <span class="buy_buttons">
+                  <button class="btn" v-on:click="inc_desired_quantity(prod._idx, 1)">
+                     <i class="fa fa-plus"></i>
+                  </button>
+                  <span class="desired_quantity">${prod.desired_quantity}</span>
+                  <button class="btn" v-on:click="inc_desired_quantity(prod._idx, -1)">
+                     <i class="fa fa-minus"></i>
+                  </button>
+                  <button class="btn red" v-on:click="buy_product(prod._idx)"><i class="fa fa-lg fa-shopping-cart"></i>    Buy
+                  </button>
+               </span>
+               <!-- <button v-on:click="add_prod_to_cart(prod._idx)" class="btn red">Buy</button> -->
+            </div>
+
+         <!-- Code for star ratings. -->
+         <!-- v-if="is_logged_in" -->
+            <div class="review_box row" v-if="!prod._show_reviews"> 
+               <span class="star_rating" >
+                  <span v-for="idx in star_indices">
+                     <i v-if="idx <= prod._avg_stars" class="fa fa-star"></i>
+                     <i v-if="idx > prod._avg_stars" class="fa fa-star-o"></i>
+                  </span>
+               </span>
+               <button class="review_btn" v-on:click="get_reviews(prod._idx)">
+                  Reviews
+               </button>
+            </div>
+
+            <div class="review_list" v-if="prod._show_reviews">
+               <div class = "user_review"  v-if="is_logged_in">
+               <!-- display and allow updating of user's star rating -->	
+                  <span class="star_rating" >
+                     <b>Your Review:</b>
+                     <span v-on:mouseout="stars_out(prod._idx)">
+                          <!-- server stars updated on click -->
+                        <span 
+                          v-for="idx in star_indices"
+                          v-on:mouseover="stars_over(prod._idx, idx)"
+                          v-on:click="set_stars(prod._idx, idx)"
+                          id="user_stars">
+                              <i v-if="idx <= prod._user_stars" class="fa fa-star"></i>
+                              <i v-if="idx > prod._user_stars" class="fa fa-star-o"></i>
+                        </span>
+                     </span>
+                 </span>
+
+                 <textarea v-model="prod._user_review.review_content"
+                  class = "user_review_content">
+                  </textarea>
+
+                  <div class = "flex_between">
+                     <i class="user_name">${user_name}</i>
+                     <button class="review_btn rounded red" v-on:click="save_review(prod._idx)"
+                        id="save_btn">
+                           Save
+                     </button>
                   </div>
+               </div>
 
+               <div v-if="!(prod._review_list.length === 0)">
+                  <b>Other people's reviews:</b>
+                  <div class="inner_review"
+                      v-for="rev in prod._review_list">
+                     <div class="inner_review_stars row">
+                        <span v-for="idx in star_indices">
+                           <i v-if="idx <= rev.rating" class="fa fa-star"></i>
+                           <i v-if="idx > rev.rating" class="fa fa-star-o"></i>
+                        </span>	
+                     </div>
+                     <div class="review_content">${rev.review_content}</div>
+                     <div class="review_name">${rev.reviewer}</div>
+                  </div><!-- end review_list v-for -->
+               </div>
+               <div class = "right_">
+                  <button class="review_btn" v-on:click="hide_reviews(prod._idx)">
+                     Close
+                  </button>
+               </div>
+            </div>	
+         </div><!-- end product container -->
 
-              
-   				<!-- Code for star ratings. -->
-   				<!-- v-if="is_logged_in" -->
-   				<div class="review_box row" v-if="!prod._show_reviews"> 
-   					<span class="star_rating" >
-   						<span v-for="idx in star_indices">
-   							<i v-if="idx <= prod._avg_stars" class="fa fa-star"></i>
-   							<i v-if="idx > prod._avg_stars" class="fa fa-star-o"></i>
-   						</span>
-   					</span>
-   					
-   					<button class="review_btn" v-on:click="get_reviews(prod._idx)">
-   						Reviews
-   					</button>
-   				</div>
+       </div><!-- end product list -->
+    </div><!-- end prods page -->
+    <!-- CART -->
+    <div v-if="page=='cart'" id="cart_list">
 
-   				<div class="review_list" v-if="prod._show_reviews">
-      				<div class = "user_review"  v-if="is_logged_in">
-   						<!-- display and allow updating of user's star rating -->	
-      					<span class="star_rating" >
-      						<b>Your Review:</b>
-      						<span v-on:mouseout="stars_out(prod._idx)">
-      							<!-- server stars updated on click -->
-   	   						<span 
-   	   						v-for="idx in star_indices"
-   	   						v-on:mouseover="stars_over(prod._idx, idx)"
-   	   						v-on:click="set_stars(prod._idx, idx)"
-   	   						id="user_stars">
-   	   							<i v-if="idx <= prod._user_stars" class="fa fa-star"></i>
-   	   							<i v-if="idx > prod._user_stars" class="fa fa-star-o"></i>
-   	   						</span>
-      						</span>
-   						</span>
-
-   						<textarea v-model="prod._user_review.review_content"
-   								class = "user_review_content">
-   							
-   						</textarea>
-      					<div class = "flex_between">
-      						<i class="user_name">${user_name}</i>
-      						<button class="review_btn rounded red" v-on:click="save_review(prod._idx)"
-      						 id="save_btn">
-      							Save
-      						</button>
-      					</div>
-      				</div>
-
-   					<div v-if="!(prod._review_list.length === 0)">
-      					<b>Other people's reviews:</b>
-   					   <div class="inner_review"
-   						  v-for="rev in prod._review_list">
-   						  <div class="inner_review_stars row">
-   					 		<span v-for="idx in star_indices">
-   								<i v-if="idx <= rev.rating" class="fa fa-star"></i>
-   								<i v-if="idx > rev.rating" class="fa fa-star-o"></i>
-   							</span>	
-   						  </div>
-   					 		<div class="review_content">${rev.review_content}</div>
-   					 		<div class="review_name">${rev.reviewer}</div>
-   					   </div><!-- end v-for -->
-   				   </div>
-   				   <div class = "right_">
-   					<button class="review_btn" v-on:click="hide_reviews(prod._idx)">
-      						Close
-   					</button>
-   				   </div>
-   			</div>	
-   		   </div><!-- end product container -->
-   		
-         </div><!-- end product list -->
-      </div><!-- end prods page -->
-   <div v-if="page=='cart'" id="cart_list">
-         <div v-if="cart.length == 0" class="container">
-             <div class="cart_empty_msg">
-                 Your cart is empty
-             </div>
-         </div>
-         <div v-for="product in cart" class="container">
-            <div class="col-md-3 prod_image third">
-               <div class="product_name"><h2>${product.prod_name}</h2></div>
-               <div class="product_quantity_price">
-                  <span class="product_price">$ ${product.prod_price}</span>
-                  <!-- <span class="product_quantity">Quantity in stock: ${product.quantity}</span> -->
-                  <!-- <span class="buy_buttons">
+      <div v-if="cart.length == 0" class="container">
+         <div class="cart_empty_msg">Your cart is empty</div>
+      </div>
+      <div class="cart_list">
+      <div v-for="product in cart" class="cart_item">
+         <div class="cart_prod_name">${product.prod_name}</div>
+         <div class="product_quantity_price">
+            <div class="product_price top_bottom_margin"> ${product.display_price}</div>
+                  <span class="buy_buttons">
                       <button class="btn" v-on:click="inc_cart_quantity(product._idx, 1)">
                         <i class="fa fa-plus"></i>
                       </button>
@@ -140,21 +156,20 @@
                       <button class="btn" v-on:click="inc_cart_quantity(product._idx, -1)">
                         <i class="fa fa-minus"></i>
                       </button>
-                  </span> -->
-               </div>
-               <!-- <div class="product_description">
-                  <p>${product.description}</p>
-               </div> -->
-            </div>
-         </div>
-         <div v-if="cart.length > 0" class="total_price">
-             Your total price: $ ${cart_total}
-             <button class="btn blue" v-on:click="pay()"><i class="fa fa-lg fa-credit-card"></i> Pay</button>
-         </div>
-     </div>
-
+                      <button class="btn red" v-on:click="buy_product(product._idx)"
+                         v-if="product.server_quantity !== product.cart_quantity">
+                        <i class="fa fa-lg fa-shopping-cart"></i>    Update
+                     </button>
+                   </span>
+          </div>
+      </div>
+      </div>
+      <div v-if="cart.length > 0" class="total_price">
+        Your total price: $ ${cart_total}
+        <button class="btn blue" v-on:click="pay()"><i class="fa fa-lg fa-credit-card"></i> Pay</button>
+      </div>
+    </div>
    </div><!-- end vue-div -->
-
-</div>
+</div><!-- end main content -->
 <!-- load my js -->
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>
