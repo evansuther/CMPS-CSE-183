@@ -131,3 +131,9 @@ def get_cart():
 
     logger.info("cart = {%s}" %user_cart)
     return response.json(dict(cart=user_cart))
+
+@auth.requires_signature(hash_vars=False)
+def clear_cart():
+    email = auth.user.email
+    db(db.cart.user_email == email).delete()
+    return "ok"

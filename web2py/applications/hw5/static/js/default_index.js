@@ -32,6 +32,7 @@ var app = function() {
             Vue.set(e, '_user_stars', 0);
             // Vue.set(e, '_num_stars_display', e.rating); *** old stars code
             Vue.set(e, '_show_reviews', false);
+            Vue.set(e, '_show_check', false);
             Vue.set(e, 'desired_quantity', 0);
             Vue.set(e, 'cart_quantity', 0);
             Vue.set(e, 'server_quantity', 0)
@@ -164,47 +165,14 @@ var app = function() {
         );
     };
 
-    // deprecated
-    self.add_prod_to_cart = function(prod_idx){
-        var p = self.vue.product_list[prod_idx];
-        self.vue.cart.push({
-            prod_id: p.id,
-            _order_quant: p._order_quant,
-            prod_name: p.prod_name,
-            prod_price: p.prod_price,
-            display_price: p.display_price,
-
+    self.clear_cart = function(){
+        $.post(clear_cart_url, function(data){
+            self.vue.cart = [];
+            self.vue.cart_total = 0;
         });
-        // p._user_review.rating = star_idx;
-        // Sends the rating to the server.
-        // $.web2py.disableElement($("#user_stars"));
-        $.post(add_prod_to_cart_url, {
-            prod_id: p.id,
-            prod_quant: p._order_quant
-            }, function(data){
-                p._order_quant = 0;
-
-                // $.web2py.enableElement($("#user_stars"));
-                // p._avg_stars = data.new_avg
-            }
-        );
+        self.get_cart();
+        self.process_products();
     };
-
-    self.update_server_cart = function(prod_idx){
-       var p = self.vue.product_list[product_idx];
-       $.post(add_prod_to_cart_url, {
-            prod_id: p.id,
-            prod_quant: p.cart_quantity
-            }, function(data){
-                p.desired_quantity = 0;
-                p.server_quantity = p.cart_quantity;
-
-                // $.web2py.enableElement($("#user_stars"));
-                // p._avg_stars = data.new_avg
-                self.update_cart_total();
-            }
-        ); 
-    }
 
     self.buy_product = function(product_idx) {
         var p = self.vue.product_list[product_idx];
@@ -331,7 +299,14 @@ var app = function() {
                 prod_id: p.id,
                 content: p._user_review.review_content
             }, function(data){
-                $.web2py.enableElement($("#save_btn"));
+                p._show_check = true;
+                setTimeout(function(){ 
+                    $.web2py.enableElement($("#save_btn"));
+                    p._show_check = false;
+                 },
+                 500);
+                // $.web2py.enableElement($("#save_btn"));
+                
             });
     };
     // Complete as needed.
@@ -369,7 +344,7 @@ var app = function() {
             inc_desired_quantity: self.inc_desired_quantity,
             inc_cart_quantity: self.inc_cart_quantity,
             buy_product: self.buy_product,
-            add_prod_to_cart: self.add_prod_to_cart
+            clear_cart: self.clear_cart,
         }
 
     });
