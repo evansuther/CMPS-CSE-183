@@ -30,9 +30,11 @@ var app = function() {
             Vue.set(e, '_avg_stars', e.rating);
             // user stars can be set by get_reviews
             Vue.set(e, '_user_stars', 0);
-            // Vue.set(e, '_num_stars_display', e.rating); *** old stars code
             Vue.set(e, '_show_reviews', false);
             Vue.set(e, '_show_check', false);
+            // 3 different quantities to show/hide update btn in cart
+            // and be able to display 0 for default buy quantity 
+            // on each product
             Vue.set(e, 'desired_quantity', 0);
             Vue.set(e, 'cart_quantity', 0);
             Vue.set(e, 'server_quantity', 0)
@@ -90,6 +92,9 @@ var app = function() {
                 self.vue.product_list = data.product_list;
                 // add dynamic attributes and _idx to products
                 self.process_products();
+                // get_cart matches cart prods to the overall
+                // product_list _idx so it has to wait for the list
+                // and for the list to be processed
                 if(is_logged_in){
                   self.get_cart();
                 };
@@ -129,22 +134,28 @@ var app = function() {
         };
     };
 
+    // change the page between cart and products
     self.goto = function(page){
         self.vue.page=page;
     };
 
+    // called when adding products to the cart from the products page
+    // or when updating the cart quantity in the actual cart.
+    // this changes the cart total, gives an idx to each product
+    // according to the overall products list.
     self.update_cart_total = function(){
         var cart_sum = 0;
         for (i in self.vue.cart){
             var p = self.vue.cart[i];
-            p._changed = false;
+            // p._changed = false; *** OLD
             console.log('var p = ', p);
             cart_sum = cart_sum + p.cart_quantity * p.prod_price.toFixed(2);
-            // set cart quantity so that cart quantity can be properly incremented
+            // give products in the cart an _idx to be able to change the quantity in the future
             var p_idx = self.find_prod_idx_by_id(p.prod_id);
             p._idx = p_idx;
             console.log('p_idx = ', p_idx);
             var prod = self.vue.product_list[p_idx];
+            // set cart quantity so that cart quantity can be properly incremented
             prod.cart_quantity=p.cart_quantity;
         };
         self.vue.cart_total = cart_sum.toFixed(2);
@@ -155,17 +166,16 @@ var app = function() {
         // an AJAX call to app/api/get_product_list
         $.getJSON(get_cart_url,
             function(data) {
-                // I am assuming here that the server gives me a nice list
-                // of products, all ready for display.
                 self.vue.cart = data.cart;
-                // process cart?
-                // cart total not working
+                // sum the total due and assign an _idx matching the
+                // overall product list's _idx
                 self.update_cart_total();
             }
         );
     };
 
     self.clear_cart = function(){
+        // clear cart on server, wait for response, then clear local cart
         $.post(clear_cart_url, function(data){
             self.vue.cart = [];
             self.vue.cart_total = 0;
@@ -174,6 +184,8 @@ var app = function() {
         self.process_products();
     };
 
+    // called to update cart quantity server-side and keep
+    // track of these changes browser-side
     self.buy_product = function(product_idx) {
         var p = self.vue.product_list[product_idx];
         // I need to put the product in the cart.
@@ -198,24 +210,22 @@ var app = function() {
                 display_price: p.display_price,
             });
         };
+        // update display quantities
         self.vue.cart[found_idx].cart_quantity += p.desired_quantity;
         p.cart_quantity += p.desired_quantity;
+        // send changes to server
         $.post(add_prod_to_cart_url, {
             prod_id: p.id,
             prod_quant: p.cart_quantity
             }, function(data){
                 p.desired_quantity = 0;
+                // update server_quantity to reflect changes
                 p.server_quantity = p.cart_quantity;
                 self.vue.cart[found_idx].server_quantity = p.cart_quantity;
-
-                // $.web2py.enableElement($("#user_stars"));
-                // p._avg_stars = data.new_avg
+                // properly wait for server response to update total
                 self.update_cart_total();
             }
         );
-        // Updates the amount of products in the cart.
-        // self.update_cart();
-        // self.store_cart();
     };
 
     self.inc_desired_quantity = function(product_idx, qty) {
@@ -225,7 +235,8 @@ var app = function() {
     };
 
     self.inc_cart_quantity = function(product_idx, qty) {
-        // Inc and dec to desired quantity.
+        // Inc and dec to cart quantity.
+        // updates pushed to server with buy_product()
         var p = self.vue.product_list[product_idx];
         var found_idx=self.vue.cart.length;
         for (i in self.vue.cart){
@@ -236,13 +247,10 @@ var app = function() {
         var cart_prod = self.vue.cart[found_idx];
         p.cart_quantity = Math.max(0, p.cart_quantity + qty);
         cart_prod.cart_quantity = Math.max(0, cart_prod.cart_quantity + qty);
-        p._changed = true;
-        // self.update_cart();
-        // self.update_cart_total();
-        // self.store_cart();
+        // p._changed = true; *****OLD
     };
 
-    //Code for reviews
+    // Code for reviews
     self.get_reviews = function(prod_idx) {
         // hide all other reviews
         for (prod in self.vue.product_list){
@@ -306,9 +314,9 @@ var app = function() {
                  },
                  500);
                 // $.web2py.enableElement($("#save_btn"));
-                
             });
     };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",

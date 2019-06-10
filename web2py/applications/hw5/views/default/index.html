@@ -52,7 +52,7 @@
                <div class="prod_price">${prod.display_price}</div>
             </div>
             <p class="prod_desc">${prod.prod_desc}</p>
-            <!-- ADD BUY BUTTON  -->
+            <!-- BUY BUTTON  -->
             <div v-if="is_logged_in">
                <!-- <input v-model="prod.cart_quantity" id = "order_quantity" type="number">  -->
                <span class="buy_buttons">
@@ -69,7 +69,7 @@
                <!-- <button v-on:click="add_prod_to_cart(prod._idx)" class="btn red">Buy</button> -->
             </div>
 
-         <!-- Code for star ratings. -->
+         <!-- Code for AVG STARS. -->
          <!-- v-if="is_logged_in" -->
             <div class="review_box row" v-if="!prod._show_reviews"> 
                <span class="star_rating" >
@@ -82,10 +82,10 @@
                   Reviews
                </button>
             </div>
-
+            <!-- REVIEWS -->
             <div class="review_list" v-if="prod._show_reviews">
                <div class = "user_review"  v-if="is_logged_in">
-               <!-- display and allow updating of user's star rating -->	
+               <!-- USER's STARS -->
                   <span class="star_rating" >
                      <b>Your Review:</b>
                      <span v-on:mouseout="stars_out(prod._idx)">
@@ -100,11 +100,11 @@
                         </span>
                      </span>
                  </span>
-
+                 <!-- USER'S TEXT REVIEW -->
                  <textarea v-model="prod._user_review.review_content"
                   class = "user_review_content">
                   </textarea>
-
+                  <!-- USERNAME + UPDATE REVIEW BUTTON -->
                   <div class = "flex_between">
                      <i class="user_name">${user_name}</i>
                      <div>
@@ -116,7 +116,7 @@
                   </div>
                   </div>
                </div>
-
+               <!-- OTHER REVIEWS -->
                <div v-if="!(prod._review_list.length === 0)">
                   <b>Other people's reviews:</b>
                   <div class="inner_review"
@@ -138,16 +138,16 @@
                </div>
             </div>	
          </div><!-- end product container -->
-
        </div><!-- end product list -->
     </div><!-- end prods page -->
+
     <!-- CART -->
     <div v-if="page=='cart'" id="cart_list">
-
       <div v-if="cart.length == 0" class="container">
          <div class="cart_empty_msg">Your cart is empty</div>
       </div>
       <div class="cart_list" v-if="cart.length > 0">
+      <!-- PRODUCTS IN USER CART -->
       <div v-for="product in cart" class="cart_item">
          <div class="cart_prod_name">${product.prod_name}</div>
          <div class="product_quantity_price">
@@ -160,6 +160,7 @@
                       <button class="btn" v-on:click="inc_cart_quantity(product._idx, -1)">
                         <i class="fa fa-minus"></i>
                       </button>
+                      <!-- DISPLAY UPDATE BTN IF LOCAL CART QUANT !=  SERVER CART QUANT-->
                       <button class="btn red" v-on:click="buy_product(product._idx)"
                          v-if="product.server_quantity !== product.cart_quantity">
                         <i class="fa fa-lg fa-shopping-cart"></i>    Update
@@ -168,16 +169,18 @@
           </div>
       </div>
       </div>
-
+      <!-- CART TOTAL -->
       <div v-if="cart.length > 0" class="total_price">
         <h3>Your Order Total: $ ${cart_total}</h3>
         <a class ="noeffect"href="#popup1">
+            <!-- link to modal saying thank you -->
            <button class="btn large" href="#popup1">
                <i class="fa fa-lg fa-credit-card"></i> 
                Complete Order
             </button>
         </a>
       </div>
+    <!-- thank you modal -->
     <div class="modal" id="popup1">
       <div class="padded quarter rounded white">
          <h4>Thank you for your business!</h4>
